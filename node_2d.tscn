@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://cnjmi0oabpifi"]
+
+[ext_resource type="Texture2D" uid="uid://da8if3xp7bvsc" path="res://res/selection.png" id="1_e4tlb"]
+[ext_resource type="Texture2D" uid="uid://dlv0e3hvm6es5" path="res://res/grid.png" id="1_uc04y"]
+[ext_resource type="Script" path="res://TileMap.gd" id="2_md644"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s07oj"]
+texture = ExtResource("1_uc04y")
+texture_region_size = Vector2i(70, 70)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d0is3"]
+texture = ExtResource("1_e4tlb")
+texture_region_size = Vector2i(70, 70)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_ushug"]
+tile_size = Vector2i(70, 70)
+sources/2 = SubResource("TileSetAtlasSource_d0is3")
+sources/1 = SubResource("TileSetAtlasSource_s07oj")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_ushug")
+cell_quadrant_size = 70
+format = 2
+layer_1/name = ""
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = false
+layer_1/y_sort_origin = 0
+layer_1/z_index = 0
+layer_1/tile_data = PackedInt32Array()
+script = ExtResource("2_md644")
+
+[node name="PathLine" type="Line2D" parent="."]
+unique_name_in_owner = true
+default_color = Color(1, 0, 0, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
