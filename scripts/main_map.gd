@@ -1,6 +1,6 @@
 extends TileMap
 
-const tile_size = 70
+@export var tile_size:int = 70
 
 const map_w = 27
 const map_h = 14
@@ -14,7 +14,7 @@ const id_selection_tile = 2
 const id_active_selection_tile = 3
 
 var draw_state: bool = false
-var path_commands: Array = []
+var path_commands_answer: Array = []
 
 func _ready():
 	for y in map_h:
@@ -23,6 +23,7 @@ func _ready():
 
 var mouse_coord: Vector2 = Vector2.ZERO
 var last_mouse_coord: Vector2 = Vector2.ZERO
+var line_from: Vector2 = Vector2.ZERO
 
 func _process(_delta):
 	if not draw_state:
@@ -38,7 +39,7 @@ func _process(_delta):
 		set_cell(layer_active_selection, mouse_coord, id_active_selection_tile, Vector2.ZERO)
 		%PathLine.clear_points()
 
-		var line_from: Vector2 = map_to_local(mouse_coord)
+		line_from = map_to_local(mouse_coord)
 		last_mouse_coord = line_from
 		%PathLine.add_point(line_from)
 	
@@ -59,12 +60,12 @@ func _process(_delta):
 					middle_point.x += tile_size
 
 				# Add the middle point to the path commands
-				path_commands.append(%PathProcessor.determine_direction(last_mouse_coord, middle_point))
+				path_commands_answer.append(PathProcessor.determine_direction(last_mouse_coord, middle_point))
 				# Add the middle point to the path line
 				%PathLine.add_point(middle_point)
 
 			# Add the new point to the path commands
-			path_commands.append(PathProcessor.determine_direction(last_mouse_coord, mouse_coord))
+			path_commands_answer.append(PathProcessor.determine_direction(last_mouse_coord, mouse_coord))
 			# Add the new point to the path line
 			%PathLine.add_point(mouse_coord)
 			# Update the last mouse coord
@@ -72,7 +73,12 @@ func _process(_delta):
 	
 	if Input.is_action_just_released("LeftClick"):
 		draw_state = false
-		PathProcessor.print_moves(path_commands)
+		PathProcessor.print_moves(path_commands_answer)
+		%Rocket.set_start_position(line_from)
+		%Rocket.execute_move_commands(path_commands_answer)
+		await %Rocket.move_completed
+		path_commands_answer.clear()
+		print("Path completed")
 
 func erase_selection_map():
 	for y in map_h:
