@@ -8,11 +8,13 @@ const map_h = 14
 const layer_grid = 0
 const layer_selection = 1
 const layer_active_selection = 2
+
 const id_grid_tile = 1
 const id_selection_tile = 2
 const id_active_selection_tile = 3
 
 var draw_state: bool = false
+var path_commands: Array = []
 
 func _ready():
 	for y in map_h:
@@ -32,6 +34,7 @@ func _process(_delta):
 	
 	if Input.is_action_just_pressed("LeftClick"):
 		draw_state = true
+		# Mark on map origin point
 		set_cell(layer_active_selection, mouse_coord, id_active_selection_tile, Vector2.ZERO)
 		%PathLine.clear_points()
 
@@ -55,13 +58,21 @@ func _process(_delta):
 				else:
 					middle_point.x += tile_size
 
+				# Add the middle point to the path commands
+				path_commands.append(%PathProcessor.determine_direction(last_mouse_coord, middle_point))
+				# Add the middle point to the path line
 				%PathLine.add_point(middle_point)
 
+			# Add the new point to the path commands
+			path_commands.append(PathProcessor.determine_direction(last_mouse_coord, mouse_coord))
+			# Add the new point to the path line
 			%PathLine.add_point(mouse_coord)
+			# Update the last mouse coord
 			last_mouse_coord = mouse_coord
 	
 	if Input.is_action_just_released("LeftClick"):
 		draw_state = false
+		PathProcessor.print_moves(path_commands)
 
 func erase_selection_map():
 	for y in map_h:
