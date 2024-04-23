@@ -1,6 +1,6 @@
 extends Node
 
-enum MOVES {UP, DOWN, LEFT, RIGHT}
+enum MOVES {UP, RIGHT, DOWN, LEFT}
 
 func determine_direction(from:Vector2, to:Vector2) -> MOVES:
 	var direction:MOVES
@@ -16,12 +16,15 @@ func determine_direction(from:Vector2, to:Vector2) -> MOVES:
 
 func print_moves(moves:Array):
 	for move in moves:
-		match move:
-			MOVES.UP:
-				print("UP ")
-			MOVES.DOWN:
-				print("DOWN ")
-			MOVES.LEFT:
-				print("LEFT ")
-			MOVES.RIGHT:
-				print("RIGHT ")
+		print_move(move)
+
+func print_move(move:MOVES):
+	match move:
+		MOVES.UP:
+			print("UP")
+		MOVES.DOWN:
+			print("DOWN")
+		MOVES.LEFT:
+			print("LEFT")
+		MOVES.RIGHT:
+			print("RIGHT")

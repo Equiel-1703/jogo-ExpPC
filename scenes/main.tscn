@@ -71,5 +71,6 @@ end_cap_mode = 2
 [node name="Rocket" type="Sprite2D" parent="."]
 unique_name_in_owner = true
 visible = false
+scale = Vector2(0.8, 0.8)
 texture = ExtResource("5_mjr6l")
 script = ExtResource("6_42yqi")
