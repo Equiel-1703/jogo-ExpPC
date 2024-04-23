@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cnjmi0oabpifi"]
+[gd_scene load_steps=13 format=3 uid="uid://cnjmi0oabpifi"]
 
 [ext_resource type="Texture2D" uid="uid://dlv0e3hvm6es5" path="res://res/grid.png" id="1_mv3ls"]
 [ext_resource type="Texture2D" uid="uid://da8if3xp7bvsc" path="res://res/selection.png" id="2_ahn7w"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://scripts/main_map.gd" id="4_kdbj8"]
 [ext_resource type="Texture2D" uid="uid://dftpo1aex8ah0" path="res://res/Rocket_70x170.png" id="5_mjr6l"]
 [ext_resource type="Script" path="res://scripts/rocket.gd" id="6_42yqi"]
+[ext_resource type="Texture2D" uid="uid://bmjnhcqpa4h1g" path="res://res/MAPA_JOGO_OV.png" id="6_qi3it"]
+[ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="7_qtrjm"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s07oj"]
 texture = ExtResource("1_mv3ls")
@@ -30,6 +32,10 @@ sources/3 = SubResource("TileSetAtlasSource_exlpe")
 
 [node name="Main" type="Node2D"]
 
+[node name="MapSpr" type="Sprite2D" parent="."]
+texture = ExtResource("7_qtrjm")
+centered = false
+
 [node name="MainMap" type="TileMap" parent="."]
 unique_name_in_owner = true
 tile_set = SubResource("TileSet_ushug")
@@ -50,6 +56,10 @@ layer_2/y_sort_origin = 0
 layer_2/z_index = 0
 layer_2/tile_data = PackedInt32Array()
 script = ExtResource("4_kdbj8")
+
+[node name="MapSorOv" type="Sprite2D" parent="."]
+texture = ExtResource("6_qi3it")
+centered = false
 
 [node name="PathLine" type="Line2D" parent="."]
 unique_name_in_owner = true

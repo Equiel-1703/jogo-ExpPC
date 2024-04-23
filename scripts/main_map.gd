@@ -17,6 +17,8 @@ var draw_state: bool = false
 var path_commands_answer: Array = []
 
 func _ready():
+	self.tile_set.tile_size = Vector2(tile_size, tile_size)
+	
 	for y in map_h:
 		for x in map_w:
 			set_cell(layer_grid, Vector2(x, y), id_grid_tile, Vector2.ZERO)
