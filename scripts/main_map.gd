@@ -14,6 +14,7 @@ const id_selection_tile = 2
 const id_active_selection_tile = 3
 
 var draw_state: bool = false
+var movement_enabled: bool = true
 var path_commands_answer: Array = []
 
 func _ready():
@@ -22,6 +23,11 @@ func _ready():
 	for y in map_h:
 		for x in map_w:
 			set_cell(layer_grid, Vector2(x, y), id_grid_tile, Vector2.ZERO)
+	
+	# Connect Rocket signal
+	%Rocket.move_completed.connect(_on_move_completed)
+	# Connect CriarPath signal
+	%CriarPath.player_path_done.connect(_on_player_path_done)
 
 var mouse_coord: Vector2 = Vector2.ZERO
 var last_mouse_coord: Vector2 = Vector2.ZERO
@@ -30,6 +36,9 @@ var line_from: Vector2 = Vector2.ZERO
 func _process(_delta):
 	if not draw_state:
 		erase_selection_map()
+	
+	if not movement_enabled:
+		return
 	
 	mouse_coord = local_to_map(get_local_mouse_position())
 	
@@ -40,11 +49,11 @@ func _process(_delta):
 		# Mark on map origin point
 		set_cell(layer_active_selection, mouse_coord, id_active_selection_tile, Vector2.ZERO)
 		%PathLine.clear_points()
+		path_commands_answer.clear()
 
 		line_from = map_to_local(mouse_coord)
 		last_mouse_coord = line_from
 		%PathLine.add_point(line_from)
-		path_commands_answer.clear()
 	
 	if Input.is_action_pressed("LeftClick"):
 		mouse_coord = map_to_local(mouse_coord)
@@ -122,12 +131,31 @@ func _process(_delta):
 	
 	if Input.is_action_just_released("LeftClick"):
 		draw_state = false
+
+		print("+ Answer: ")
 		PathProcessor.print_moves(path_commands_answer)
-		%Rocket.set_start_position(line_from)
-		%Rocket.execute_move_commands(path_commands_answer)
-		await %Rocket.move_completed
-		path_commands_answer.clear()
-		print("Path completed")
+		
+		%CriarPath.show_path_menu(path_commands_answer)
+		movement_enabled = false
+		
+
+# Emmited by the CriarPath screen, when the player has finished creating the path
+func _on_player_path_done(answer):
+	# For debugging purposes only
+	print("Player answer: " + str(answer))
+	print("Correct answer: " + str(path_commands_answer))
+
+	if answer == path_commands_answer:
+		print("CORRETO")
+	else:
+		print("ERRADO")
+
+	%Rocket.set_start_position(line_from)
+	%Rocket.execute_move_commands(answer.duplicate())
+
+# Emmited by the Rocket node
+func _on_move_completed():
+	movement_enabled = true
 
 func erase_selection_map():
 	for y in map_h:

@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://cig2gpf3kuqkq"]
+[gd_scene load_steps=3 format=3 uid="uid://cig2gpf3kuqkq"]
 
 [ext_resource type="Script" path="res://scripts/criar_path.gd" id="1_xtxpk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n3fof"]
+bg_color = Color(1, 0.805, 0.22, 1)
 
 [node name="CriarPath" type="Control"]
 layout_mode = 3
@@ -11,11 +14,35 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_xtxpk")
 
+[node name="BG" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 980.0
+color = Color(0, 0, 0, 0.54902)
+
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 0
 offset_right = 1890.0
 offset_bottom = 980.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
+[node name="PathButtons" type="HFlowContainer" parent="CenterContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(1800, 0)
 layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+alignment = 1
+
+[node name="Ok" type="Button" parent="."]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+offset_left = 866.0
+offset_top = 873.0
+offset_right = 1016.0
+offset_bottom = 923.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_n3fof")
+text = "Ok"
+
+[connection signal="pressed" from="Ok" to="." method="_on_ok_pressed"]
