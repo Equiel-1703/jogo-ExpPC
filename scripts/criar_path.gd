@@ -38,8 +38,6 @@ func _on_ok_pressed():
 	for child in %PathButtons.get_children():
 		child.queue_free()
 	
-	self.visible = false
-	
 	print("+ Player path:")
 	PathProcessor.print_moves(player_path)
 	player_path_done.emit(player_path)

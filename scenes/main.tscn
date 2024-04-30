@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cnjmi0oabpifi"]
+[gd_scene load_steps=16 format=3 uid="uid://cnjmi0oabpifi"]
 
 [ext_resource type="Texture2D" uid="uid://dlv0e3hvm6es5" path="res://res/grid.png" id="1_mv3ls"]
 [ext_resource type="Texture2D" uid="uid://da8if3xp7bvsc" path="res://res/selection.png" id="2_ahn7w"]
@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://bmjnhcqpa4h1g" path="res://res/MAPA_JOGO_OV.png" id="6_qi3it"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="7_qtrjm"]
 [ext_resource type="PackedScene" uid="uid://cig2gpf3kuqkq" path="res://scenes/criar_path.tscn" id="9_qgmui"]
+[ext_resource type="PackedScene" uid="uid://diik6iqcg1u36" path="res://scenes/win_scene.tscn" id="10_ht0ha"]
+[ext_resource type="PackedScene" uid="uid://btif7hfb7i3rc" path="res://scenes/lose_scene.tscn" id="11_cb0id"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s07oj"]
 texture = ExtResource("1_mv3ls")
@@ -67,4 +69,12 @@ script = ExtResource("6_42yqi")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="CriarPath" parent="CanvasLayer" instance=ExtResource("9_qgmui")]
+unique_name_in_owner = true
+visible = false
+
+[node name="WinScene" parent="CanvasLayer" instance=ExtResource("10_ht0ha")]
+unique_name_in_owner = true
+visible = false
+
+[node name="LoseScene" parent="CanvasLayer" instance=ExtResource("11_cb0id")]
 unique_name_in_owner = true

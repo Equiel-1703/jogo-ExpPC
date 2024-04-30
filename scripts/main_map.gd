@@ -16,6 +16,7 @@ const id_active_selection_tile = 3
 var draw_state: bool = false
 var movement_enabled: bool = true
 var path_commands_answer: Array = []
+var player_won: bool = false
 
 func _ready():
 	self.tile_set.tile_size = Vector2(tile_size, tile_size)
@@ -28,6 +29,9 @@ func _ready():
 	%Rocket.move_completed.connect(_on_move_completed)
 	# Connect CriarPath signal
 	%CriarPath.player_path_done.connect(_on_player_path_done)
+	# Connect WinScene and LoseScene signals
+	%WinScene.play_again.connect(_on_play_again)
+	%LoseScene.play_again.connect(_on_play_again)
 
 var mouse_coord: Vector2 = Vector2.ZERO
 var last_mouse_coord: Vector2 = Vector2.ZERO
@@ -129,15 +133,17 @@ func _process(_delta):
 				# Update the last mouse coord
 				last_mouse_coord = mouse_coord
 	
-	if Input.is_action_just_released("LeftClick"):
+func _input(event):
+	if event.is_action_released("LeftClick"):
+		print("LeftClick released")
 		draw_state = false
+		movement_enabled = false
 
 		print("+ Answer: ")
 		PathProcessor.print_moves(path_commands_answer)
 		
 		%CriarPath.show_path_menu(path_commands_answer)
-		movement_enabled = false
-		
+		set_process_input(false)
 
 # Emmited by the CriarPath screen, when the player has finished creating the path
 func _on_player_path_done(answer):
@@ -147,15 +153,30 @@ func _on_player_path_done(answer):
 
 	if answer == path_commands_answer:
 		print("CORRETO")
+		player_won = true
 	else:
 		print("ERRADO")
+		player_won = false
 
 	%Rocket.set_start_position(line_from)
 	%Rocket.execute_move_commands(answer.duplicate())
 
 # Emmited by the Rocket node
 func _on_move_completed():
+	if player_won:
+		%WinScene.visible = true
+	else:
+		%LoseScene.visible = true
+
+# Emmited by the WinScene and LoseScene nodes
+func _on_play_again():
 	movement_enabled = true
+
+	%PathLine.clear_points()
+	%Rocket.visible = false
+
+	# Enable input processing again
+	set_process_input(true)
 
 func erase_selection_map():
 	for y in map_h:

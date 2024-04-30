@@ -55,8 +55,9 @@ func _physics_process(delta):
 			t += MOVE_SPEED * delta
 		
 			self.position = self.position.lerp(destination_pos, t)
-			print(t)
-			print(self.position)
+			# Used for debug purposes only
+			# print(t)
+			# print(self.position)
 		else:
 			execute_flag = false
 			execute_next_command()
