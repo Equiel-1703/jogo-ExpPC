@@ -1,6 +1,6 @@
 extends TileMap
 
-@export var tile_size:int = 70
+var tile_size:int
 
 const map_w = 27
 const map_h = 14
@@ -19,12 +19,9 @@ var path_commands_answer: Array = []
 var player_won: bool = false
 
 func _ready():
-	self.tile_set.tile_size = Vector2(tile_size, tile_size)
-	
-	for y in map_h:
-		for x in map_w:
-			set_cell(layer_grid, Vector2(x, y), id_grid_tile, Vector2.ZERO)
-	
+	# Getting the tile size (x and y must be the same)
+	tile_size = self.tile_set.tile_size.x
+
 	# Connect Rocket signal
 	%Rocket.move_completed.connect(_on_move_completed)
 	# Connect CriarPath signal
@@ -46,7 +43,10 @@ func _process(_delta):
 	
 	mouse_coord = local_to_map(get_local_mouse_position())
 	
-	set_cell(layer_selection, mouse_coord, id_selection_tile, Vector2.ZERO)
+	if get_cell_source_id(layer_grid, mouse_coord) == id_grid_tile:
+		set_cell(layer_selection, mouse_coord, id_selection_tile, Vector2.ZERO)
+	else:
+		return
 	
 	if Input.is_action_just_pressed("LeftClick"):
 		draw_state = true
@@ -134,7 +134,7 @@ func _process(_delta):
 				last_mouse_coord = mouse_coord
 	
 func _input(event):
-	if event.is_action_released("LeftClick"):
+	if event.is_action_released("LeftClick") and draw_state:
 		print("LeftClick released")
 		draw_state = false
 		movement_enabled = false
