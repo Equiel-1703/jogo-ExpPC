@@ -6,14 +6,14 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_i1k1n"]
 font = ExtResource("2_8sx16")
-font_size = 133
+font_size = 135
 font_color = Color(1, 0, 0.239216, 1)
 outline_size = 5
 outline_color = Color(1, 0, 0.239216, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_s2hsg"]
 font = ExtResource("1_b30vr")
-font_size = 100
+font_size = 91
 font_color = Color(1, 0, 0.239216, 1)
 outline_size = 10
 
@@ -34,7 +34,7 @@ custom_minimum_size = Vector2(1890, 980)
 layout_mode = 0
 offset_right = 1890.0
 offset_bottom = 980.0
-color = Color(3.60981e-07, 0.189238, 0.255862, 0.639216)
+color = Color(0, 0.168627, 0.231373, 0.717647)
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 0
@@ -59,7 +59,8 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.37, 1, 0.3, 1)
 theme_override_fonts/font = ExtResource("1_b30vr")
 theme_override_font_sizes/font_size = 80
-text = "Você errou"
+text = "Você não chegou
+ao seu destino!"
 label_settings = SubResource("LabelSettings_s2hsg")
 horizontal_alignment = 1
 vertical_alignment = 1

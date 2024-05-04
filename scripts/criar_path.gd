@@ -1,14 +1,21 @@
 extends Control
 
 signal player_path_done(player_path: Array)
+signal player_path_cancelled()
 
 var direction_button: PackedScene
 var path_commands_answer: Array
 
+var ver_mapa_flag: bool = false
+
 func _ready():
 	# Load direction_button scene
-	direction_button = preload("res://scenes/direction_button.tscn")
+	direction_button = preload ("res://scenes/direction_button.tscn")
 
+	# Hide gradient background and set the normal background visible
+	%GradientBG.visible = false
+	%BG.visible = true
+	
 	# Hide the menu
 	self.visible = false
 
@@ -20,6 +27,10 @@ func _load_buttons():
 	for i in range(path_commands_answer.size()):
 		%PathButtons.add_child(direction_button.instantiate())
 
+func _clear_buttons():
+	for child in %PathButtons.get_children():
+		child.queue_free()
+
 func show_path_menu(answer: Array):
 	path_commands_answer = answer
 
@@ -29,16 +40,39 @@ func show_path_menu(answer: Array):
 func _on_ok_pressed():
 	self.visible = false
 
+	# Get the player path from the buttons
 	var player_path = []
 	for child in %PathButtons.get_children():
-		var direction = child.button_direction
-		player_path.append(direction)
+		player_path.append(child.button_direction)
 
 	# Clear the buttons
-	for child in %PathButtons.get_children():
-		child.queue_free()
-	
+	_clear_buttons()
+
+	# Print the player path for debug
 	print("+ Player path:")
 	PathProcessor.print_moves(player_path)
+	
+	# Emit the path done signal with the player path
 	player_path_done.emit(player_path)
 
+func _on_ver_mapa_pressed():
+	# Set the gradient background visible and the normal background invisible
+	%BG.visible = !%BG.visible
+	%GradientBG.visible = !%GradientBG.visible
+	
+	# Hide path buttons
+	%PathButtons.visible = !%PathButtons.visible
+
+	# Hide unused buttons
+	%Ok.visible = !%Ok.visible
+	%Cancelar.visible = !%Cancelar.visible
+
+func _on_cancelar_pressed():
+	self.visible = false
+
+	# Clear the buttons
+	_clear_buttons()
+	
+	print("x Player cancelled path selection x")
+
+	player_path_cancelled.emit()

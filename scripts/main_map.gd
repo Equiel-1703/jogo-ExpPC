@@ -15,6 +15,7 @@ const id_active_selection_tile = 3
 
 var draw_state: bool = false
 var movement_enabled: bool = true
+var can_erase: bool = true
 var path_commands_answer: Array = []
 var player_won: bool = false
 
@@ -24,8 +25,9 @@ func _ready():
 
 	# Connect Rocket signal
 	%Rocket.move_completed.connect(_on_move_completed)
-	# Connect CriarPath signal
+	# Connect CriarPath signals
 	%CriarPath.player_path_done.connect(_on_player_path_done)
+	%CriarPath.player_path_cancelled.connect(_on_player_path_cancelled)
 	# Connect WinScene and LoseScene signals
 	%WinScene.play_again.connect(_on_play_again)
 	%LoseScene.play_again.connect(_on_play_again)
@@ -35,7 +37,7 @@ var last_mouse_coord: Vector2 = Vector2.ZERO
 var line_from: Vector2 = Vector2.ZERO
 
 func _process(_delta):
-	if not draw_state:
+	if not draw_state and can_erase:
 		erase_selection_map()
 	
 	if not movement_enabled:
@@ -52,14 +54,17 @@ func _process(_delta):
 		draw_state = true
 		# Mark on map origin point
 		set_cell(layer_active_selection, mouse_coord, id_active_selection_tile, Vector2.ZERO)
+
+		# Clear line and path commands answer
 		%PathLine.clear_points()
 		path_commands_answer.clear()
 
+		# Add the first point to the path line
 		line_from = map_to_local(mouse_coord)
 		last_mouse_coord = line_from
 		%PathLine.add_point(line_from)
 	
-	if Input.is_action_pressed("LeftClick"):
+	if Input.is_action_pressed("LeftClick") and draw_state:
 		mouse_coord = map_to_local(mouse_coord)
 
 		if mouse_coord != last_mouse_coord:
@@ -133,17 +138,21 @@ func _process(_delta):
 				# Update the last mouse coord
 				last_mouse_coord = mouse_coord
 	
-func _input(event):
-	if event.is_action_released("LeftClick") and draw_state:
+	if Input.is_action_just_released("LeftClick") and draw_state:
 		print("LeftClick released")
+
+		if path_commands_answer.size() <= 0:
+			draw_state = false
+			return
+
 		draw_state = false
+		can_erase = false
 		movement_enabled = false
 
 		print("+ Answer: ")
 		PathProcessor.print_moves(path_commands_answer)
 		
 		%CriarPath.show_path_menu(path_commands_answer)
-		set_process_input(false)
 
 # Emmited by the CriarPath screen, when the player has finished creating the path
 func _on_player_path_done(answer):
@@ -161,6 +170,13 @@ func _on_player_path_done(answer):
 	%Rocket.set_start_position(line_from)
 	%Rocket.execute_move_commands(answer.duplicate())
 
+func _on_player_path_cancelled():
+	draw_state = false
+	can_erase = true
+	movement_enabled = true
+
+	%PathLine.clear_points()
+
 # Emmited by the Rocket node
 func _on_move_completed():
 	if player_won:
@@ -170,13 +186,12 @@ func _on_move_completed():
 
 # Emmited by the WinScene and LoseScene nodes
 func _on_play_again():
+	# Now the yellow selection can be erased and you can move the cursor again
+	can_erase = true
 	movement_enabled = true
 
 	%PathLine.clear_points()
 	%Rocket.visible = false
-
-	# Enable input processing again
-	set_process_input(true)
 
 func erase_selection_map():
 	for y in map_h:
