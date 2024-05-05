@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://diik6iqcg1u36"]
 
 [ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="1_nfo8h"]
-[ext_resource type="Script" path="res://scripts/win_scene.gd" id="1_rkmbc"]
+[ext_resource type="Script" path="res://scripts/level_1/win_scene.gd" id="1_rkmbc"]
 [ext_resource type="FontFile" uid="uid://cqy64kfoqcffx" path="res://fonts/KGRedHandsOutline.ttf" id="2_flast"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_i1k1n"]

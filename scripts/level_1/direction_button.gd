@@ -4,7 +4,7 @@ extends Control
 
 func _ready():
 	self.pivot_offset = Vector2(self.size.x / 2, self.size.y / 2)
-	%DirectionButton.pivot_offset = Vector2(self.size.x / 2, self.size.y / 2)
+	%DirectionButton .pivot_offset = Vector2(self.size.x / 2, self.size.y / 2)
 
 func _on_pressed():
 	%DirectionButton.rotation_degrees += 90

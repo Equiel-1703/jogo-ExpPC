@@ -2,10 +2,9 @@ extends Sprite2D
 
 signal move_completed
 
-@onready var tile_size = %MainMap.tile_size
-
 const MOVE_SPEED = 1.0
 
+var tile_size = GlobalGameData.MAP_TILE_SIZE.x
 var commands_to_process:Array
 var execute_flag:bool
 

@@ -1,16 +1,14 @@
 extends Control
 
-signal player_path_done(player_path: Array)
+signal player_path_done(player_path_answer: Array)
 signal player_path_cancelled()
 
-var direction_button: PackedScene
-var path_commands_answer: Array
-
-var ver_mapa_flag: bool = false
+var _direction_button: PackedScene
+var _path_commands_answer: Array
 
 func _ready():
-	# Load direction_button scene
-	direction_button = preload ("res://scenes/direction_button.tscn")
+	# Load _direction_button scene
+	_direction_button = preload ("res://scenes/direction_button.tscn")
 
 	# Hide gradient background and set the normal background visible
 	%GradientBG.visible = false
@@ -20,19 +18,19 @@ func _ready():
 	self.visible = false
 
 	# # make test answer array (for debug purposes only)
-	# path_commands_answer = [PathProcessor.MOVES.UP, PathProcessor.MOVES.RIGHT, PathProcessor.MOVES.DOWN, PathProcessor.MOVES.LEFT]
-	# show_path_menu(path_commands_answer)
+	# _path_commands_answer = [PathProcessor.MOVES.UP, PathProcessor.MOVES.RIGHT, PathProcessor.MOVES.DOWN, PathProcessor.MOVES.LEFT]
+	# show_path_menu(_path_commands_answer)
 
 func _load_buttons():
-	for i in range(path_commands_answer.size()):
-		%PathButtons.add_child(direction_button.instantiate())
+	for i in range(_path_commands_answer.size()):
+		%PathButtons.add_child(_direction_button.instantiate())
 
 func _clear_buttons():
 	for child in %PathButtons.get_children():
 		child.queue_free()
 
 func show_path_menu(answer: Array):
-	path_commands_answer = answer
+	_path_commands_answer = answer
 
 	_load_buttons()
 	self.visible = true
@@ -57,15 +55,15 @@ func _on_ok_pressed():
 
 func _on_ver_mapa_pressed():
 	# Set the gradient background visible and the normal background invisible
-	%BG.visible = !%BG.visible
-	%GradientBG.visible = !%GradientBG.visible
+	%BG.visible = ! %BG.visible
+	%GradientBG.visible = ! %GradientBG.visible
 	
 	# Hide path buttons
-	%PathButtons.visible = !%PathButtons.visible
+	%PathButtons.visible = ! %PathButtons.visible
 
 	# Hide unused buttons
-	%Ok.visible = !%Ok.visible
-	%Cancelar.visible = !%Cancelar.visible
+	%Ok.visible = ! %Ok.visible
+	%Cancelar.visible = ! %Cancelar.visible
 
 func _on_cancelar_pressed():
 	self.visible = false
