@@ -2,7 +2,7 @@ extends TileMap
 
 signal path_set(path_answer: Array, start_coord: Vector2)
 
-var _tile_size:int
+var _tile_size: int
 
 var _map_w_tiles: int
 var _map_h_tiles: int
@@ -27,17 +27,16 @@ var _line_from: Vector2 = Vector2.ZERO
 
 func _ready():
 	# Getting the tile size
-	_tile_size = GlobalGameData.MAP_TILE_SIZE.x as int
+	_tile_size = int(GlobalGameData.MAP_TILE_SIZE.x)
 
 	# Setting the tile size
 	tile_set.tile_size = GlobalGameData.MAP_TILE_SIZE
 
 	# Setting number of map tiles
-	_map_w_tiles = GlobalGameData.WINDOW_SIZE.x / _tile_size as int
-	_map_h_tiles = GlobalGameData.WINDOW_SIZE.y / _tile_size as int
+	_map_w_tiles = int(GlobalGameData.WINDOW_SIZE.x / _tile_size)
+	_map_h_tiles = int(GlobalGameData.WINDOW_SIZE.y / _tile_size)
 
 	print("Map size: ", _map_w_tiles, "x", _map_h_tiles)
-
 
 func _process(_delta):
 	if not _draw_state and _can_erase:
@@ -79,11 +78,11 @@ func _process(_delta):
 			# Detecting vertical movement missing (drag mouse too fast)
 			if abs(y_diff) > _tile_size:
 				print("Vertical movement detected")
-				var steps:int = abs(y_diff) / _tile_size
+				var steps: int = abs(y_diff) / _tile_size
 				var middle_point: Vector2
 
 				for i in range(steps):
-					var new_y = _last_mouse_coord.y + (_tile_size if y_diff > 0 else -_tile_size)
+					var new_y = _last_mouse_coord.y + (_tile_size if y_diff > 0 else - _tile_size)
 					var new_x = _last_mouse_coord.x
 					middle_point = Vector2(new_x, new_y)
 					# Add the new point to the path commands
@@ -96,11 +95,11 @@ func _process(_delta):
 			# Detecting horizontal movement missing (drag mouse too fast)
 			if abs(x_diff) > _tile_size:
 				print("Horizontal movement detected")
-				var steps:int = abs(x_diff) / _tile_size
+				var steps: int = abs(x_diff) / _tile_size
 				var middle_point: Vector2
 
 				for i in range(steps):
-					var new_x = _last_mouse_coord.x + (_tile_size if x_diff > 0 else -_tile_size)
+					var new_x = _last_mouse_coord.x + (_tile_size if x_diff > 0 else - _tile_size)
 					var new_y = _last_mouse_coord.y
 					middle_point = Vector2(new_x, new_y)
 					# Add the new point to the path commands
