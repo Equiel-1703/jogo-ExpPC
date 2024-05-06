@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="atividade-1-ExpPC"
-run/main_scene="res://levels/level_1.tscn"
+run/main_scene="res://scenes/main_screen.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
 

@@ -1,0 +1,60 @@
+[gd_scene load_steps=7 format=3 uid="uid://bbap2gx8e7xb6"]
+
+[ext_resource type="Script" path="res://scripts/main_screen.gd" id="1_4o7tt"]
+[ext_resource type="Texture2D" uid="uid://bhk673yex75io" path="res://res/CAPA.jpg" id="1_qiql0"]
+[ext_resource type="FontFile" uid="uid://bci6fkabidcfe" path="res://fonts/Warzone.ttf" id="2_bkjom"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_lyvy7"]
+blend_mode = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ndo1"]
+bg_color = Color(0.6, 0.6, 0.6, 0.117647)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_railc"]
+blend_mode = 1
+
+[node name="MainScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4o7tt")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1923.0
+offset_bottom = 980.0
+texture = ExtResource("1_qiql0")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 1377.0
+offset_top = 714.0
+offset_right = 1832.0
+offset_bottom = 920.0
+theme_override_constants/separation = 10
+
+[node name="Jogar" type="Button" parent="VBoxContainer"]
+material = SubResource("CanvasItemMaterial_lyvy7")
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("2_bkjom")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxFlat_0ndo1")
+text = "Jogar"
+
+[node name="Sair" type="Button" parent="VBoxContainer"]
+material = SubResource("CanvasItemMaterial_railc")
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("2_bkjom")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxFlat_0ndo1")
+text = "Sair"
+
+[connection signal="pressed" from="VBoxContainer/Jogar" to="." method="_on_jogar_pressed"]
+[connection signal="pressed" from="VBoxContainer/Sair" to="." method="_on_sair_pressed"]
