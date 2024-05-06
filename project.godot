@@ -10,7 +10,8 @@ config_version=5
 
 [application]
 
-config/name="atividade-1-ExpPC"
+config/name="Uma Aventura no Espaço"
+config/version="1.0"
 run/main_scene="res://scenes/main_screen.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
