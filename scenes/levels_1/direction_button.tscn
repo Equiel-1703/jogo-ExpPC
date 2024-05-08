@@ -14,8 +14,19 @@ script = ExtResource("1_ju0p0")
 [node name="DirectionButton" type="TextureButton" parent="."]
 unique_name_in_owner = true
 layout_mode = 0
+offset_top = 42.0
 offset_right = 140.0
-offset_bottom = 140.0
+offset_bottom = 182.0
 texture_normal = ExtResource("1_6jln3")
+
+[node name="IndexLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 140.0
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 25
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="DirectionButton" to="." method="_on_pressed"]

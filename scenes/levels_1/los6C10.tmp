@@ -1,15 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://btif7hfb7i3rc"]
+[gd_scene load_steps=6 format=3 uid="uid://btif7hfb7i3rc"]
 
 [ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="1_b30vr"]
-[ext_resource type="Script" path="res://scripts/level_1/win_scene.gd" id="1_f4xyt"]
-[ext_resource type="FontFile" uid="uid://cqy64kfoqcffx" path="res://fonts/KGRedHandsOutline.ttf" id="2_8sx16"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_i1k1n"]
-font = ExtResource("2_8sx16")
-font_size = 135
-font_color = Color(1, 0, 0.239216, 1)
-outline_size = 5
-outline_color = Color(1, 0, 0.239216, 1)
+[ext_resource type="Script" path="res://scripts/level_1/win_lose_scene.gd" id="1_f4xyt"]
+[ext_resource type="LabelSettings" uid="uid://cyxrw7bvdde6q" path="res://themes/label_red_text.tres" id="3_tlqyx"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_s2hsg"]
 font = ExtResource("1_b30vr")
@@ -50,7 +43,7 @@ theme_override_colors/font_color = Color(0.37, 1, 0.3, 1)
 theme_override_fonts/font = ExtResource("1_b30vr")
 theme_override_font_sizes/font_size = 80
 text = "QUE PENA :("
-label_settings = SubResource("LabelSettings_i1k1n")
+label_settings = ExtResource("3_tlqyx")
 horizontal_alignment = 1
 vertical_alignment = 1
 

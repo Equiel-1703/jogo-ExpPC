@@ -24,7 +24,7 @@ func _on_path_set(path_answer: Array, start_coord: Vector2):
 	_start_coord = start_coord
 
 	%Map.disable_map()
-	%CriarPath.show_path_menu(path_answer)
+	%CriarPath.show_path_menu(path_answer.size())
 
 # Emmited by the CriarPath screen, when the player has finished creating the path
 func _on_player_path_done(player_path_answer):

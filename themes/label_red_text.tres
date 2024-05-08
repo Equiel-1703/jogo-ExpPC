@@ -1,0 +1,10 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://cyxrw7bvdde6q"]
+
+[ext_resource type="FontFile" uid="uid://cqy64kfoqcffx" path="res://fonts/KGRedHandsOutline.ttf" id="1_eiwnx"]
+
+[resource]
+font = ExtResource("1_eiwnx")
+font_size = 130
+font_color = Color(1, 0, 0.239216, 1)
+outline_size = 5
+outline_color = Color(1, 0, 0.239216, 1)

@@ -4,36 +4,33 @@ signal player_path_done(player_path_answer: Array)
 signal player_path_cancelled()
 
 var _direction_button: PackedScene
-var _path_commands_answer: Array
+var _path_lenght: int
 
 func _ready():
 	# Load _direction_button scene
-	_direction_button = preload ("res://scenes/direction_button.tscn")
-
-	# Hide gradient background and set the normal background visible
-	%GradientBG.visible = false
-	%BG.visible = true
+	_direction_button = preload ("res://scenes/levels_1/direction_button.tscn")
 	
 	# Hide the menu
 	self.visible = false
 
-	# # make test answer array (for debug purposes only)
-	# _path_commands_answer = [PathProcessor.MOVES.UP, PathProcessor.MOVES.RIGHT, PathProcessor.MOVES.DOWN, PathProcessor.MOVES.LEFT]
-	# show_path_menu(_path_commands_answer)
+func show_path_menu(path_lenght: int):
+	_path_lenght = path_lenght
+
+	# Hide gradient background and set the normal background visible
+	%GradientBG.visible = false
+	%BG.visible = true
+
+	_load_buttons()
+	self.visible = true
 
 func _load_buttons():
-	for i in range(_path_commands_answer.size()):
+	DirectionButton.reset_labels_count()
+	for i in range(_path_lenght):
 		%PathButtons.add_child(_direction_button.instantiate())
 
 func _clear_buttons():
 	for child in %PathButtons.get_children():
 		child.queue_free()
-
-func show_path_menu(answer: Array):
-	_path_commands_answer = answer
-
-	_load_buttons()
-	self.visible = true
 
 func _on_ok_pressed():
 	self.visible = false
@@ -53,7 +50,18 @@ func _on_ok_pressed():
 	# Emit the path done signal with the player path
 	player_path_done.emit(player_path)
 
+var label_2: String = "Ver menu"
+var temp: String
+
 func _on_ver_mapa_pressed():
+	# Swap VerMapa button label
+	temp = %VerMapa.text
+	%VerMapa.text = label_2
+	label_2 = temp
+
+	# VerMapa not in focus
+	%VerMapa.focus_mode = Control.FOCUS_NONE
+
 	# Set the gradient background visible and the normal background invisible
 	%BG.visible = ! %BG.visible
 	%GradientBG.visible = ! %GradientBG.visible
