@@ -1,5 +1,5 @@
 # This is the generic version of this screen
-extends "res://scripts/level_3/criar_path.gd"
+extends CriarPath
 
 var _reading_path_size: bool
 

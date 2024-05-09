@@ -1,4 +1,5 @@
 extends Control
+class_name CriarPath
 
 signal player_path_done(player_path_answer: Array)
 signal player_path_cancelled()
@@ -8,7 +9,7 @@ var _path_lenght: int
 
 func _ready():
 	# Load _direction_button scene
-	_direction_button = preload ("res://scenes/levels_1/direction_button.tscn")
+	_direction_button = preload ("res://scenes/level_1/direction_button.tscn")
 	
 	# Hide the menu
 	self.visible = false
