@@ -27,7 +27,7 @@ func _on_path_set(path_answer: Array, start_coord: Vector2):
 	%CriarPath.show_path_menu(path_answer.size())
 
 # Emmited by the CriarPath screen, when the player has finished creating the path
-func _on_player_path_done(player_path_answer):
+func _on_player_path_done(player_path_answer: Array):
 	# For debugging purposes only
 	print("Player player_path_answer: " + str(player_path_answer))
 	print("Correct player_path_answer: " + str(_correct_answer))
@@ -42,12 +42,16 @@ func _on_player_path_done(player_path_answer):
 	%Rocket.set_start_position(_start_coord)
 	%Rocket.execute_move_commands(player_path_answer.duplicate())
 
+# Emmited by the CriarPath screen, when the player has cancelled the path creation
 func _on_player_path_cancelled():
 	%Map.enable_map()
 	%PathLine.clear_points()
 
-# Emmited by the Rocket node
-func _on_move_completed():
+# Emmited by the Rocket node when it has finished moving
+func _on_move_completed(final_position: Vector2):
+	print("RCKT> Rocket has arrived at: " + str(final_position))
+	print("RCKT> In TileMap coords: " + str(%Map.local_to_map((final_position))))
+
 	if _player_won:
 		%WinScene.visible = true
 	else:

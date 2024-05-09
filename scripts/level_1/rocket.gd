@@ -1,6 +1,6 @@
 extends Sprite2D
 
-signal move_completed
+signal move_completed(final_position: Vector2)
 
 const MOVE_SPEED = 1.0
 
@@ -21,9 +21,9 @@ var t: float = 0.0
 
 func execute_move_commands(commands: Array) -> void:
 	_commands_to_process = commands
-	execute_next_command()
+	_execute_next_command()
 
-func execute_next_command() -> void:
+func _execute_next_command() -> void:
 	if _commands_to_process.size() > 0:
 		var command = _commands_to_process.pop_front()
 		destination_pos = self.position
@@ -46,7 +46,8 @@ func execute_next_command() -> void:
 		_execute_flag = true
 			
 	else:
-		move_completed.emit()
+		# The last destination position is the final position of the rocket
+		move_completed.emit(destination_pos)
 
 func _physics_process(delta):
 	if _execute_flag:
@@ -59,4 +60,4 @@ func _physics_process(delta):
 			# print(self.position)
 		else:
 			_execute_flag = false
-			execute_next_command()
+			_execute_next_command()
