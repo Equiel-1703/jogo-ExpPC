@@ -143,10 +143,12 @@ func _process(_delta):
 	if Input.is_action_just_released("LeftClick") and _draw_state:
 		# For debugging purposes
 		print("LeftClick released")
+		
+		# Finished drawing
+		_draw_state = false
 
 		# Single click with no movement
 		if _path_commands_answer.size() <= 0:
-			_draw_state = false
 			return
 
 		# For debugging purposes

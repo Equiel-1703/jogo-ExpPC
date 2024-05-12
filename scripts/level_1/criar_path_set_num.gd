@@ -23,6 +23,9 @@ func show_path_menu(_p_len: int = 0):
 
 	self.visible = true
 
+func _on_tam_rota_line_field_text_submitted(_new_text):
+	_on_ok_pressed()
+
 func _on_ok_pressed():
 	# Hide alert label
 	%InsertValidIntLabel.visible = false

@@ -1,0 +1,95 @@
+[gd_scene load_steps=8 format=3 uid="uid://c3pvrpj2n21cd"]
+
+[ext_resource type="Script" path="res://scripts/level_1/next_phase_scene.gd" id="1_7p4xs"]
+[ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="1_a6fg7"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_xamc4"]
+font = ExtResource("1_a6fg7")
+font_size = 72
+font_color = Color(1, 0.803922, 0.219608, 1)
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cfiok"]
+bg_color = Color(1, 0.803922, 0.219608, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_daw6v"]
+font = ExtResource("1_a6fg7")
+font_size = 72
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_t8ir2"]
+font = ExtResource("1_a6fg7")
+font_size = 42
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skg7m"]
+bg_color = Color(1, 0.805, 0.22, 1)
+
+[node name="NextPhaseScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7p4xs")
+
+[node name="BG" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 980.0
+color = Color(0, 0, 0, 0.588235)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 249.0
+alignment = 1
+
+[node name="Seu destino e" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Seu destino é "
+label_settings = SubResource("LabelSettings_xamc4")
+
+[node name="NomePlaneta" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_cfiok")
+text = "PLANETA"
+label_settings = SubResource("LabelSettings_daw6v")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_top = 249.0
+offset_right = 1890.0
+offset_bottom = 873.0
+
+[node name="Instrucoes" type="Label" parent="CenterContainer"]
+custom_minimum_size = Vector2(1500, 400)
+layout_mode = 2
+text = "Clique no foguete e arraste até o seu planeta de destino para traçar a rota de viagem."
+label_settings = SubResource("LabelSettings_t8ir2")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_top = 873.0
+offset_right = 1890.0
+offset_bottom = 980.0
+alignment = 1
+
+[node name="Ok" type="Button" parent="HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_skg7m")
+text = "Ok"
+
+[connection signal="pressed" from="HBoxContainer2/Ok" to="." method="_on_ok_pressed"]

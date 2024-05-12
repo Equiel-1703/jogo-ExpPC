@@ -129,6 +129,7 @@ theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxFlat_i026o")
 text = "Cancelar"
 
+[connection signal="text_submitted" from="SetNumContainer/TamRotaLineField" to="." method="_on_tam_rota_line_field_text_submitted"]
 [connection signal="pressed" from="Buttons/VerMapa" to="." method="_on_ver_mapa_pressed"]
 [connection signal="pressed" from="Buttons/Ok" to="." method="_on_ok_pressed"]
 [connection signal="pressed" from="Buttons/Cancelar" to="." method="_on_cancelar_pressed"]

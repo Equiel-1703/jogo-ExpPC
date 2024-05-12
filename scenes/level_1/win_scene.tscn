@@ -74,6 +74,6 @@ offset_bottom = 925.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxFlat_xtk78")
-text = "JOGAR DE NOVO"
+text = "PRÓXIMA FASE"
 
-[connection signal="pressed" from="PlayAgain" to="." method="_on_play_again_pressed"]
+[connection signal="pressed" from="PlayAgain" to="." method="_on_next_phase_pressed"]

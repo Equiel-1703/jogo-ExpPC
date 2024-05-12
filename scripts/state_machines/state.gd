@@ -1,6 +1,6 @@
 extends Node
 class_name State
-## This is the base class for all states in the state machine. 
+## This is the base class for all states in a StateMachine.
 ##
 ## It has three virtual functions that can be overridden: Enter, Exit, and Update.
 
