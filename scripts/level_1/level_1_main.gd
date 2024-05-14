@@ -1,6 +1,6 @@
 extends Node2D
 
-var _start_coord: Vector2
+var _rocket_start_coord: Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,8 +17,11 @@ func _ready():
 	# Connect NextPhaseScene signal
 	%NextPhaseScene.play_again.connect(_on_play_again)
 
+	# Get planet Earth's object from the GlobalGameData singleton
 	var planet_earth = GlobalGameData.PLANETS_COORDS["terra"]
-	%Rocket.set_start_position(%Map.map_to_local(planet_earth.planet_coord))
+	# Set the Rocket's start position to the Earth's position
+	_rocket_start_coord = %Map.map_to_local(planet_earth.planet_coord)
+	%Rocket.set_start_position(_rocket_start_coord)
 
 	# Show first phase
 	%Map.disable_map()
@@ -26,8 +29,14 @@ func _ready():
 
 # Emmited by Map when the player has finished creating the path for the rocket
 func _on_path_set(path_answer: Array, start_coord: Vector2):
+	var rocket_pos_map = %Map.local_to_map(%Rocket.position)
+	var start_coord_map = %Map.local_to_map(start_coord)
+
+	print("Rocket pos = ", rocket_pos_map)
+	print("Start coord = ", start_coord_map)
+
 	# Check if Rocket start position is different from the start position of the path
-	if %Rocket.position != start_coord:
+	if rocket_pos_map != start_coord_map:
 		print("Rocket position is different from the start position of the path")
 
 		# We must clear the PathLine in this case
@@ -36,7 +45,7 @@ func _on_path_set(path_answer: Array, start_coord: Vector2):
 		return
 
 	%Level1PhasesManager.correct_answer = path_answer
-	_start_coord = start_coord
+	_rocket_start_coord = start_coord
 
 	%Map.disable_map()
 	%CriarPath.show_path_menu(path_answer.size())
@@ -50,26 +59,33 @@ func _on_player_path_done(player_path_answer: Array):
 	%Level1PhasesManager.print_answers()
 
 	# "Launch" the rocket :)
-	%Rocket.set_start_position(_start_coord)
+	%Rocket.set_start_position(_rocket_start_coord)
 	%Rocket.execute_move_commands(player_path_answer.duplicate())
 
 # Emmited by the Rocket node, when the rocket has finished moving
 func _on_move_completed(final_position: Vector2):
+	# Check if player won and store in GlobalGameData
+	GlobalGameData.player_won = %Level1PhasesManager.player_won(%Map.local_to_map(final_position))
+
 	# Check if the player's answer is correct
-	if %Level1PhasesManager.player_won(%Map.local_to_map(final_position)):
+	if GlobalGameData.player_won:
 		# Show the WinScene
 		%WinScene.visible = true
 	else:
 		# Show the LoseScene
 		%LoseScene.visible = true
-
+		
 # Emmited by the CriarPath screen, when the player has cancelled the path creation
 func _on_player_path_cancelled():
 	%Map.enable_map()
 	%PathLine.clear_points()
 
 # Emmited by the NextPhaseScene and LoseScene node
-func _on_play_again(): 
+func _on_play_again():
+	if not GlobalGameData.player_won:
+		# Put the rocket back to the start position if player lost
+		%Rocket.set_start_position(_rocket_start_coord)
+	
 	# Now the yellow selection can be erased and you can move the cursor again
 	%Map.enable_map()
 	%PathLine.clear_points()

@@ -50,6 +50,7 @@ func _process(_delta):
 	if get_cell_source_id(_layer_grid, _mouse_coord) == _id_grid_tile:
 		set_cell(_layer_selection, _mouse_coord, _id_selection_tile, Vector2.ZERO)
 	else:
+		_restart_map()
 		return
 	
 	if Input.is_action_just_pressed("LeftClick"):
@@ -173,3 +174,10 @@ func enable_map():
 	_draw_state = false
 	_can_erase = true
 	_movement_enabled = true
+
+func _restart_map():
+	_draw_state = false
+	_can_erase = true
+	_movement_enabled = true
+	
+	%PathLine.clear_points()

@@ -13,7 +13,7 @@ func print_answers():
 	print("Player answer: ", player_answer)
 	print("Correct answer: ", correct_answer)
 
-# Get the destination of the current phase.
+## Get the destination of the current phase.
 func _get_next_destination() -> String:
 	if _destinations.size() == 0:
 		return ""

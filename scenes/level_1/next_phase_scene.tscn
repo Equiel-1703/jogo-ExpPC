@@ -39,7 +39,7 @@ script = ExtResource("1_7p4xs")
 layout_mode = 0
 offset_right = 1890.0
 offset_bottom = 980.0
-color = Color(0, 0, 0, 0.588235)
+color = Color(0, 0, 0, 0.784314)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 0
