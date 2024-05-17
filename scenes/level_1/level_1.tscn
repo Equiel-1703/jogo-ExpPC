@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dftpo1aex8ah0" path="res://res/Rocket_70x170.png" id="9_awt4r"]
 [ext_resource type="Script" path="res://scripts/level_1/rocket.gd" id="10_7ethw"]
 [ext_resource type="PackedScene" uid="uid://diik6iqcg1u36" path="res://scenes/level_1/win_scene.tscn" id="12_68fdk"]
-[ext_resource type="PackedScene" uid="uid://c14mclctv6ack" path="res://scenes/level_1/criar_path_set_num.tscn" id="12_cyy7x"]
+[ext_resource type="PackedScene" uid="uid://c0onqu281fee5" path="res://scenes/level_1/criar_path_num.tscn" id="12_o06rq"]
 [ext_resource type="PackedScene" uid="uid://c3pvrpj2n21cd" path="res://scenes/level_1/next_phase_scene.tscn" id="12_re1tg"]
 [ext_resource type="PackedScene" uid="uid://btif7hfb7i3rc" path="res://scenes/level_1/lose_scene.tscn" id="13_2cdh5"]
 [ext_resource type="Script" path="res://scripts/level_1/level_1_phases_manager.gd" id="15_3jtoy"]
@@ -126,12 +126,13 @@ autoplay = "sun_shine"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="NextPhaseScene" parent="CanvasLayer" instance=ExtResource("12_re1tg")]
+[node name="CriarPath" parent="CanvasLayer" instance=ExtResource("12_o06rq")]
 unique_name_in_owner = true
 visible = false
 
-[node name="CriarPath" parent="CanvasLayer" instance=ExtResource("12_cyy7x")]
+[node name="NextPhaseScene" parent="CanvasLayer" instance=ExtResource("12_re1tg")]
 unique_name_in_owner = true
+visible = false
 
 [node name="WinScene" parent="CanvasLayer" instance=ExtResource("12_68fdk")]
 unique_name_in_owner = true

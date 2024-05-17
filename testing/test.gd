@@ -2,7 +2,7 @@ extends Node2D
 
 
 func _ready():
-	$NextPhaseScene.show_destination("Netuno")
+	$CriarPath.show_path_menu()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
