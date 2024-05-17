@@ -3,8 +3,7 @@ extends Control
 signal play_again
 
 func _ready():
-	#self.visible = false
-	pass
+	self.visible = false
 
 func _on_next_phase_pressed():
 	self.visible = false
