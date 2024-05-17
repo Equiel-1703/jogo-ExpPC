@@ -1,7 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://c14mclctv6ack"]
+[gd_scene load_steps=10 format=3 uid="uid://c14mclctv6ack"]
 
 [ext_resource type="Script" path="res://scripts/level_1/criar_path_set_num.gd" id="1_ipxu4"]
+[ext_resource type="Material" uid="uid://ddpwqy41qf85d" path="res://shaders/bg_material.tres" id="2_a3khq"]
 [ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="2_p7u8x"]
+[ext_resource type="LabelSettings" uid="uid://cgl76j25jy15c" path="res://themes/instructions_label_settings.tres" id="4_ukq0g"]
 
 [sub_resource type="Gradient" id="Gradient_mfpkk"]
 offsets = PackedFloat32Array(0, 0.201299)
@@ -35,6 +37,7 @@ script = ExtResource("1_ipxu4")
 
 [node name="GradientBG" type="TextureRect" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 offset_right = 1890.0
 offset_bottom = 980.0
@@ -42,11 +45,11 @@ texture = SubResource("GradientTexture2D_keesj")
 
 [node name="BG" type="ColorRect" parent="."]
 unique_name_in_owner = true
-visible = false
+material = ExtResource("2_a3khq")
 layout_mode = 0
 offset_right = 1890.0
 offset_bottom = 980.0
-color = Color(0, 0, 0, 0.54902)
+color = Color(0, 0, 0, 1)
 
 [node name="SetNumContainer" type="CenterContainer" parent="."]
 layout_mode = 0
@@ -63,6 +66,7 @@ alignment = 1
 
 [node name="InsertValidIntLabel" type="Label" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 offset_top = 528.0
 offset_right = 1890.0
@@ -70,6 +74,17 @@ offset_bottom = 873.0
 text = "Por favor, insira um
 tamanho de rota válido!"
 label_settings = SubResource("LabelSettings_ttvyg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InstructionLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 268.0
+text = "Insira o tamanho da rota e clique nas setas para criar
+a rota da nave."
+label_settings = ExtResource("4_ukq0g")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -81,7 +96,6 @@ mouse_filter = 2
 
 [node name="PathButtons" type="HFlowContainer" parent="PathButtonsContainer"]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(1800, 0)
 layout_mode = 2
 theme_override_constants/h_separation = 10

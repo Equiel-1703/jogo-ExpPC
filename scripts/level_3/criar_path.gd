@@ -21,6 +21,9 @@ func show_path_menu(path_lenght: int):
 	%GradientBG.visible = false
 	%BG.visible = true
 
+	# Show instruction label if we are in the tutorial phase
+	%InstructionLabel.visible = GlobalGameData.tutorial_phase
+
 	_load_buttons()
 	self.visible = true
 
@@ -67,6 +70,10 @@ func _on_ver_mapa_pressed():
 	%BG.visible = ! %BG.visible
 	%GradientBG.visible = ! %GradientBG.visible
 	
+	if GlobalGameData.tutorial_phase:
+		# Hide instruction label
+		%InstructionLabel.visible = ! %InstructionLabel.visible
+
 	# Hide path buttons
 	%PathButtons.visible = ! %PathButtons.visible
 

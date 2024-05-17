@@ -8,7 +8,7 @@ func _ready():
 
 func _on_next_phase_pressed():
 	self.visible = false
-	%Level1PhasesManager.show_next_phase()
+	%Level1PhasesManager.show_current_phase()
 
 func _on_play_again_pressed():
 	self.visible = false

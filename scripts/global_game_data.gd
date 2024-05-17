@@ -16,3 +16,4 @@ var PLANETS_COORDS = {
 }
 
 var player_won: bool = false
+var tutorial_phase: bool = true

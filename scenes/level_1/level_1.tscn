@@ -132,7 +132,6 @@ visible = false
 
 [node name="CriarPath" parent="CanvasLayer" instance=ExtResource("12_cyy7x")]
 unique_name_in_owner = true
-visible = false
 
 [node name="WinScene" parent="CanvasLayer" instance=ExtResource("12_68fdk")]
 unique_name_in_owner = true

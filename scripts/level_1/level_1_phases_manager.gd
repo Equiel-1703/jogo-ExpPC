@@ -3,7 +3,8 @@ class_name Level1PhasesManager
 
 signal play_again
 
-var _destinations: Array = ["mercurio", "marte"]
+var _destinations: Array = ["venus", "terra"]
+var _current_phase_num: int = 1
 
 var player_answer: Array
 var correct_answer: Array
@@ -14,7 +15,7 @@ func print_answers():
 	print("Correct answer: ", correct_answer)
 
 ## Get the destination of the current phase.
-func _get_next_destination() -> String:
+func _get_current_destination() -> String:
 	if _destinations.size() == 0:
 		return ""
 	else:
@@ -28,22 +29,31 @@ func player_won(rocket_destination: Vector2) -> bool:
 	if player_answer != correct_answer:
 		return false
 	
-	var planet_destination = GlobalGameData.PLANETS_COORDS[_get_next_destination()]
+	var planet_destination = GlobalGameData.PLANETS_COORDS[_get_current_destination()]
 
 	print("Rocket destination: ", rocket_destination)
 	print("Planet destination: ", planet_destination.planet_coord)
 
 	if rocket_destination == planet_destination.planet_coord:
-		# Go to the next phase (remove the first planet).
-		_destinations.pop_front()
 		return true
 	else:
 		return false
 
-## Show the next phase screen.
-func show_next_phase():
-	# Get the next destination.
-	var destination = _get_next_destination()
+## Update the internal variables to go to the next phase.
+func go_to_next_phase():
+	# Increment the current phase number.
+	_current_phase_num += 1
+	# Remove the current destination from the list.
+	_destinations.pop_front()
+
+## Show the current phase screen.
+func show_current_phase():
+	if _current_phase_num > 1:
+		# The first phase is the tutorial, now the player is in the second phase.
+		GlobalGameData.tutorial_phase = false
+
+	# Get the current destination.
+	var destination = _get_current_destination()
 	if destination == "":
 		# The level is over.
 		# For now, this is only a placeholder.

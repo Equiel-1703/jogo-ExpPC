@@ -25,7 +25,7 @@ func _ready():
 
 	# Show first phase
 	%Map.disable_map()
-	%Level1PhasesManager.show_next_phase()
+	%Level1PhasesManager.show_current_phase()
 
 # Emmited by Map when the player has finished creating the path for the rocket
 func _on_path_set(path_answer: Array, start_coord: Vector2):
@@ -67,10 +67,12 @@ func _on_move_completed(final_position: Vector2):
 	# Check if player won and store in GlobalGameData
 	GlobalGameData.player_won = %Level1PhasesManager.player_won(%Map.local_to_map(final_position))
 
-	# Check if the player's answer is correct
+	# Decide which scene to show
 	if GlobalGameData.player_won:
 		# Show the WinScene
 		%WinScene.visible = true
+		# Tell the PhasesManager to go to the next phase
+		%Level1PhasesManager.go_to_next_phase()
 	else:
 		# Show the LoseScene
 		%LoseScene.visible = true

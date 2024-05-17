@@ -3,7 +3,7 @@ extends CriarPath
 
 var _reading_path_size: bool
 
-func show_path_menu(_p_len: int = 0):
+func show_path_menu(_p_len: int=0):
 	# We will read the path size first
 	_reading_path_size = true
 
@@ -20,6 +20,9 @@ func show_path_menu(_p_len: int = 0):
 
 	# Hide alert label
 	%InsertValidIntLabel.visible = false
+
+	# Show instruction label if we are in the tutorial phase
+	%InstructionLabel.visible = GlobalGameData.tutorial_phase
 
 	self.visible = true
 

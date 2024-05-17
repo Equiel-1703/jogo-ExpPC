@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://cig2gpf3kuqkq"]
+[gd_scene load_steps=7 format=3 uid="uid://cig2gpf3kuqkq"]
 
 [ext_resource type="Script" path="res://scripts/level_3/criar_path.gd" id="1_xtxpk"]
+[ext_resource type="LabelSettings" uid="uid://cgl76j25jy15c" path="res://themes/instructions_label_settings.tres" id="2_jvns2"]
 
 [sub_resource type="Gradient" id="Gradient_mfpkk"]
 offsets = PackedFloat32Array(0, 0.201299)
@@ -40,6 +41,17 @@ layout_mode = 0
 offset_right = 1890.0
 offset_bottom = 980.0
 color = Color(0, 0, 0, 0.54902)
+
+[node name="InstructionLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 268.0
+text = "Insira o tamanho da rota e clique nas setas para criar
+a rota da nave."
+label_settings = ExtResource("2_jvns2")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 0

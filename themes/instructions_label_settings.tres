@@ -1,0 +1,7 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://cgl76j25jy15c"]
+
+[ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="1_sfbnl"]
+
+[resource]
+font = ExtResource("1_sfbnl")
+font_size = 50
