@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cnjmi0oabpifi"]
+[gd_scene load_steps=29 format=3 uid="uid://cnjmi0oabpifi"]
 
 [ext_resource type="Script" path="res://scripts/level_1/level_1_main.gd" id="1_2r2tr"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="1_woosl"]
@@ -9,9 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://bmjnhcqpa4h1g" path="res://res/MAPA_JOGO_OV.png" id="6_61beh"]
 [ext_resource type="Texture2D" uid="uid://dbryvpjdpfce5" path="res://res/SUN_SHINE.png" id="7_ftnky"]
 [ext_resource type="Texture2D" uid="uid://yx5t6di3guma" path="res://res/SUN.png" id="8_hurj4"]
-[ext_resource type="Texture2D" uid="uid://dftpo1aex8ah0" path="res://res/Rocket_70x170.png" id="9_awt4r"]
-[ext_resource type="Script" path="res://scripts/level_1/rocket.gd" id="10_7ethw"]
+[ext_resource type="Shader" path="res://shaders/fire_heat.gdshader" id="10_xca78"]
+[ext_resource type="Texture2D" uid="uid://bmptqxie7ni4c" path="res://res/Flame.png" id="11_qc580"]
 [ext_resource type="PackedScene" uid="uid://diik6iqcg1u36" path="res://scenes/level_1/win_scene.tscn" id="12_68fdk"]
+[ext_resource type="PackedScene" uid="uid://di4d6nr6gxb8t" path="res://scenes/level_1/rocket.tscn" id="12_lbtbs"]
 [ext_resource type="PackedScene" uid="uid://c0onqu281fee5" path="res://scenes/level_1/criar_path_num.tscn" id="12_o06rq"]
 [ext_resource type="PackedScene" uid="uid://c3pvrpj2n21cd" path="res://scenes/level_1/next_phase_scene.tscn" id="12_re1tg"]
 [ext_resource type="PackedScene" uid="uid://btif7hfb7i3rc" path="res://scenes/level_1/lose_scene.tscn" id="13_2cdh5"]
@@ -38,6 +39,37 @@ sources/2 = SubResource("TileSetAtlasSource_d0is3")
 sources/1 = SubResource("TileSetAtlasSource_s07oj")
 sources/3 = SubResource("TileSetAtlasSource_exlpe")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vkoee"]
+shader = ExtResource("10_xca78")
+shader_parameter/force = 0.26
+shader_parameter/scale = 0.01
+shader_parameter/debug = false
+
+[sub_resource type="Curve" id="Curve_mnmal"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.509881, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_cbof3"]
+curve = SubResource("Curve_mnmal")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nmlo5"]
+lifetime_randomness = 0.17
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1, 2, 1)
+emission_shape = 2
+emission_sphere_radius = 97.83
+angle_min = -30.9
+angle_max = 216.0
+direction = Vector3(0, -1, 0)
+spread = 32.144
+initial_velocity_min = 50.0
+initial_velocity_max = 70.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.3
+scale_max = 0.5
+alpha_curve = SubResource("CurveTexture_cbof3")
+
 [sub_resource type="Animation" id="Animation_useid"]
 length = 0.001
 tracks/0/type = "value"
@@ -55,7 +87,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_fkius"]
 resource_name = "sun_shine"
-length = 2.0
+length = 3.0
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -64,7 +96,7 @@ tracks/0/path = NodePath("SunShine:modulate")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1, 2),
+"times": PackedFloat32Array(0, 1.5, 3),
 "transitions": PackedFloat32Array(1, 1.68179, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.454902), Color(1, 1, 1, 1)]
@@ -104,6 +136,15 @@ centered = false
 texture = ExtResource("8_hurj4")
 centered = false
 
+[node name="SunDistort" type="GPUParticles2D" parent="."]
+material = SubResource("ShaderMaterial_vkoee")
+position = Vector2(45, 524)
+amount = 50
+process_material = SubResource("ParticleProcessMaterial_nmlo5")
+texture = ExtResource("11_qc580")
+lifetime = 2.0
+trail_lifetime = 1.83
+
 [node name="PathLine" type="Line2D" parent="."]
 unique_name_in_owner = true
 default_color = Color(1, 0, 0, 1)
@@ -111,12 +152,8 @@ joint_mode = 2
 begin_cap_mode = 1
 end_cap_mode = 2
 
-[node name="Rocket" type="Sprite2D" parent="."]
+[node name="Rocket" parent="." instance=ExtResource("12_lbtbs")]
 unique_name_in_owner = true
-visible = false
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("9_awt4r")
-script = ExtResource("10_7ethw")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

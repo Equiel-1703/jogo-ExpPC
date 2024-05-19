@@ -1,0 +1,53 @@
+[gd_scene load_steps=10 format=3 uid="uid://di4d6nr6gxb8t"]
+
+[ext_resource type="Texture2D" uid="uid://dspio5wt6h05w" path="res://res/Rocket_70x111.png" id="1_gqm3p"]
+[ext_resource type="Texture2D" uid="uid://bmptqxie7ni4c" path="res://res/Flame.png" id="2_lhhot"]
+[ext_resource type="Script" path="res://scripts/level_1/rocket.gd" id="2_n3w3j"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_np1eb"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_7dy8i"]
+offsets = PackedFloat32Array(0, 0.146667)
+colors = PackedColorArray(1, 0.815686, 0, 1, 0.711088, 0.264008, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_lh740"]
+gradient = SubResource("Gradient_7dy8i")
+width = 100
+
+[sub_resource type="Curve" id="Curve_7fvol"]
+_data = [Vector2(0.173913, 0.538016), 0.0, 0.0, 0, 0, Vector2(0.328063, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_sl0ii"]
+curve = SubResource("Curve_7fvol")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1oong"]
+lifetime_randomness = 0.28
+particle_flag_disable_z = true
+angle_max = 282.3
+direction = Vector3(0, 1, 0)
+spread = 6.429
+flatness = 0.589
+initial_velocity_min = 257.15
+initial_velocity_max = 264.29
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_max = 0.5
+scale_curve = SubResource("CurveTexture_sl0ii")
+color_ramp = SubResource("GradientTexture1D_lh740")
+
+[node name="Rocket" type="Node2D"]
+script = ExtResource("2_n3w3j")
+
+[node name="Propulsion" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_np1eb")
+position = Vector2(0, 45)
+scale = Vector2(0.8, 0.8)
+amount = 70
+process_material = SubResource("ParticleProcessMaterial_1oong")
+texture = ExtResource("2_lhhot")
+
+[node name="RocketSpr" type="Sprite2D" parent="."]
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("1_gqm3p")
