@@ -175,7 +175,7 @@ visible = false
 unique_name_in_owner = true
 visible = false
 
-[node name="LoseScene" parent="CanvasLayer" instance=ExtResource("13_2cdh5")]
+[node name="LoseScene" parent="CanvasLayer" groups=["lose_screen"] instance=ExtResource("13_2cdh5")]
 unique_name_in_owner = true
 visible = false
 

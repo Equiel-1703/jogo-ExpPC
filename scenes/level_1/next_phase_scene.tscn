@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://c3pvrpj2n21cd"]
+[gd_scene load_steps=8 format=3 uid="uid://c3pvrpj2n21cd"]
 
 [ext_resource type="Script" path="res://scripts/level_1/next_phase_scene.gd" id="1_7p4xs"]
 [ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="1_a6fg7"]
 [ext_resource type="Material" uid="uid://ddpwqy41qf85d" path="res://shaders/bg_material.tres" id="2_fn2el"]
-[ext_resource type="LabelSettings" uid="uid://cgl76j25jy15c" path="res://themes/instructions_label_settings.tres" id="4_r4eel"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_xamc4"]
 font = ExtResource("1_a6fg7")
@@ -40,36 +39,45 @@ offset_right = 1890.0
 offset_bottom = 980.0
 color = Color(0, 0, 0, 1)
 
-[node name="DestinationContainer" type="HBoxContainer" parent="."]
+[node name="Content" type="VBoxContainer" parent="."]
 layout_mode = 0
 offset_right = 1890.0
-offset_bottom = 249.0
+offset_bottom = 873.0
 alignment = 1
 
-[node name="Seu destino e" type="Label" parent="DestinationContainer"]
+[node name="DestContainer" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+alignment = 1
+
+[node name="Seu destino e" type="Label" parent="Content/DestContainer"]
 layout_mode = 2
 text = "Seu destino é "
 label_settings = SubResource("LabelSettings_xamc4")
 
-[node name="NomePlaneta" type="Label" parent="DestinationContainer"]
+[node name="NomePlaneta" type="Label" parent="Content/DestContainer"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_cfiok")
 text = "PLANETA"
 label_settings = SubResource("LabelSettings_daw6v")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
-layout_mode = 0
-offset_top = 249.0
-offset_right = 1890.0
-offset_bottom = 873.0
-
-[node name="Instrucoes" type="Label" parent="CenterContainer"]
-custom_minimum_size = Vector2(1500, 400)
+[node name="CenterContainer" type="CenterContainer" parent="Content"]
+custom_minimum_size = Vector2(0, 612)
 layout_mode = 2
-text = "Clique no foguete e arraste até o seu planeta de destino para traçar a rota de viagem."
-label_settings = ExtResource("4_r4eel")
-horizontal_alignment = 1
-vertical_alignment = 1
+
+[node name="Instrucoes" type="RichTextLabel" parent="Content/CenterContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(1800, 0)
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.509804)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/shadow_outline_size = 10
+theme_override_fonts/normal_font = ExtResource("1_a6fg7")
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[center]Clique no foguete e arraste até o seu planeta de destino para traçar a rota de viagem.[center]"
+fit_content = true
+scroll_active = false
 autowrap_mode = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]

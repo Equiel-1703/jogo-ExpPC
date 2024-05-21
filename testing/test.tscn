@@ -1,60 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://btvk0x05tgewp"]
+[gd_scene load_steps=3 format=3 uid="uid://btvk0x05tgewp"]
 
 [ext_resource type="Script" path="res://testing/test.gd" id="1_vgntq"]
-[ext_resource type="Texture2D" uid="uid://dftpo1aex8ah0" path="res://res/Rocket_70x170.png" id="1_yux14"]
-[ext_resource type="PackedScene" uid="uid://c0onqu281fee5" path="res://scenes/level_1/criar_path_num.tscn" id="2_htufr"]
-[ext_resource type="Script" path="res://testing/rocket.gd" id="2_mec3w"]
-
-[sub_resource type="Animation" id="Animation_ig4sy"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Rocket:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_3xepk"]
-resource_name = "rocket_opacity"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Rocket:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_408eo"]
-_data = {
-"RESET": SubResource("Animation_ig4sy"),
-"rocket_opacity": SubResource("Animation_3xepk")
-}
+[ext_resource type="PackedScene" uid="uid://cig2gpf3kuqkq" path="res://scenes/level_3/criar_path.tscn" id="2_8egim"]
 
 [node name="Test" type="Node2D"]
 script = ExtResource("1_vgntq")
 
-[node name="CriarPath" parent="." instance=ExtResource("2_htufr")]
-
-[node name="Rocket" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(928, 543)
-texture = ExtResource("1_yux14")
-script = ExtResource("2_mec3w")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_408eo")
-}
-autoplay = "rocket_opacity"
+[node name="CriarPath" parent="." instance=ExtResource("2_8egim")]

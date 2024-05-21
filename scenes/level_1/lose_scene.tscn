@@ -35,7 +35,9 @@ offset_right = 1890.0
 offset_bottom = 980.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(1200, 0)
 layout_mode = 2
+alignment = 1
 
 [node name="QUEPENA" type="Label" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
@@ -47,16 +49,19 @@ label_settings = ExtResource("3_tlqyx")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VoceErrou" type="Label" parent="CenterContainer/VBoxContainer"]
+[node name="LoseText" type="Label" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.37, 1, 0.3, 1)
 theme_override_fonts/font = ExtResource("1_b30vr")
 theme_override_font_sizes/font_size = 80
-text = "Você não chegou
-ao seu destino!"
+text = "Você não chegou ao seu destino!"
 label_settings = SubResource("LabelSettings_s2hsg")
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="PlayAgain" type="Button" parent="."]
 custom_minimum_size = Vector2(250, 50)

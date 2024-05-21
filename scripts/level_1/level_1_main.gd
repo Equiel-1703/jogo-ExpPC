@@ -29,6 +29,22 @@ func _ready():
 
 # Emmited by Map when the player has finished creating the path for the rocket
 func _on_path_set(path_answer: Array, start_coord: Vector2):
+	# Check if path length is not greater than the maximum allowed
+	if path_answer.size() > GlobalGameData.MAX_PATH_LENGTH:
+		print("Path length (", path_answer.size(), ") is greater than ", GlobalGameData.MAX_PATH_LENGTH)
+
+		# We must clear the PathLine in this case
+		%PathLine.clear_points()
+
+		# Print a message to the player (this is just a placeholder)
+		var message_label = Label.new()
+		message_label.text = "O tamanho do caminho é grande demais!"
+		message_label.custom_minimum_size = Vector2(200, 50)
+		message_label.position = Vector2(100, 100)
+		add_child(message_label)
+		
+		return
+
 	var rocket_pos_map = %Map.local_to_map(%Rocket.position)
 	var start_coord_map = %Map.local_to_map(start_coord)
 
@@ -42,6 +58,13 @@ func _on_path_set(path_answer: Array, start_coord: Vector2):
 		# We must clear the PathLine in this case
 		%PathLine.clear_points()
 		
+		# Print a message to the player (this is just a placeholder)
+		var message_label = Label.new()
+		message_label.text = "A rota deve começar no foguete!"
+		message_label.custom_minimum_size = Vector2(200, 50)
+		message_label.position = Vector2(100, 100)
+		add_child(message_label)
+
 		return
 
 	%Level1PhasesManager.correct_answer = path_answer
