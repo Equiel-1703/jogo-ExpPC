@@ -114,3 +114,6 @@ func _on_play_again():
 	# Now the yellow selection can be erased and you can move the cursor again
 	%Map.enable_map()
 	%PathLine.clear_points()
+
+func _on_area_entered(_area):
+	%Rocket.explode()

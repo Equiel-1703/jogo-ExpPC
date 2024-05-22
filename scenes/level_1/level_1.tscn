@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cnjmi0oabpifi"]
+[gd_scene load_steps=30 format=3 uid="uid://cnjmi0oabpifi"]
 
 [ext_resource type="Script" path="res://scripts/level_1/level_1_main.gd" id="1_2r2tr"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="1_woosl"]
@@ -69,6 +69,10 @@ gravity = Vector3(0, 0, 0)
 scale_min = 0.3
 scale_max = 0.5
 alpha_curve = SubResource("CurveTexture_cbof3")
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vo5nc"]
+radius = 215.0
+height = 474.0
 
 [sub_resource type="Animation" id="Animation_useid"]
 length = 0.001
@@ -155,6 +159,14 @@ end_cap_mode = 2
 [node name="Rocket" parent="." instance=ExtResource("12_lbtbs")]
 unique_name_in_owner = true
 
+[node name="Barriers" type="Node2D" parent="."]
+
+[node name="Sun" type="Area2D" parent="Barriers"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/Sun"]
+position = Vector2(0, 490)
+shape = SubResource("CapsuleShape2D_vo5nc")
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_upr88")
@@ -182,3 +194,5 @@ visible = false
 [node name="Level1PhasesManager" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("15_3jtoy")
+
+[connection signal="area_entered" from="Barriers/Sun" to="." method="_on_area_entered"]

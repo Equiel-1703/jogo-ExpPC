@@ -1,4 +1,5 @@
 extends Node2D
+class_name Rocket
 
 signal move_completed(final_position: Vector2)
 
@@ -9,6 +10,8 @@ var _commands_to_process: Array
 var _execute_flag: bool
 
 @onready var _propulsion = $Propulsion
+@onready var _rocket_sprite = $RocketSpr
+@onready var _explosion = $Explosion
 
 func _ready():
 	_execute_flag = false
@@ -16,6 +19,10 @@ func _ready():
 
 func set_start_position(start_pos: Vector2) -> void:
 	self.position = start_pos
+	self.rotation_degrees = 0
+
+	_rocket_sprite.visible = true
+	_propulsion.emitting = false
 
 var _destination_pos: Vector2
 var _t: float = 0.0
@@ -27,6 +34,11 @@ func execute_move_commands(commands: Array) -> void:
 	_propulsion.emitting = true
 	# Execute the first command
 	_execute_next_command()
+
+func explode():
+	_propulsion.emitting = false
+	_rocket_sprite.visible = false
+	_explosion.emitting = true
 
 func _execute_next_command() -> void:
 	if _commands_to_process.size() > 0:
