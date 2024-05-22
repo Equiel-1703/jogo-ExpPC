@@ -70,13 +70,12 @@ color_ramp = SubResource("GradientTexture1D_wbyua")
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5r0ll"]
 radius = 20.0
-height = 84.0
+height = 40.0
 
 [node name="Rocket" type="Node2D"]
 script = ExtResource("2_n3w3j")
 
 [node name="Propulsion" type="GPUParticles2D" parent="."]
-visible = false
 material = SubResource("CanvasItemMaterial_np1eb")
 position = Vector2(0, 45)
 scale = Vector2(0.8, 0.8)
@@ -85,7 +84,6 @@ process_material = SubResource("ParticleProcessMaterial_1oong")
 texture = ExtResource("2_lhhot")
 
 [node name="RocketSpr" type="Sprite2D" parent="."]
-visible = false
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("1_gqm3p")
 
@@ -100,8 +98,9 @@ one_shot = true
 explosiveness = 1.0
 
 [node name="Collision" type="Area2D" parent="."]
-visible = false
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision"]
 shape = SubResource("CapsuleShape2D_5r0ll")
+
+[connection signal="finished" from="Explosion" to="." method="_on_explosion_finished"]

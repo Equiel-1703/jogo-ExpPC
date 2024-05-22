@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cj0mpdxnupbgl"]
 
 [ext_resource type="Texture2D" uid="uid://b2spr4bxiphnj" path="res://res/BOTÃO_JOGO.png" id="1_6jln3"]
-[ext_resource type="Script" path="res://scripts/level_1/direction_button.gd" id="1_ju0p0"]
+[ext_resource type="Script" path="res://scripts/helpers/direction_button.gd" id="1_ju0p0"]
 
 [node name="DirectionButtonContainer" type="Control"]
 custom_minimum_size = Vector2(140, 140)

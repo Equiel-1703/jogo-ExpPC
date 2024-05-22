@@ -12,7 +12,7 @@ class _destination:
 		min_path = m_path
 
 # Destinations of the level.
-var _destinations: Array = [_destination.new("mercurio", false), _destination.new("venus", true)]
+var _destinations: Array = [_destination.new("mercurio", false),_destination.new("venus", true)]
 
 var _current_phase_num: int = 1
 var _last_destination: String = "terra"
@@ -31,7 +31,7 @@ func _check_minimum_path() -> bool:
 	var dest_planet = _get_current_destination().planet_name
 	var orig_planet = _last_destination
 
-	var minimum_dist : int = GlobalGameData.get_minimum_distance(orig_planet, dest_planet)
+	var minimum_dist: int = GlobalGameData.get_minimum_distance(orig_planet, dest_planet)
 
 	return player_answer.size() <= minimum_dist
 
@@ -39,7 +39,6 @@ func _check_minimum_path() -> bool:
 func print_answers():
 	print("Player answer: ", player_answer)
 	print("Correct answer: ", correct_answer)
-
 
 ## Check if the player won the game.
 ##

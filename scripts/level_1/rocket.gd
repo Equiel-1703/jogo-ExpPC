@@ -2,12 +2,14 @@ extends Node2D
 class_name Rocket
 
 signal move_completed(final_position: Vector2)
+signal explosion_animation_finished()
 
 const MOVE_SPEED = 1.0
 
 var _tile_size = GlobalGameData.MAP_TILE_SIZE.x
 var _commands_to_process: Array
 var _execute_flag: bool
+var _exploded: bool
 
 @onready var _propulsion = $Propulsion
 @onready var _rocket_sprite = $RocketSpr
@@ -23,6 +25,8 @@ func set_start_position(start_pos: Vector2) -> void:
 
 	_rocket_sprite.visible = true
 	_propulsion.emitting = false
+	
+	_exploded = false
 
 var _destination_pos: Vector2
 var _t: float = 0.0
@@ -36,9 +40,13 @@ func execute_move_commands(commands: Array) -> void:
 	_execute_next_command()
 
 func explode():
+	_exploded = true
 	_propulsion.emitting = false
 	_rocket_sprite.visible = false
 	_explosion.emitting = true
+
+func _on_explosion_finished():
+	explosion_animation_finished.emit()
 
 func _execute_next_command() -> void:
 	if _commands_to_process.size() > 0:
@@ -65,8 +73,11 @@ func _execute_next_command() -> void:
 	else:
 		# Turn off the propulsion effect
 		_propulsion.emitting = false
-		# The last destination position is the final position of the rocket
-		move_completed.emit(_destination_pos)
+		
+		# Emit the signal if the rocket didn't explode
+		if not _exploded:
+			# The last destination position is the final position of the rocket
+			move_completed.emit(_destination_pos)
 
 func _physics_process(delta):
 	if _execute_flag:

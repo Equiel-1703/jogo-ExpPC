@@ -27,6 +27,12 @@ func _ready():
 	%Map.disable_map()
 	%Level1PhasesManager.show_current_phase()
 
+# Can be used by other nodes to lose immediately
+func lose_immediately(lose_screen_text: String):
+	%Map.disable_map()
+	%LoseScene.set_lose_screen_text(lose_screen_text)
+	%LoseScene.visible = true
+
 # Emmited by Map when the player has finished creating the path for the rocket
 func _on_path_set(path_answer: Array, start_coord: Vector2):
 	# Check if path length is not greater than the maximum allowed
@@ -36,12 +42,8 @@ func _on_path_set(path_answer: Array, start_coord: Vector2):
 		# We must clear the PathLine in this case
 		%PathLine.clear_points()
 
-		# Print a message to the player (this is just a placeholder)
-		var message_label = Label.new()
-		message_label.text = "O tamanho do caminho é grande demais!"
-		message_label.custom_minimum_size = Vector2(200, 50)
-		message_label.position = Vector2(100, 100)
-		add_child(message_label)
+		# Print a message to the player
+		%MessageScene.show_message("O caminho é muito longo! As rotas não podem ser maiores que 30.")
 		
 		return
 
@@ -58,12 +60,8 @@ func _on_path_set(path_answer: Array, start_coord: Vector2):
 		# We must clear the PathLine in this case
 		%PathLine.clear_points()
 		
-		# Print a message to the player (this is just a placeholder)
-		var message_label = Label.new()
-		message_label.text = "A rota deve começar no foguete!"
-		message_label.custom_minimum_size = Vector2(200, 50)
-		message_label.position = Vector2(100, 100)
-		add_child(message_label)
+		# Print a message to the player
+		%MessageScene.show_message("Você deve começar o caminho no foguete!")
 
 		return
 
@@ -115,5 +113,8 @@ func _on_play_again():
 	%Map.enable_map()
 	%PathLine.clear_points()
 
-func _on_area_entered(_area):
+# Emmited by the Rocket node, when the rocket enters a prohibited area
+func _on_explosion_area_entered(_area):
 	%Rocket.explode()
+	await %Rocket.explosion_animation_finished
+	lose_immediately("Seu foguete explodiu! Tente novamente.")

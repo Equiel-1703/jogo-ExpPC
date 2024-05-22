@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cnjmi0oabpifi"]
+[gd_scene load_steps=35 format=3 uid="uid://cnjmi0oabpifi"]
 
 [ext_resource type="Script" path="res://scripts/level_1/level_1_main.gd" id="1_2r2tr"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="1_woosl"]
@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://c0onqu281fee5" path="res://scenes/level_1/criar_path_num.tscn" id="12_o06rq"]
 [ext_resource type="PackedScene" uid="uid://c3pvrpj2n21cd" path="res://scenes/level_1/next_phase_scene.tscn" id="12_re1tg"]
 [ext_resource type="PackedScene" uid="uid://btif7hfb7i3rc" path="res://scenes/level_1/lose_scene.tscn" id="13_2cdh5"]
+[ext_resource type="PackedScene" uid="uid://b3dk076igvbbl" path="res://scenes/level_1/message.tscn" id="13_msuy3"]
 [ext_resource type="Script" path="res://scripts/level_1/level_1_phases_manager.gd" id="15_3jtoy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s07oj"]
@@ -74,6 +75,18 @@ alpha_curve = SubResource("CurveTexture_cbof3")
 radius = 215.0
 height = 474.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fm3bj"]
+size = Vector2(266, 1005)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yjqdt"]
+size = Vector2(270, 1005)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8l0hq"]
+size = Vector2(171, 1948.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nwt4n"]
+size = Vector2(170.5, 1948.5)
+
 [sub_resource type="Animation" id="Animation_useid"]
 length = 0.001
 tracks/0/type = "value"
@@ -112,7 +125,7 @@ _data = {
 "sun_shine": SubResource("Animation_fkius")
 }
 
-[node name="Level_1" type="Node2D"]
+[node name="Level_1" type="Node2D" groups=["main_level"]]
 script = ExtResource("1_2r2tr")
 
 [node name="MapSpr" type="Sprite2D" parent="."]
@@ -160,12 +173,45 @@ end_cap_mode = 2
 unique_name_in_owner = true
 
 [node name="Barriers" type="Node2D" parent="."]
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
 [node name="Sun" type="Area2D" parent="Barriers"]
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/Sun"]
 position = Vector2(0, 490)
 shape = SubResource("CapsuleShape2D_vo5nc")
+
+[node name="left" type="Area2D" parent="Barriers"]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/left"]
+position = Vector2(-133, 487.5)
+shape = SubResource("RectangleShape2D_fm3bj")
+
+[node name="right" type="Area2D" parent="Barriers"]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/right"]
+position = Vector2(2025, 488)
+shape = SubResource("RectangleShape2D_yjqdt")
+
+[node name="bottom" type="Area2D" parent="Barriers"]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/bottom"]
+position = Vector2(947, 1065.5)
+rotation = 1.57079
+shape = SubResource("RectangleShape2D_8l0hq")
+
+[node name="top" type="Area2D" parent="Barriers"]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/top"]
+position = Vector2(947, -85.25)
+rotation = 1.57079
+shape = SubResource("RectangleShape2D_nwt4n")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -174,6 +220,10 @@ libraries = {
 autoplay = "sun_shine"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MessageScene" parent="CanvasLayer" groups=["alert"] instance=ExtResource("13_msuy3")]
+unique_name_in_owner = true
+time_visible = 3.0
 
 [node name="CriarPath" parent="CanvasLayer" instance=ExtResource("12_o06rq")]
 unique_name_in_owner = true
@@ -195,4 +245,8 @@ visible = false
 unique_name_in_owner = true
 script = ExtResource("15_3jtoy")
 
-[connection signal="area_entered" from="Barriers/Sun" to="." method="_on_area_entered"]
+[connection signal="area_entered" from="Barriers/Sun" to="." method="_on_explosion_area_entered"]
+[connection signal="area_entered" from="Barriers/left" to="." method="_on_explosion_area_entered"]
+[connection signal="area_entered" from="Barriers/right" to="." method="_on_explosion_area_entered"]
+[connection signal="area_entered" from="Barriers/bottom" to="." method="_on_explosion_area_entered"]
+[connection signal="area_entered" from="Barriers/top" to="." method="_on_explosion_area_entered"]
