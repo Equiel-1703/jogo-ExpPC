@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://cig2gpf3kuqkq"]
 
-[ext_resource type="Script" path="res://scripts/level_3/criar_path.gd" id="1_xtxpk"]
+[ext_resource type="Script" path="res://scripts/level_2/criar_path.gd" id="1_xtxpk"]
 [ext_resource type="Material" uid="uid://ddpwqy41qf85d" path="res://shaders/bg_material.tres" id="2_atlsb"]
 [ext_resource type="LabelSettings" uid="uid://cgl76j25jy15c" path="res://themes/instructions_label_settings.tres" id="2_jvns2"]
 

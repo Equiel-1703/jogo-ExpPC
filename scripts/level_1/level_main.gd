@@ -1,4 +1,5 @@
 extends Node2D
+class_name LevelMain
 
 var _rocket_start_coord: Vector2
 
@@ -16,6 +17,8 @@ func _ready():
 	%LoseScene.play_again.connect(_on_play_again)
 	# Connect NextPhaseScene signal
 	%NextPhaseScene.play_again.connect(_on_play_again)
+	# Connect LevelNum signal
+	%LevelNum.level_num_finished.connect(_on_level_num_finished)
 
 	# Get planet Earth's object from the GlobalGameData singleton
 	var planet_earth = GlobalGameData.PLANETS_COORDS["terra"]
@@ -23,15 +26,23 @@ func _ready():
 	_rocket_start_coord = %Map.map_to_local(planet_earth.planet_coord)
 	%Rocket.set_start_position(_rocket_start_coord)
 
-	# Show first phase
+	# Disable the map at the beginning
 	%Map.disable_map()
-	%Level1PhasesManager.show_current_phase()
+
+	# Show level num
+	%LevelNum.level_num = GlobalGameData.current_level
+	%LevelNum.show_level_num()
 
 # Can be used by other nodes to lose immediately
 func lose_immediately(lose_screen_text: String):
 	%Map.disable_map()
 	%LoseScene.set_lose_screen_text(lose_screen_text)
 	%LoseScene.visible = true
+
+# Emmited by LevelNum when the level number has finished showing
+func _on_level_num_finished():
+	# Show first phase
+	%LevelPhasesManager.show_current_phase()
 
 # Emmited by Map when the player has finished creating the path for the rocket
 func _on_path_set(path_answer: Array, start_coord: Vector2):
@@ -65,7 +76,7 @@ func _on_path_set(path_answer: Array, start_coord: Vector2):
 
 		return
 
-	%Level1PhasesManager.correct_answer = path_answer
+	%LevelPhasesManager.correct_answer = path_answer
 	_rocket_start_coord = start_coord
 
 	%Map.disable_map()
@@ -73,11 +84,11 @@ func _on_path_set(path_answer: Array, start_coord: Vector2):
 
 # Emmited by the CriarPath screen, when the player has finished creating the path
 func _on_player_path_done(player_path_answer: Array):
-	# Set the player's answer in the Level1PhasesManager object
-	%Level1PhasesManager.player_answer = player_path_answer
+	# Set the player's answer in the LevelPhasesManager object
+	%LevelPhasesManager.player_answer = player_path_answer
 
 	# For debugging purposes only
-	%Level1PhasesManager.print_answers()
+	%LevelPhasesManager.print_answers()
 
 	# "Launch" the rocket :)
 	%Rocket.set_start_position(_rocket_start_coord)
@@ -86,14 +97,14 @@ func _on_player_path_done(player_path_answer: Array):
 # Emmited by the Rocket node, when the rocket has finished moving
 func _on_move_completed(final_position: Vector2):
 	# Check if player won and store in GlobalGameData
-	GlobalGameData.player_won = %Level1PhasesManager.player_won(%Map.local_to_map(final_position))
+	GlobalGameData.player_won = %LevelPhasesManager.player_won(%Map.local_to_map(final_position))
 
 	# Decide which scene to show
 	if GlobalGameData.player_won:
 		# Show the WinScene
 		%WinScene.visible = true
 		# Tell the PhasesManager to go to the next phase
-		%Level1PhasesManager.go_to_next_phase()
+		%LevelPhasesManager.go_to_next_phase()
 	else:
 		# Show the LoseScene
 		%LoseScene.visible = true

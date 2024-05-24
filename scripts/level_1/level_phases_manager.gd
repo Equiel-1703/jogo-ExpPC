@@ -1,7 +1,9 @@
 extends Node
-class_name Level1PhasesManager
+class_name LevelPhasesManager
 
 signal play_again
+
+@export var next_level_scene: PackedScene
 
 class _destination:
 	var planet_name: String
@@ -12,7 +14,7 @@ class _destination:
 		min_path = m_path
 
 # Destinations of the level.
-var _destinations: Array = [_destination.new("mercurio", false),_destination.new("venus", true)]
+var _destinations: Array = [_destination.new("venus", true)]
 
 var _current_phase_num: int = 1
 var _last_destination: String = "terra"
@@ -87,9 +89,16 @@ func show_current_phase():
 	var destination = _get_current_destination()
 	if !destination:
 		# The level is over.
-		# For now, this is only a placeholder.
-		print("Level 1 is over!")
-		get_tree().quit()
+		print("Level " + str(GlobalGameData.current_level) + " is over!")
+
+		# Increase level in GlobalGameData.
+		GlobalGameData.current_level += 1
+
+		# Change the scene to the next level, if there is one.
+		if next_level_scene:
+			get_tree().change_scene_to_packed(next_level_scene)
+		else:
+			get_tree().quit()
 	else:
 		var planet_destination = GlobalGameData.PLANETS_COORDS[destination.planet_name]
 
