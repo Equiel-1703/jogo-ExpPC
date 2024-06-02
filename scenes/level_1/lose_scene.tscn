@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://btif7hfb7i3rc"]
 
 [ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="1_b30vr"]
-[ext_resource type="Script" path="res://scripts/level_1/win_lose_scene.gd" id="1_f4xyt"]
+[ext_resource type="Script" path="res://scripts/general/win_lose_scene.gd" id="1_f4xyt"]
 [ext_resource type="LabelSettings" uid="uid://cyxrw7bvdde6q" path="res://themes/label_red_text.tres" id="3_tlqyx"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_s2hsg"]

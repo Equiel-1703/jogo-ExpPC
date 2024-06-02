@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://b3dk076igvbbl"]
 
-[ext_resource type="Script" path="res://scripts/level_1/message.gd" id="1_g5xbg"]
+[ext_resource type="Script" path="res://scripts/general/message.gd" id="1_g5xbg"]
 [ext_resource type="LabelSettings" uid="uid://d0poqp6bcc1m5" path="res://themes/alert_label.tres" id="1_ta8tm"]
 
 [sub_resource type="Gradient" id="Gradient_mfpkk"]

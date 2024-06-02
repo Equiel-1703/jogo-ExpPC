@@ -18,8 +18,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-PathProcessor="*res://scripts/helpers/path_processor.gd"
-GlobalGameData="*res://scripts/global_game_data.gd"
+PathProcessor="*res://scripts/singletons/path_processor.gd"
+GlobalGameData="*res://scripts/singletons/global_game_data.gd"
 
 [display]
 

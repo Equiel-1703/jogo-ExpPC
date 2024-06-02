@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://6eh3ia4g6l8g"]
 
-[ext_resource type="Script" path="res://scripts/level_1/level_num.gd" id="1_i5rw0"]
+[ext_resource type="Script" path="res://scripts/general/level_num.gd" id="1_i5rw0"]
 [ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="3_a66xs"]
 
 [sub_resource type="Shader" id="Shader_f2von"]

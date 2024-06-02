@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dspio5wt6h05w" path="res://res/Rocket_70x111.png" id="1_gqm3p"]
 [ext_resource type="Texture2D" uid="uid://bmptqxie7ni4c" path="res://res/Flame.png" id="2_lhhot"]
-[ext_resource type="Script" path="res://scripts/level_1/rocket.gd" id="2_n3w3j"]
+[ext_resource type="Script" path="res://scripts/general/rocket.gd" id="2_n3w3j"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_np1eb"]
 blend_mode = 1

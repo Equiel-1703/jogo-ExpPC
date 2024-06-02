@@ -5,14 +5,14 @@
 [ext_resource type="Texture2D" uid="uid://dlv0e3hvm6es5" path="res://res/grid.png" id="3_4j7hm"]
 [ext_resource type="Texture2D" uid="uid://da8if3xp7bvsc" path="res://res/selection.png" id="4_350p8"]
 [ext_resource type="Texture2D" uid="uid://ciifhkfrwevv1" path="res://res/selection_active.png" id="5_sv384"]
-[ext_resource type="Script" path="res://scripts/level_1/map.gd" id="6_xe2dr"]
+[ext_resource type="Script" path="res://scripts/general/map.gd" id="6_xe2dr"]
 [ext_resource type="Texture2D" uid="uid://bmjnhcqpa4h1g" path="res://res/MAPA_JOGO_OV.png" id="7_5s07d"]
 [ext_resource type="Texture2D" uid="uid://dbryvpjdpfce5" path="res://res/SUN_SHINE.png" id="8_gx4pf"]
 [ext_resource type="Texture2D" uid="uid://yx5t6di3guma" path="res://res/SUN.png" id="9_q0g5r"]
 [ext_resource type="Shader" path="res://shaders/fire_heat.gdshader" id="10_58ynu"]
 [ext_resource type="Texture2D" uid="uid://bmptqxie7ni4c" path="res://res/Flame.png" id="11_5muee"]
-[ext_resource type="Script" path="res://scripts/level_2/line_manager.gd" id="12_13dp6"]
 [ext_resource type="PackedScene" uid="uid://di4d6nr6gxb8t" path="res://scenes/level_1/rocket.tscn" id="12_kl447"]
+[ext_resource type="Script" path="res://scripts/general/line_manager.gd" id="12_pi8tq"]
 [ext_resource type="PackedScene" uid="uid://b3dk076igvbbl" path="res://scenes/level_1/message.tscn" id="13_xrji8"]
 [ext_resource type="PackedScene" uid="uid://cig2gpf3kuqkq" path="res://scenes/level_2/criar_path.tscn" id="14_v3fbq"]
 [ext_resource type="PackedScene" uid="uid://c3pvrpj2n21cd" path="res://scenes/level_1/next_phase_scene.tscn" id="15_nu1tc"]
@@ -175,7 +175,7 @@ lifetime = 2.0
 trail_lifetime = 1.83
 
 [node name="LineManager" type="Node" parent="." node_paths=PackedStringArray("base_line")]
-script = ExtResource("12_13dp6")
+script = ExtResource("12_pi8tq")
 base_line = NodePath("../BaseLine")
 
 [node name="BaseLine" type="Line2D" parent="."]
