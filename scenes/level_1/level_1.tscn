@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://cnjmi0oabpifi"]
+[gd_scene load_steps=40 format=3 uid="uid://cnjmi0oabpifi"]
 
 [ext_resource type="Script" path="res://scripts/level_1/level_main.gd" id="1_ai3si"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="1_woosl"]
@@ -18,7 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://btif7hfb7i3rc" path="res://scenes/level_1/lose_scene.tscn" id="13_2cdh5"]
 [ext_resource type="PackedScene" uid="uid://b3dk076igvbbl" path="res://scenes/level_1/message.tscn" id="13_msuy3"]
 [ext_resource type="PackedScene" uid="uid://6eh3ia4g6l8g" path="res://scenes/level_1/level_num.tscn" id="18_m3eb5"]
-[ext_resource type="Script" path="res://scripts/level_1/level_phases_manager.gd" id="19_g04pg"]
+[ext_resource type="Script" path="res://scripts/level_1/level_1_phases_manager.gd" id="19_nawpt"]
 [ext_resource type="PackedScene" uid="uid://clxa5nth18uh8" path="res://scenes/level_2/level_2.tscn" id="20_cbin1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s07oj"]
@@ -89,6 +89,15 @@ size = Vector2(171, 1948.5)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nwt4n"]
 size = Vector2(170.5, 1948.5)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sy2od"]
+size = Vector2(133, 132)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_js653"]
+size = Vector2(268.5, 269)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dqrl5"]
+size = Vector2(202.25, 203.5)
+
 [sub_resource type="Animation" id="Animation_useid"]
 length = 0.001
 tracks/0/type = "value"
@@ -134,7 +143,7 @@ script = ExtResource("1_ai3si")
 texture = ExtResource("1_woosl")
 centered = false
 
-[node name="Map" type="TileMap" parent="."]
+[node name="Map" type="TileMap" parent="." node_paths=PackedStringArray("line")]
 unique_name_in_owner = true
 tile_set = SubResource("TileSet_ushug")
 format = 2
@@ -142,6 +151,7 @@ layer_0/tile_data = PackedInt32Array(0, 1, 0, 1, 1, 0, 2, 1, 0, 3, 1, 0, 4, 1, 0
 layer_1/tile_data = PackedInt32Array()
 layer_2/tile_data = PackedInt32Array()
 script = ExtResource("5_busbn")
+line = NodePath("../PathLine")
 
 [node name="MapSprOv" type="Sprite2D" parent="."]
 texture = ExtResource("6_61beh")
@@ -176,7 +186,6 @@ unique_name_in_owner = true
 
 [node name="Barriers" type="Node2D" parent="."]
 metadata/_edit_group_ = true
-metadata/_edit_lock_ = true
 
 [node name="Sun" type="Area2D" parent="Barriers"]
 monitorable = false
@@ -215,6 +224,70 @@ position = Vector2(947, -85.25)
 rotation = 1.57079
 shape = SubResource("RectangleShape2D_nwt4n")
 
+[node name="mercurio" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/mercurio"]
+position = Vector2(331.57, 751.02)
+shape = SubResource("RectangleShape2D_sy2od")
+
+[node name="venus" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/venus"]
+position = Vector2(472.07, 260.02)
+shape = SubResource("RectangleShape2D_sy2od")
+
+[node name="terra" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/terra"]
+position = Vector2(611.57, 540.02)
+shape = SubResource("RectangleShape2D_sy2od")
+
+[node name="marte" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/marte"]
+position = Vector2(821.57, 400.02)
+shape = SubResource("RectangleShape2D_sy2od")
+
+[node name="jupiter" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/jupiter"]
+position = Vector2(1031.32, 750.52)
+shape = SubResource("RectangleShape2D_js653")
+
+[node name="saturno" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/saturno"]
+position = Vector2(1276.44, 225.27)
+shape = SubResource("RectangleShape2D_dqrl5")
+
+[node name="urano" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/urano"]
+position = Vector2(1451.57, 679.02)
+shape = SubResource("RectangleShape2D_sy2od")
+
+[node name="netuno" type="Area2D" parent="Barriers"]
+position = Vector2(228, -329)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/netuno"]
+position = Vector2(1451.57, 679.02)
+shape = SubResource("RectangleShape2D_sy2od")
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_upr88")
@@ -225,6 +298,7 @@ autoplay = "sun_shine"
 
 [node name="MessageScene" parent="CanvasLayer" groups=["alert"] instance=ExtResource("13_msuy3")]
 unique_name_in_owner = true
+visible = false
 time_visible = 3.0
 
 [node name="CriarPath" parent="CanvasLayer" instance=ExtResource("12_o06rq")]
@@ -248,11 +322,5 @@ unique_name_in_owner = true
 
 [node name="LevelPhasesManager" type="Node" parent="."]
 unique_name_in_owner = true
-script = ExtResource("19_g04pg")
+script = ExtResource("19_nawpt")
 next_level_scene = ExtResource("20_cbin1")
-
-[connection signal="area_entered" from="Barriers/Sun" to="." method="_on_explosion_area_entered"]
-[connection signal="area_entered" from="Barriers/left" to="." method="_on_explosion_area_entered"]
-[connection signal="area_entered" from="Barriers/right" to="." method="_on_explosion_area_entered"]
-[connection signal="area_entered" from="Barriers/bottom" to="." method="_on_explosion_area_entered"]
-[connection signal="area_entered" from="Barriers/top" to="." method="_on_explosion_area_entered"]

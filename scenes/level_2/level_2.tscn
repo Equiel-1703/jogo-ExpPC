@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://clxa5nth18uh8"]
+[gd_scene load_steps=40 format=3 uid="uid://clxa5nth18uh8"]
 
 [ext_resource type="Script" path="res://scripts/level_2/level_2.gd" id="1_0idx8"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="2_bkd4d"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://yx5t6di3guma" path="res://res/SUN.png" id="9_q0g5r"]
 [ext_resource type="Shader" path="res://shaders/fire_heat.gdshader" id="10_58ynu"]
 [ext_resource type="Texture2D" uid="uid://bmptqxie7ni4c" path="res://res/Flame.png" id="11_5muee"]
+[ext_resource type="Script" path="res://scripts/level_2/line_manager.gd" id="12_13dp6"]
 [ext_resource type="PackedScene" uid="uid://di4d6nr6gxb8t" path="res://scenes/level_1/rocket.tscn" id="12_kl447"]
 [ext_resource type="PackedScene" uid="uid://b3dk076igvbbl" path="res://scenes/level_1/message.tscn" id="13_xrji8"]
 [ext_resource type="PackedScene" uid="uid://cig2gpf3kuqkq" path="res://scenes/level_2/criar_path.tscn" id="14_v3fbq"]
@@ -18,7 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://diik6iqcg1u36" path="res://scenes/level_1/win_scene.tscn" id="16_ktncq"]
 [ext_resource type="PackedScene" uid="uid://btif7hfb7i3rc" path="res://scenes/level_1/lose_scene.tscn" id="17_oixjc"]
 [ext_resource type="PackedScene" uid="uid://6eh3ia4g6l8g" path="res://scenes/level_1/level_num.tscn" id="18_bcskv"]
-[ext_resource type="Script" path="res://scripts/level_1/level_phases_manager.gd" id="18_cikve"]
+[ext_resource type="Script" path="res://scripts/level_2/level_2_phases_manager.gd" id="19_qrpmp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s07oj"]
 texture = ExtResource("3_4j7hm")
@@ -72,21 +73,30 @@ scale_min = 0.3
 scale_max = 0.5
 alpha_curve = SubResource("CurveTexture_cbof3")
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vo5nc"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8my6g"]
 radius = 215.0
 height = 474.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fm3bj"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qwam6"]
 size = Vector2(266, 1005)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_yjqdt"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wteo3"]
 size = Vector2(270, 1005)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8l0hq"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3cuvc"]
 size = Vector2(171, 1948.5)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_nwt4n"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_783uy"]
 size = Vector2(170.5, 1948.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mhkp6"]
+size = Vector2(133, 132)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bajg6"]
+size = Vector2(268.5, 269)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5gb61"]
+size = Vector2(202.25, 203.5)
 
 [sub_resource type="Animation" id="Animation_useid"]
 length = 0.001
@@ -133,7 +143,7 @@ script = ExtResource("1_0idx8")
 texture = ExtResource("2_bkd4d")
 centered = false
 
-[node name="Map" type="TileMap" parent="."]
+[node name="Map" type="TileMap" parent="." node_paths=PackedStringArray("line_manager")]
 unique_name_in_owner = true
 tile_set = SubResource("TileSet_ushug")
 format = 2
@@ -141,6 +151,7 @@ layer_0/tile_data = PackedInt32Array(0, 1, 0, 1, 1, 0, 2, 1, 0, 3, 1, 0, 4, 1, 0
 layer_1/tile_data = PackedInt32Array()
 layer_2/tile_data = PackedInt32Array()
 script = ExtResource("6_xe2dr")
+line_manager = NodePath("../LineManager")
 
 [node name="MapSprOv" type="Sprite2D" parent="."]
 texture = ExtResource("7_5s07d")
@@ -163,8 +174,11 @@ texture = ExtResource("11_5muee")
 lifetime = 2.0
 trail_lifetime = 1.83
 
-[node name="PathLine" type="Line2D" parent="."]
-unique_name_in_owner = true
+[node name="LineManager" type="Node" parent="." node_paths=PackedStringArray("base_line")]
+script = ExtResource("12_13dp6")
+base_line = NodePath("../BaseLine")
+
+[node name="BaseLine" type="Line2D" parent="."]
 default_color = Color(1, 0, 0, 1)
 joint_mode = 2
 begin_cap_mode = 1
@@ -172,31 +186,31 @@ end_cap_mode = 2
 
 [node name="Rocket" parent="." instance=ExtResource("12_kl447")]
 unique_name_in_owner = true
+visible = false
 
 [node name="Barriers" type="Node2D" parent="."]
 metadata/_edit_group_ = true
-metadata/_edit_lock_ = true
 
 [node name="Sun" type="Area2D" parent="Barriers"]
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/Sun"]
 position = Vector2(0, 490)
-shape = SubResource("CapsuleShape2D_vo5nc")
+shape = SubResource("CapsuleShape2D_8my6g")
 
 [node name="left" type="Area2D" parent="Barriers"]
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/left"]
 position = Vector2(-133, 487.5)
-shape = SubResource("RectangleShape2D_fm3bj")
+shape = SubResource("RectangleShape2D_qwam6")
 
 [node name="right" type="Area2D" parent="Barriers"]
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/right"]
 position = Vector2(2025, 488)
-shape = SubResource("RectangleShape2D_yjqdt")
+shape = SubResource("RectangleShape2D_wteo3")
 
 [node name="bottom" type="Area2D" parent="Barriers"]
 monitorable = false
@@ -204,7 +218,7 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/bottom"]
 position = Vector2(947, 1065.5)
 rotation = 1.57079
-shape = SubResource("RectangleShape2D_8l0hq")
+shape = SubResource("RectangleShape2D_3cuvc")
 
 [node name="top" type="Area2D" parent="Barriers"]
 monitorable = false
@@ -212,7 +226,71 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/top"]
 position = Vector2(947, -85.25)
 rotation = 1.57079
-shape = SubResource("RectangleShape2D_nwt4n")
+shape = SubResource("RectangleShape2D_783uy")
+
+[node name="mercurio" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/mercurio"]
+position = Vector2(331.57, 751.02)
+shape = SubResource("RectangleShape2D_mhkp6")
+
+[node name="venus" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/venus"]
+position = Vector2(472.07, 260.02)
+shape = SubResource("RectangleShape2D_mhkp6")
+
+[node name="terra" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/terra"]
+position = Vector2(611.57, 540.02)
+shape = SubResource("RectangleShape2D_mhkp6")
+
+[node name="marte" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/marte"]
+position = Vector2(821.57, 400.02)
+shape = SubResource("RectangleShape2D_mhkp6")
+
+[node name="jupiter" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/jupiter"]
+position = Vector2(1031.32, 750.52)
+shape = SubResource("RectangleShape2D_bajg6")
+
+[node name="saturno" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/saturno"]
+position = Vector2(1276.44, 225.27)
+shape = SubResource("RectangleShape2D_5gb61")
+
+[node name="urano" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/urano"]
+position = Vector2(1451.57, 679.02)
+shape = SubResource("RectangleShape2D_mhkp6")
+
+[node name="netuno" type="Area2D" parent="Barriers"]
+position = Vector2(228, -329)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/netuno"]
+position = Vector2(1451.57, 679.02)
+shape = SubResource("RectangleShape2D_mhkp6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -224,6 +302,7 @@ autoplay = "sun_shine"
 
 [node name="MessageScene" parent="CanvasLayer" groups=["alert"] instance=ExtResource("13_xrji8")]
 unique_name_in_owner = true
+visible = false
 time_visible = 3.0
 
 [node name="CriarPath" parent="CanvasLayer" instance=ExtResource("14_v3fbq")]
@@ -247,10 +326,4 @@ unique_name_in_owner = true
 
 [node name="LevelPhasesManager" type="Node" parent="."]
 unique_name_in_owner = true
-script = ExtResource("18_cikve")
-
-[connection signal="area_entered" from="Barriers/Sun" to="." method="_on_explosion_area_entered"]
-[connection signal="area_entered" from="Barriers/left" to="." method="_on_explosion_area_entered"]
-[connection signal="area_entered" from="Barriers/right" to="." method="_on_explosion_area_entered"]
-[connection signal="area_entered" from="Barriers/bottom" to="." method="_on_explosion_area_entered"]
-[connection signal="area_entered" from="Barriers/top" to="." method="_on_explosion_area_entered"]
+script = ExtResource("19_qrpmp")

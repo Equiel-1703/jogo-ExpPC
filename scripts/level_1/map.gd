@@ -1,6 +1,6 @@
 extends TileMap
 
-signal path_set(path_answer: Array, start_coord: Vector2)
+signal path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2)
 
 var _tile_size: int
 
@@ -25,7 +25,24 @@ var _mouse_coord: Vector2 = Vector2.ZERO
 var _last_mouse_coord: Vector2 = Vector2.ZERO
 var _line_from: Vector2 = Vector2.ZERO
 
+@export var line : Line2D
+@export var line_manager: LineManager
+
 func _ready():
+	# Check if the user did not provide a line or a line manager
+	if not line and not line_manager:
+		printerr("Map> You need to provide a Line2D or a LineManager node to the map!")
+		get_tree().quit()
+		return
+	
+	# Check if the user provided both a line and a line manager, and await the ready signal
+	if line:
+		await line.ready
+	else:
+		# If the line was not provided, get it from the line manager
+		await line_manager.ready
+		line = line_manager.get_active_line()
+
 	# Getting the tile size
 	_tile_size = int(GlobalGameData.MAP_TILE_SIZE.x)
 
@@ -59,13 +76,13 @@ func _process(_delta):
 		set_cell(_layer_active_selection, _mouse_coord, _id_active_selection_tile, Vector2.ZERO)
 
 		# Clear line and path commands answer
-		%PathLine.clear_points()
+		line.clear_points()
 		_path_commands_answer.clear()
 
 		# Add the first point to the path line
 		_line_from = map_to_local(_mouse_coord)
 		_last_mouse_coord = _line_from
-		%PathLine.add_point(_line_from)
+		line.add_point(_line_from)
 	
 	if Input.is_action_pressed("LeftClick") and _draw_state:
 		_mouse_coord = map_to_local(_mouse_coord)
@@ -89,7 +106,7 @@ func _process(_delta):
 					# Add the new point to the path commands
 					_path_commands_answer.append(PathProcessor.determine_direction(_last_mouse_coord, middle_point))
 					# Add the new point to the path line
-					%PathLine.add_point(middle_point)
+					line.add_point(middle_point)
 					# Update the last mouse coord
 					_last_mouse_coord = middle_point
 
@@ -106,7 +123,7 @@ func _process(_delta):
 					# Add the new point to the path commands
 					_path_commands_answer.append(PathProcessor.determine_direction(_last_mouse_coord, middle_point))
 					# Add the new point to the path line
-					%PathLine.add_point(middle_point)
+					line.add_point(middle_point)
 					# Update the last mouse coord
 					_last_mouse_coord = middle_point
 			
@@ -123,11 +140,11 @@ func _process(_delta):
 				# Add the middle point to the path commands
 				_path_commands_answer.append(PathProcessor.determine_direction(_last_mouse_coord, middle_point))
 				# Add the middle point to the path line
-				%PathLine.add_point(middle_point)
+				line.add_point(middle_point)
 				# Add the last point (mouse coord) to the path commands
 				_path_commands_answer.append(PathProcessor.determine_direction(middle_point, _mouse_coord))
 				# Add the last point (mouse coord) to the path line
-				%PathLine.add_point(_mouse_coord)
+				line.add_point(_mouse_coord)
 				# Update the last mouse coord
 				_last_mouse_coord = _mouse_coord
 
@@ -137,7 +154,7 @@ func _process(_delta):
 				# Add the new point to the path commands
 				_path_commands_answer.append(PathProcessor.determine_direction(_last_mouse_coord, _mouse_coord))
 				# Add the new point to the path line
-				%PathLine.add_point(_mouse_coord)
+				line.add_point(_mouse_coord)
 				# Update the last mouse coord
 				_last_mouse_coord = _mouse_coord
 	
@@ -157,7 +174,7 @@ func _process(_delta):
 		PathProcessor.print_moves(_path_commands_answer)
 		
 		# Emit the signal with the path answer
-		path_set.emit(_path_commands_answer, _line_from)
+		path_set.emit(_path_commands_answer, _line_from, _last_mouse_coord)
 
 func _erase_selection_map():
 	for y in _map_h_tiles:
@@ -180,4 +197,4 @@ func _restart_map():
 	_can_erase = true
 	_movement_enabled = true
 	
-	%PathLine.clear_points()
+	line.clear_points()

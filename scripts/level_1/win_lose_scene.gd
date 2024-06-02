@@ -8,7 +8,7 @@ func _ready():
 # Only in win screen
 func _on_next_phase_pressed():
 	self.visible = false
-	%LevelPhasesManager.show_current_phase()
+	%LevelPhasesManager.show_current_destination()
 
 # Only in lose screen
 func _on_play_again_pressed():

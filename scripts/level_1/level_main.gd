@@ -1,7 +1,10 @@
 extends Node2D
 class_name LevelMain
 
-var _rocket_start_coord: Vector2
+# Used to spawn the rocket in the start of the level
+var _rocket_default_start_coord: Vector2
+# Used to respawn the rocket if the player loses
+var _rocket_last_start_coord: Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,11 +23,17 @@ func _ready():
 	# Connect LevelNum signal
 	%LevelNum.level_num_finished.connect(_on_level_num_finished)
 
+	# Connecting barriers explosion signal
+	for barrier in $Barriers.get_children():
+		barrier.area_entered.connect(_on_explosion_area_entered)
+
 	# Get planet Earth's object from the GlobalGameData singleton
 	var planet_earth = GlobalGameData.PLANETS_COORDS["terra"]
 	# Set the Rocket's start position to the Earth's position
-	_rocket_start_coord = %Map.map_to_local(planet_earth.planet_coord)
-	%Rocket.set_start_position(_rocket_start_coord)
+	_rocket_default_start_coord = %Map.map_to_local(planet_earth.planet_coord)
+	%Rocket.set_start_position(_rocket_default_start_coord)
+	# Saving last start coord
+	_rocket_last_start_coord = _rocket_default_start_coord
 
 	# Disable the map at the beginning
 	%Map.disable_map()
@@ -42,10 +51,10 @@ func lose_immediately(lose_screen_text: String):
 # Emmited by LevelNum when the level number has finished showing
 func _on_level_num_finished():
 	# Show first phase
-	%LevelPhasesManager.show_current_phase()
+	%LevelPhasesManager.show_current_destination()
 
 # Emmited by Map when the player has finished creating the path for the rocket
-func _on_path_set(path_answer: Array, start_coord: Vector2):
+func _on_path_set(path_answer: Array, start_coord: Vector2, _end_coord: Vector2):
 	# Check if path length is not greater than the maximum allowed
 	if path_answer.size() > GlobalGameData.MAX_PATH_LENGTH:
 		print("Path length (", path_answer.size(), ") is greater than ", GlobalGameData.MAX_PATH_LENGTH)
@@ -54,7 +63,7 @@ func _on_path_set(path_answer: Array, start_coord: Vector2):
 		%PathLine.clear_points()
 
 		# Print a message to the player
-		%MessageScene.show_message("O caminho é muito longo! As rotas não podem ser maiores que 30.")
+		%MessageScene.show_message("O caminho é muito longo! As rotas não podem ser maiores que " + str(GlobalGameData.MAX_PATH_LENGTH) + ".")
 		
 		return
 
@@ -76,8 +85,10 @@ func _on_path_set(path_answer: Array, start_coord: Vector2):
 
 		return
 
+	# Save the last start coord of the rocket
+	_rocket_last_start_coord = start_coord
+
 	%LevelPhasesManager.correct_answer = path_answer
-	_rocket_start_coord = start_coord
 
 	%Map.disable_map()
 	%CriarPath.show_path_menu(path_answer.size())
@@ -91,7 +102,6 @@ func _on_player_path_done(player_path_answer: Array):
 	%LevelPhasesManager.print_answers()
 
 	# "Launch" the rocket :)
-	%Rocket.set_start_position(_rocket_start_coord)
 	%Rocket.execute_move_commands(player_path_answer.duplicate())
 
 # Emmited by the Rocket node, when the rocket has finished moving
@@ -118,7 +128,7 @@ func _on_player_path_cancelled():
 func _on_play_again():
 	if not GlobalGameData.player_won:
 		# Put the rocket back to the start position if player lost
-		%Rocket.set_start_position(_rocket_start_coord)
+		%Rocket.set_start_position(_rocket_last_start_coord)
 	
 	# Now the yellow selection can be erased and you can move the cursor again
 	%Map.enable_map()

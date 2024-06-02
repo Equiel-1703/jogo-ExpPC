@@ -1,8 +1,24 @@
-[gd_scene load_steps=9 format=3 uid="uid://6eh3ia4g6l8g"]
+[gd_scene load_steps=10 format=3 uid="uid://6eh3ia4g6l8g"]
 
 [ext_resource type="Script" path="res://scripts/level_1/level_num.gd" id="1_i5rw0"]
-[ext_resource type="Material" uid="uid://ddpwqy41qf85d" path="res://shaders/bg_material.tres" id="2_r08og"]
 [ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="3_a66xs"]
+
+[sub_resource type="Shader" id="Shader_f2von"]
+code = "shader_type canvas_item;
+
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+uniform float lod: hint_range(0.0, 5) = 0.0;
+uniform float brightness_decrease: hint_range(0, 1.0) = 0.0;
+
+void fragment(){
+	vec4 color = texture(SCREEN_TEXTURE, SCREEN_UV, lod);
+	COLOR = color - vec4(brightness_decrease, brightness_decrease, brightness_decrease, 0.0);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vcfhj"]
+shader = SubResource("Shader_f2von")
+shader_parameter/lod = 2.0
+shader_parameter/brightness_decrease = 0.07
 
 [sub_resource type="LabelSettings" id="LabelSettings_fmst5"]
 font = ExtResource("3_a66xs")
@@ -115,7 +131,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/path = NodePath("BG:material:shader_parameter/brightness_decrease")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -155,7 +171,7 @@ grow_vertical = 2
 script = ExtResource("1_i5rw0")
 
 [node name="BG" type="ColorRect" parent="."]
-material = ExtResource("2_r08og")
+material = SubResource("ShaderMaterial_vcfhj")
 layout_mode = 0
 offset_right = 1890.0
 offset_bottom = 980.0
