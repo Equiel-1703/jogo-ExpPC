@@ -1,6 +1,6 @@
 extends Control
 
-signal play_again
+signal play
 
 @onready var _label_planeta = $Content/DestContainer/NomePlaneta
 @onready var _container_instrucoes = $Content/CenterContainer
@@ -32,4 +32,4 @@ func show_destination_min_path(planet_name: String):
 
 func _on_ok_pressed():
 	self.visible = false
-	play_again.emit()
+	play.emit()

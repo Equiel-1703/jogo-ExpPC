@@ -4,16 +4,16 @@ class_name LevelMain
 # Used to manage the lines that show the path
 @export var line_manager: LineManager
 # Used to manage the phases progression of the levels
-@export var phases_manager: PhasesManagerBase
+@export var phases_manager: PhasesManager
 
 # Used to spawn the rocket in the start of the level
 var _rocket_default_start_coord: Vector2
 # Used to respawn the rocket if the player loses
-var _rocket_last_start_coord: Vector2
+var _rocket_respawn_coord: Vector2
 
 # Última coordenada de fim do caminho (usada para verificar se o jogador começou o caminho no lugar correto, onde o primeiro é a terra)
 var _last_end_coord: Vector2
-# Usada para armazenar temporariamente o último _last_end_coord
+# Coordenada de fim do caminho temporária (é usada caso o jogador cancele a criação do path)
 var _temp_last_end: Vector2
 
 # Called when the node enters the scene tree for the first time.
@@ -26,17 +26,19 @@ func _ready():
 	# Connect Map signal
 	$Map.path_set.connect(_on_path_set)
 	# Connect Rocket signal
-	$Rocket.move_completed.connect(_on_move_completed)
+	$Rocket.moves_matrix_completed.connect(_on_moves_matrix_completed)
+
 	# Connect CriarPath signals
 	%CriarPath.player_path_done.connect(_on_player_path_done)
 	%CriarPath.player_path_cancelled.connect(_on_player_path_cancelled)
 	# Connect WinScene and LoseScene signals
-	%WinScene.play_again.connect(_on_play_again)
+	%WinScene.go_to_next_phase.connect(_on_go_to_next_phase)
 	%LoseScene.play_again.connect(_on_play_again)
 	# Connect NextPhaseScene signal
-	%NextPhaseScene.play_again.connect(_on_play_again)
+	%NextPhaseScene.play.connect(_on_play)
 	# Connect LevelNum signal
 	%LevelNum.level_num_finished.connect(_on_level_num_finished)
+
 	# Connect PhasesManager signal
 	phases_manager.all_paths_set.connect(_on_all_paths_set)
 
@@ -50,10 +52,11 @@ func _ready():
 	_rocket_default_start_coord = $Map.map_to_local(planet_earth.planet_coord)
 	$Rocket.set_start_position(_rocket_default_start_coord)
 
-	# Saving last start coord for the rocket
-	_rocket_last_start_coord = _rocket_default_start_coord
+	# Setting the respawn coord to the default start coord
+	_rocket_respawn_coord = _rocket_default_start_coord
 	# Na primeira vez, a última coordenada de fim do caminho para o foguete é sua posição inicial
 	_last_end_coord = _rocket_default_start_coord
+	_temp_last_end = _last_end_coord
 
 	# Disable the map at the beginning
 	$Map.disable_map()
@@ -63,52 +66,6 @@ func _ready():
 	%LevelNum.show_level_num()
 	print("Level ", GlobalGameData.current_level)
 
-# Can be used by other nodes to lose immediately
-func lose_immediately(lose_screen_text: String):
-	$Map.disable_map()
-	%LoseScene.set_lose_screen_text(lose_screen_text)
-	%LoseScene.visible = true
-
-# # Emmited by Map when the player has finished creating the path for the rocket
-# func _on_path_set(path_answer: Array, start_coord: Vector2, _end_coord: Vector2):
-# 	# Check if path length is not greater than the maximum allowed
-# 	if path_answer.size() > GlobalGameData.MAX_PATH_LENGTH:
-# 		print("Path length (", path_answer.size(), ") is greater than ", GlobalGameData.MAX_PATH_LENGTH)
-
-# 		# We must clear the PathLine in this case
-# 		%PathLine.clear_points()
-
-# 		# Print a message to the player
-# 		%MessageScene.show_message("O caminho é muito longo! As rotas não podem ser maiores que " + str(GlobalGameData.MAX_PATH_LENGTH) + ".")
-		
-# 		return
-
-# 	var rocket_pos_map = $Map.local_to_map($Rocket.position)
-# 	var start_coord_map = $Map.local_to_map(start_coord)
-
-# 	print("Rocket pos = ", rocket_pos_map)
-# 	print("Start coord = ", start_coord_map)
-
-# 	# Check if Rocket start position is different from the start position of the path
-# 	if rocket_pos_map != start_coord_map:
-# 		print("Rocket position is different from the start position of the path")
-
-# 		# We must clear the PathLine in this case
-# 		%PathLine.clear_points()
-		
-# 		# Print a message to the player
-# 		%MessageScene.show_message("Você deve começar o caminho no foguete!")
-
-# 		return
-
-# 	# Save the last start coord of the rocket
-# 	_rocket_last_start_coord = start_coord
-
-# 	phases_manager.correct_answer = path_answer
-
-# 	$Map.disable_map()
-# 	%CriarPath.show_path_menu(path_answer.size())
-
 # Emmited by LevelNum when the level number has finished showing
 func _on_level_num_finished():
 	# Show first phase
@@ -117,7 +74,7 @@ func _on_level_num_finished():
 # Emmited by Map when the player has finished creating the path for the rocket
 func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
 	# Get the current phase number
-	var phase_num = phases_manager.get_current_phase_num()
+	var path_index = phases_manager.get_current_destination_index()
 	# Get current line used by Map
 	var path_line = $Map.line
 
@@ -146,7 +103,7 @@ func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
 		path_line.clear_points()
 		
 		# Print a message to the player
-		if phase_num == 1:
+		if path_index == 0:
 			print("The rocket position is different from the start position of the path")
 			%MessageScene.show_message("Você deve começar o caminho no foguete!")
 		else:
@@ -158,73 +115,70 @@ func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
 	phases_manager.set_correct_answer(path_answer)
 
 	# Used for respawn the rocket if loses
-	_rocket_last_start_coord = start_coord
-	# Saving new end
+	# _rocket_respawn_coord = start_coord
+	# Saving new end as the end of the path
 	_temp_last_end = end_coord
 
 	$Map.disable_map()
 	%CriarPath.show_path_menu(path_answer.size())
-
-# # Emmited by the CriarPath screen, when the player has finished creating the path
-# func _on_player_path_done(player_path_answer: Array):
-# 	# Set the player's answer in the LevelPhasesManager object
-# 	phases_manager.player_answer = player_path_answer
-
-# 	# For debugging purposes only
-# 	phases_manager.print_answers()
-
-# 	# "Launch" the rocket :)
-# 	$Rocket.execute_move_commands(player_path_answer.duplicate())
 
 # Emmited by the CriarPath screen, when the player has finished creating the path
 func _on_player_path_done(player_path_answer: Array):
 	# For debugging purposes only
 	phases_manager.print_answers()
 
-	# Set the player's answer in the LevelPhasesManager object
+	# Set the player's answer in the phases manager object
 	phases_manager.set_player_answer(player_path_answer)
 
+	# Set the new last end coord (player didn't cancel the path creation)
+	_last_end_coord = _temp_last_end
+
 # Emmited by PhasesManager when all paths are set. At this point, we can launch the rocket.
-func _on_all_paths_set():
-	$Rocket.execute_move_commands(phases_manager.get_rocket_moves())
-
-# # Emmited by the Rocket node, when the rocket has finished moving
-# func _on_move_completed(final_position: Vector2):
-# 	# Check if player won and store in GlobalGameData
-# 	GlobalGameData.player_won = phases_manager.player_won($Map.local_to_map(final_position))
-
-# 	# Decide which scene to show
-# 	if GlobalGameData.player_won:
-# 		# Show the WinScene
-# 		%WinScene.visible = true
-# 		# Tell the PhasesManager to go to the next phase
-# 		phases_manager.go_to_next_phase()
-# 	else:
-# 		# Show the LoseScene
-# 		%LoseScene.visible = true
+func _on_all_paths_set(rocket_moves: Array):
+	$Rocket.execute_move_commands(rocket_moves)
 
 # Emmited by the Rocket node, when the rocket has finished moving
-func _on_move_completed(final_position: Vector2):
-	print(final_position)
-		
+func _on_moves_matrix_completed(final_coords: Array):
+	if phases_manager.player_won(final_coords):
+		# Player won
+		%WinScene.visible = true
+	else:
+		# Player lost (The message is set in phases_manager.player_won() function
+		%LoseScene.visible = true
+
+# Emmited by the NextPhaseScene when the player clicks on the "OK" button
+func _on_play():
+	$Map.enable_map()
+	$Map.clear_active_line()
+
 # Emmited by the CriarPath screen, when the player has cancelled the path creation
 func _on_player_path_cancelled():
-	$Map.enable_map()
-	%PathLine.clear_points()
+	_on_play()
 
-# Emmited by the NextPhaseScene, LoseScene and NextPhaseScene when the player clicks on "OK"
+# Emmited by the LoseScene
 func _on_play_again():
 	if not GlobalGameData.player_won:
 		# Put the rocket back to the start position if player lost
-		$Rocket.set_start_position(_rocket_last_start_coord)
+		$Rocket.set_start_position(_rocket_respawn_coord)
 	
 	# Now the yellow selection can be erased and you can move the cursor again
-	$Map.enable_map()
-	# Clear the path line
-	$Map.line.clear_points()
+	_on_play()
+
+# Emmited by the WinScene, we go to the next phase
+func _on_go_to_next_phase():
+	# Go to the next phase
+	phases_manager.go_to_next_phase()
+	# Show the next phase
+	phases_manager.show_current_destination()
 
 # Emmited by the Rocket node, when the rocket enters a prohibited area
 func _on_explosion_area_entered(_area):
 	$Rocket.explode()
 	await $Rocket.explosion_animation_finished
 	lose_immediately("Seu foguete explodiu! Tente novamente.")
+
+# Can be used by other nodes to lose immediately
+func lose_immediately(lose_screen_text: String):
+	$Map.disable_map()
+	%LoseScene.set_lose_screen_text(lose_screen_text)
+	%LoseScene.visible = true

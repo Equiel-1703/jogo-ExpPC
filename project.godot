@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 
 PathProcessor="*res://scripts/singletons/path_processor.gd"
 GlobalGameData="*res://scripts/singletons/global_game_data.gd"
+LevelLoader="*res://scripts/singletons/level_loader.gd"
 
 [display]
 

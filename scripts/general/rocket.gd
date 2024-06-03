@@ -1,8 +1,13 @@
 extends Node2D
 class_name Rocket
 
-signal move_completed(final_position: Vector2)
+## Emmited when the rocket has finished moving ALL the arrays of commands
+signal moves_matrix_completed(final_coords: Array)
+## Emmited when the explosion animation has finished
 signal explosion_animation_finished()
+
+## Emmited when the rocket has finished moving a single array of commands
+signal _single_move_array_completed(final_position: Vector2)
 
 const MOVE_SPEED = 1.0
 
@@ -31,13 +36,26 @@ func set_start_position(start_pos: Vector2) -> void:
 var _destination_pos: Vector2
 var _t: float = 0.0
 
-func execute_move_commands(commands: Array) -> void:
-	# Store the commands to process
-	_commands_to_process = commands
-	# Turn on the propulsion effect
-	_propulsion.emitting = true
-	# Execute the first command
-	_execute_next_command()
+## This function expects an array of arrays containing the commands to move the rocket
+func execute_move_commands(commands_matrix: Array) -> void:
+	var final_coords_array = []
+
+	for command_array in commands_matrix:
+		# Store the commands to process
+		_commands_to_process = command_array
+		# Turn on the propulsion effect
+		_propulsion.emitting = true
+		# Start executing the commands
+		_execute_next_command()
+
+		# Wait for the move to be completed
+		var final_coord = await _single_move_array_completed
+
+		# Store the final position of the rocket
+		final_coords_array.push_back(final_coord)
+
+	# Emit the signal with the final coordinates
+	moves_matrix_completed.emit(final_coords_array)	
 
 func explode():
 	_exploded = true
@@ -77,7 +95,7 @@ func _execute_next_command() -> void:
 		# Emit the signal if the rocket didn't explode
 		if not _exploded:
 			# The last destination position is the final position of the rocket
-			move_completed.emit(_destination_pos)
+			_single_move_array_completed.emit(_destination_pos)
 
 func _physics_process(delta):
 	if _execute_flag:

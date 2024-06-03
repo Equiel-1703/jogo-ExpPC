@@ -19,8 +19,8 @@
 [ext_resource type="PackedScene" uid="uid://btif7hfb7i3rc" path="res://scenes/level_1/lose_scene.tscn" id="13_2cdh5"]
 [ext_resource type="PackedScene" uid="uid://b3dk076igvbbl" path="res://scenes/level_1/message.tscn" id="13_msuy3"]
 [ext_resource type="PackedScene" uid="uid://6eh3ia4g6l8g" path="res://scenes/level_1/level_num.tscn" id="18_m3eb5"]
-[ext_resource type="Script" path="res://scripts/level_1/level_1_phases_manager.gd" id="19_nawpt"]
 [ext_resource type="PackedScene" uid="uid://clxa5nth18uh8" path="res://scenes/level_2/level_2.tscn" id="20_cbin1"]
+[ext_resource type="Script" path="res://scripts/general/multiline_phases_manager.gd" id="20_xjjgy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s07oj"]
 texture = ExtResource("2_bqu4j")
@@ -325,5 +325,6 @@ visible = false
 unique_name_in_owner = true
 
 [node name="LevelPhasesManager" type="Node" parent="."]
-script = ExtResource("19_nawpt")
+script = ExtResource("20_xjjgy")
 next_level_scene = ExtResource("20_cbin1")
+level_json_path = "res://levels_json/level_1.json"

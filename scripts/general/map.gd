@@ -35,12 +35,12 @@ func _ready():
 		get_tree().quit()
 		return
 	
-	# Check if the user provided both a line and a line manager, and await the ready signal
+	# Check if the user provided a line or a line manager, and await the ready signal
 	if line:
-		await line.ready
+		if not line.is_node_ready(): await line.ready
 	else:
-		# If the line was not provided, get it from the line manager
-		await line_manager.ready
+		# If the line was not provided, we get it from the line manager
+		if not line_manager.is_node_ready(): await line_manager.ready
 		line = line_manager.get_active_line()
 
 	# Getting the tile size
@@ -182,6 +182,13 @@ func _erase_selection_map():
 			erase_cell(_layer_selection, Vector2(x, y))
 			erase_cell(_layer_active_selection, Vector2(x, y))
 
+func _restart_map():
+	_draw_state = false
+	_can_erase = true
+	_movement_enabled = true
+	
+	line.clear_points()
+
 func disable_map():
 	_draw_state = false
 	_can_erase = false
@@ -192,9 +199,5 @@ func enable_map():
 	_can_erase = true
 	_movement_enabled = true
 
-func _restart_map():
-	_draw_state = false
-	_can_erase = true
-	_movement_enabled = true
-	
+func clear_active_line():
 	line.clear_points()
