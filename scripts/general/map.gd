@@ -170,9 +170,12 @@ func _process(_delta):
 			return
 
 		# For debugging purposes
-		print("+ Answer: ")
+		print("Map> Answer: ")
 		PathProcessor.print_moves(_path_commands_answer)
 		
+		# Let's clear the yellow selection
+		_erase_selection_map()
+
 		# Emit the signal with the path answer
 		path_set.emit(_path_commands_answer, _line_from, _last_mouse_coord)
 
@@ -201,3 +204,20 @@ func enable_map():
 
 func clear_active_line():
 	line.clear_points()
+
+func clear_all_lines():
+	line_manager.clear_all_lines()
+
+func go_to_next_line():
+	line_manager.go_to_next_line()
+	line = line_manager.get_active_line()
+
+func convert_local_array_to_map(array: Array):
+	var new_array: Array = []
+	
+	new_array.resize(array.size())
+
+	for i in range(array.size()):
+		new_array[i] = local_to_map(array[i])
+
+	return new_array

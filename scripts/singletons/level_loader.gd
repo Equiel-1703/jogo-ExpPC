@@ -23,11 +23,12 @@ func _parse_level_dictionary(level_dic: Dictionary):
 		for dest in p:
 			var dest_obj = _destination.new(dest["planet_name"],dest["mode"])
 			
-			print("Destination: " + dest_obj.planet_name + " Mode: " + str(dest_obj.mode) + "\n")
+			print("Destination: " + dest_obj.planet_name + " Mode: " + str(dest_obj.mode))
 			
 			dests.push_back(dest_obj)
 		
-		phases.push_back(dests)
+		phases.push_back(dests.duplicate())
+		dests.clear()
 	
 	return phases
 

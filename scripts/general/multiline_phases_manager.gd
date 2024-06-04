@@ -11,6 +11,7 @@ class_name PhasesManager
 ## * Path: a path is a set of moves to reach a planet. Therefore, we can call path simply as destination.
 
 signal all_paths_set(rocket_moves: Array)
+signal went_to_next_destination
 
 @export var next_level_scene: PackedScene
 @export var level_json_path: String
@@ -40,6 +41,8 @@ func _ready():
 	# Load the level JSON file.
 	_phases = LevelLoader.load_level(level_json_path)
 
+	_last_destinations = ["terra"]
+
 	# Go to the first phase.
 	go_to_next_phase()
 
@@ -47,11 +50,10 @@ func _ready():
 
 ## Get the current destination of the current path.
 func _get_current_destination():
-	return _destinations[_dest_index]
-
-## Reset the last destinations array.
-func _reset_last_destinations():
-	_last_destinations = ["terra"]
+	if _dest_index < _destinations.size():
+		return _destinations[_dest_index]
+	return null
+	
 
 ## Check if the player reached the destination with the minimum path.
 func _check_minimum_path(player_answer_index: int) -> bool:
@@ -67,8 +69,8 @@ func _check_minimum_path(player_answer_index: int) -> bool:
 
 ## For debug.
 func print_answers():
-	print("Player answer: ", _player_answers[_dest_index])
-	print("Correct answer: ", _correct_answers[_dest_index])
+	print("PhasesManager> Player answer: ", _player_answers[_dest_index])
+	print("PhasesManager> Correct answer: ", _correct_answers[_dest_index])
 
 ## Get the current phase number.
 func get_current_phase_num() -> int:
@@ -79,11 +81,11 @@ func get_current_destination_index() -> int:
 
 ## Set the player answer for the current destination.
 func set_player_answer(answer: Array):
-	_player_answers[_dest_index] = answer
+	_player_answers[_dest_index] = answer.duplicate()
 
 ## Set the correct answer for the current destination.
 func set_correct_answer(answer: Array):
-	_correct_answers[_dest_index] = answer
+	_correct_answers[_dest_index] = answer.duplicate()
 
 ## Check if the player won the game.
 ##
@@ -95,6 +97,7 @@ func player_won(_rocket_final_coords: Array) -> bool:
 			var planet_name = GlobalGameData.PLANETS_COORDS[_destinations[i].planet_name].planet_name
 			
 			get_tree().call_group("lose_screen", "set_lose_screen_text", "Você não seguiu a rota traçada para o planeta " + planet_name + "!")
+
 			
 			return false
 
@@ -132,35 +135,15 @@ func go_to_next_destination():
 		# Reset the current path.
 		_dest_index = 0
 
-		all_paths_set.emit(_player_answers)
+		all_paths_set.emit(_player_answers.duplicate(true))
+	else:
+		# Signal we went to the next destination.
+		went_to_next_destination.emit()
 
 ## Update the internal variables to go to the next phase.
 func go_to_next_phase():
-	# Increment the current phase number.
-	_current_phase_num += 1
-	# Reset the path index.
-	_dest_index = 0
-
-	# Pop the visited planets from the list.
-	for i in range(_destinations.size()):
-		_destinations.pop_front()
-	
-	# Reset last destinations.
-	_reset_last_destinations()
-	
-	# Get the next destinations from the next phase.
-	_destinations = _phases[_current_phase_num - 1]
-
-## Show the current phase screen.
-func show_current_destination():
-	if _current_phase_num > 1:
-		# The first phase is the tutorial, now the player is in the second phase.
-		GlobalGameData.tutorial_phase = false
-
-	# Get the current destination.
-	var destination = _get_current_destination()
-	if !destination:
-		# The level is over.
+	# If there are no more phases, the level is over.
+	if _phases.size() == 0:
 		print("Level " + str(GlobalGameData.current_level) + " is over!")
 
 		# Increase level in GlobalGameData.
@@ -173,7 +156,38 @@ func show_current_destination():
 			# The game is over.
 			get_tree().quit()
 		return
+
+	# Increment the current phase number.
+	_current_phase_num += 1
+	# Reset the path index.
+	_dest_index = 0
+
+	# Pop the visited planets from the list.
+	for i in range(_destinations.size()):
+		_destinations.pop_front()
 	
+	# Maintain only the last element from last destinations array.
+	_last_destinations = [_last_destinations.pop_back()]
+	
+	# Get the next destinations from the next phase.
+	_destinations = _phases.pop_front()
+
+	# Clear the player and correct answers arrays.
+	_player_answers.clear()
+	_correct_answers.clear()
+
+	# Resize the player and correct answers arrays.
+	_player_answers.resize(_destinations.size())
+	_correct_answers.resize(_destinations.size())
+
+## Show the current destination on the screen.
+func show_current_destination():
+	if _current_phase_num > 1:
+		# The first phase is the tutorial, now the player is in the second phase.
+		GlobalGameData.tutorial_phase = false
+
+	# Get the current destination.
+	var destination = _get_current_destination()
 	# Get the planet destination.
 	var planet_destination = GlobalGameData.PLANETS_COORDS[destination.planet_name]
 

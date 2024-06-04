@@ -174,7 +174,7 @@ texture = ExtResource("11_5muee")
 lifetime = 2.0
 trail_lifetime = 1.83
 
-[node name="LineManager" type="Node" parent="." node_paths=PackedStringArray("base_line")]
+[node name="LineManager" type="Node2D" parent="." node_paths=PackedStringArray("base_line")]
 script = ExtResource("12_pi8tq")
 base_line = NodePath("../BaseLine")
 

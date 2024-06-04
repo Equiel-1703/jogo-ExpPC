@@ -1,8 +1,6 @@
 extends Node2D
 class_name LevelMain
 
-# Used to manage the lines that show the path
-@export var line_manager: LineManager
 # Used to manage the phases progression of the levels
 @export var phases_manager: PhasesManager
 
@@ -18,8 +16,8 @@ var _temp_last_end: Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if not line_manager or not phases_manager:
-		printerr("LevelMain: line_manager and phases_manager must be set in the inspector!")
+	if not phases_manager:
+		printerr("LevelMain> phases_manager must be set in the inspector!")
 		get_tree().quit()
 		return
 	
@@ -39,8 +37,9 @@ func _ready():
 	# Connect LevelNum signal
 	%LevelNum.level_num_finished.connect(_on_level_num_finished)
 
-	# Connect PhasesManager signal
+	# Connect PhasesManager signals
 	phases_manager.all_paths_set.connect(_on_all_paths_set)
+	phases_manager.went_to_next_destination.connect(_on_went_to_next_destination)
 
 	# Connecting barriers explosion signal
 	for barrier in $Barriers.get_children():
@@ -75,15 +74,13 @@ func _on_level_num_finished():
 func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
 	# Get the current phase number
 	var path_index = phases_manager.get_current_destination_index()
-	# Get current line used by Map
-	var path_line = $Map.line
 
 	# Check if path length is not greater than the maximum allowed
 	if path_answer.size() > GlobalGameData.MAX_PATH_LENGTH:
 		print("Path length (", path_answer.size(), ") is greater than ", GlobalGameData.MAX_PATH_LENGTH)
 
 		# We must clear the PathLine in this case
-		path_line.clear_points()
+		$Map.clear_active_line()
 
 		# Print a message to the player
 		%MessageScene.show_message("O caminho é muito longo! As rotas não podem ser maiores que " + str(GlobalGameData.MAX_PATH_LENGTH) + ".")
@@ -100,7 +97,7 @@ func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
 	# Check if the start coord of the player is the same as the start coord of the path (valid for the rocket and the 2nd path)
 	if start_coord_player != start_coord_correct:
 		# We must clear the PathLine in this case
-		path_line.clear_points()
+		$Map.clear_active_line()
 		
 		# Print a message to the player
 		if path_index == 0:
@@ -114,9 +111,7 @@ func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
 
 	phases_manager.set_correct_answer(path_answer)
 
-	# Used for respawn the rocket if loses
-	# _rocket_respawn_coord = start_coord
-	# Saving new end as the end of the path
+	# Saving end coord of path as the temp last end
 	_temp_last_end = end_coord
 
 	$Map.disable_map()
@@ -124,27 +119,46 @@ func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
 
 # Emmited by the CriarPath screen, when the player has finished creating the path
 func _on_player_path_done(player_path_answer: Array):
-	# For debugging purposes only
-	phases_manager.print_answers()
-
-	# Set the player's answer in the phases manager object
-	phases_manager.set_player_answer(player_path_answer)
-
 	# Set the new last end coord (player didn't cancel the path creation)
 	_last_end_coord = _temp_last_end
 
-# Emmited by PhasesManager when all paths are set. At this point, we can launch the rocket.
+	# Set the player's answer in the phases manager object
+	phases_manager.set_player_answer(player_path_answer)
+	# For debugging purposes only
+	phases_manager.print_answers()
+
+	# Go to next line in the map
+	$Map.go_to_next_line()
+
+	# Go to next destination in the phase
+	phases_manager.go_to_next_destination()
+
+# Emmit by PhasesManager when we went to the next destination in the phase without finishing all destinations
+func _on_went_to_next_destination():
+	# Show new destination to the player
+	phases_manager.show_current_destination()
+
+# Emmited by PhasesManager when all paths are set (i.e. the go_to_next_destination failed).
+# There is no next destination in the phase. At this point, we can launch the rocket.
 func _on_all_paths_set(rocket_moves: Array):
 	$Rocket.execute_move_commands(rocket_moves)
 
 # Emmited by the Rocket node, when the rocket has finished moving
 func _on_moves_matrix_completed(final_coords: Array):
-	if phases_manager.player_won(final_coords):
+	$Map.clear_all_lines()
+	
+	if phases_manager.player_won($Map.convert_local_array_to_map(final_coords)):
 		# Player won
 		%WinScene.visible = true
+
+		# Get the last coord to use as the respawn coord
+		_rocket_respawn_coord = _last_end_coord
 	else:
 		# Player lost (The message is set in phases_manager.player_won() function
 		%LoseScene.visible = true
+
+		# As the player lost, the last coord is now its respawn coord
+		_last_end_coord = _rocket_respawn_coord
 
 # Emmited by the NextPhaseScene when the player clicks on the "OK" button
 func _on_play():
@@ -161,7 +175,6 @@ func _on_play_again():
 		# Put the rocket back to the start position if player lost
 		$Rocket.set_start_position(_rocket_respawn_coord)
 	
-	# Now the yellow selection can be erased and you can move the cursor again
 	_on_play()
 
 # Emmited by the WinScene, we go to the next phase

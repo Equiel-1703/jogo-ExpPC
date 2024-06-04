@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 class_name LineManager
 
 signal all_lines_looped
@@ -28,22 +28,27 @@ func _create_line() -> Line2D:
 # ------------------------- Public Methods -------------------------
 
 ## Remove all lines and clean array
-func clear_lines():
+func delete_all_lines():
 	for line in _array_of_lines:
 		line.queue_free()
 	_array_of_lines.clear()
+
+## Clear the points of all lines
+func clear_all_lines():
+	for line in _array_of_lines:
+		line.clear_points()
 
 ## Sets the number of lines to be displayed. If there was already lines set, they will be removed and replaced by the new lines.
 func set_num_of_lines(value: int):
 	num_of_lines = value
 
-	clear_lines()
+	delete_all_lines()
 
 	# Create new lines and add them to the array
 	for i in range(num_of_lines):
 		var line = _create_line()
 		# Add as child of LineManager node (this node)
-		add_child(line)
+		self.add_child(line)
 		# Add to array
 		_array_of_lines.append(line)
 

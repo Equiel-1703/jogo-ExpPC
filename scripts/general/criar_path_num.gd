@@ -55,7 +55,7 @@ func _on_ok_pressed():
 		_clear_buttons()
 
 		# Print the player path for debug
-		print("+ Player path:")
+		print("CriarPath> Player path:")
 		PathProcessor.print_moves(player_path)
 		
 		# Emit the path done signal with the player path
