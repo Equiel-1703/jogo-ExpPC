@@ -5,6 +5,10 @@
 			{
 				"planet_name": "venus",
 				"mode": 0
+			},
+			{
+				"planet_name": "mercurio",
+				"mode": 0
 			}
 		],
 		[

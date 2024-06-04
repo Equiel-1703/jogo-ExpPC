@@ -129,16 +129,19 @@ func go_to_next_destination():
 
 	# Increment the path index.
 	_dest_index += 1
+	GlobalGameData.current_path = _dest_index
 
 	# If the path index is greater than the destinations size, we setted all paths.
 	if _dest_index > _destinations.size() - 1:
 		# Reset the current path.
 		_dest_index = 0
+		GlobalGameData.current_path = _dest_index
 
 		all_paths_set.emit(_player_answers.duplicate(true))
 	else:
-		# Signal we went to the next destination.
+		# Signal that leads to the next destination.
 		went_to_next_destination.emit()
+	
 
 ## Update the internal variables to go to the next phase.
 func go_to_next_phase():
@@ -162,6 +165,9 @@ func go_to_next_phase():
 	# Reset the path index.
 	_dest_index = 0
 
+	GlobalGameData.current_phase = _current_phase_num
+	GlobalGameData.current_path = _dest_index
+
 	# Pop the visited planets from the list.
 	for i in range(_destinations.size()):
 		_destinations.pop_front()
@@ -183,22 +189,22 @@ func go_to_next_phase():
 ## Show the current destination on the screen.
 func show_current_destination():
 	if _current_phase_num > 1:
-		# The first phase is the tutorial, now the player is in the second phase.
+		# The first phase is the tutorial, now the player is in the second phase upwards.
 		GlobalGameData.tutorial_phase = false
 
 	# Get the current destination.
 	var destination = _get_current_destination()
 	# Get the planet destination.
-	var planet_destination = GlobalGameData.PLANETS_COORDS[destination.planet_name]
+	var planet_name = GlobalGameData.PLANETS_COORDS[destination.planet_name].planet_name
 
 	# Check the destination mode and show the screen accordingly.
 	match destination.mode:
 		LevelLoader.DEST_MODE.MIN_PATH:
 			# Show the min path screen.
-			%NextPhaseScene.show_destination_min_path(planet_destination.planet_name)
+			%NextPhaseScene.show_destination_min_path(planet_name)
 		LevelLoader.DEST_MODE.NORMAL:
 			# Show the next phase screen.
-			%NextPhaseScene.show_destination(planet_destination.planet_name)
+			%NextPhaseScene.show_destination(planet_name)
 	
 	# For debug only.
-	print("Next phase: ", planet_destination.planet_name)
+	print("Next phase: ", planet_name)

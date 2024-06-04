@@ -6,7 +6,11 @@ const MAX_PATH_LENGTH: int = 30
 
 var player_won: bool = false
 var tutorial_phase: bool = true
+
+# Current game status
 var current_level: int = 1
+var current_phase: int
+var current_path: int
 
 # Planets coordinates
 var PLANETS_COORDS = {

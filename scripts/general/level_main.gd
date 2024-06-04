@@ -65,6 +65,7 @@ func _ready():
 	# Show level num
 	%LevelNum.level_num = GlobalGameData.current_level
 	%LevelNum.show_level_num()
+	
 	print("Level ", GlobalGameData.current_level)
 
 # Emmited by LevelNum when the level number has finished showing
