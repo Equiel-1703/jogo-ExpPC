@@ -1,7 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://b3dk076igvbbl"]
+[gd_scene load_steps=9 format=3 uid="uid://04und56j0g87"]
 
-[ext_resource type="Script" path="res://scripts/general/message.gd" id="1_g5xbg"]
-[ext_resource type="LabelSettings" uid="uid://d0poqp6bcc1m5" path="res://themes/alert_label.tres" id="1_ta8tm"]
+[ext_resource type="Script" path="res://scripts/general/intermediate_message.gd" id="1_u0tcq"]
+[ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="2_om2qb"]
 
 [sub_resource type="Gradient" id="Gradient_mfpkk"]
 offsets = PackedFloat32Array(0, 0.201299)
@@ -11,6 +11,12 @@ colors = PackedColorArray(0, 0, 0, 0.682353, 0, 0, 0, 0)
 gradient = SubResource("Gradient_mfpkk")
 fill_from = Vector2(0, 1)
 fill_to = Vector2(0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_pcsxi"]
+font = ExtResource("2_om2qb")
+font_size = 50
+font_color = Color(0, 0.65098, 0.298039, 1)
+outline_size = 10
 
 [sub_resource type="Animation" id="Animation_rjshq"]
 length = 0.001
@@ -49,19 +55,21 @@ _data = {
 "fade_out": SubResource("Animation_5wyiu")
 }
 
-[node name="MessageScene" type="Control"]
+[node name="IntermMessage" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_g5xbg")
+mouse_filter = 2
+script = ExtResource("1_u0tcq")
 
 [node name="GradientBG" type="TextureRect" parent="."]
 layout_mode = 0
 offset_right = 1890.0
 offset_bottom = 980.0
+mouse_filter = 2
 texture = SubResource("GradientTexture2D_keesj")
 
 [node name="Message" type="Label" parent="."]
@@ -70,8 +78,8 @@ offset_left = 316.0
 offset_top = 784.0
 offset_right = 1574.0
 offset_bottom = 924.0
-text = "Alerta"
-label_settings = ExtResource("1_ta8tm")
+text = "Mensagem"
+label_settings = SubResource("LabelSettings_pcsxi")
 horizontal_alignment = 1
 vertical_alignment = 2
 autowrap_mode = 2

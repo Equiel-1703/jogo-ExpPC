@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://cnjmi0oabpifi"]
+[gd_scene load_steps=42 format=3 uid="uid://cnjmi0oabpifi"]
 
 [ext_resource type="Script" path="res://scripts/general/level_main.gd" id="1_jp7ys"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="1_woosl"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://c3pvrpj2n21cd" path="res://scenes/level_1/next_phase_scene.tscn" id="12_re1tg"]
 [ext_resource type="PackedScene" uid="uid://btif7hfb7i3rc" path="res://scenes/level_1/lose_scene.tscn" id="13_2cdh5"]
 [ext_resource type="PackedScene" uid="uid://b3dk076igvbbl" path="res://scenes/level_1/message.tscn" id="13_msuy3"]
+[ext_resource type="PackedScene" uid="uid://04und56j0g87" path="res://scenes/level_1/intermediate_message.tscn" id="16_lob6l"]
 [ext_resource type="PackedScene" uid="uid://6eh3ia4g6l8g" path="res://scenes/level_1/level_num.tscn" id="18_m3eb5"]
 [ext_resource type="PackedScene" uid="uid://clxa5nth18uh8" path="res://scenes/level_2/level_2.tscn" id="20_cbin1"]
 [ext_resource type="Script" path="res://scripts/general/multiline_phases_manager.gd" id="20_xjjgy"]
@@ -306,6 +307,10 @@ visible = false
 time_visible = 3.0
 
 [node name="CriarPath" parent="CanvasLayer" instance=ExtResource("12_o06rq")]
+unique_name_in_owner = true
+visible = false
+
+[node name="IntermMessage" parent="CanvasLayer" instance=ExtResource("16_lob6l")]
 unique_name_in_owner = true
 visible = false
 

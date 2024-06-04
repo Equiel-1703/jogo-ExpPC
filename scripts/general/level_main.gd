@@ -36,6 +36,8 @@ func _ready():
 	%NextPhaseScene.play.connect(_on_play)
 	# Connect LevelNum signal
 	%LevelNum.level_num_finished.connect(_on_level_num_finished)
+	# Connect IntermMessage signal
+	# %IntermMessage.message_faded_out.connect(_on_interm_message_faded_out)
 
 	# Connect PhasesManager signals
 	phases_manager.all_paths_set.connect(_on_all_paths_set)
@@ -130,6 +132,10 @@ func _on_player_path_done(player_path_answer: Array):
 	# Go to next line in the map
 	$Map.go_to_next_line()
 
+	# Mostrar mensagem intermediária antes de ir para o próximo destino
+	%IntermMessage.show_message()
+	await %IntermMessage.message_faded_out
+
 	# Go to next destination in the phase
 	phases_manager.go_to_next_destination()
 
@@ -146,7 +152,7 @@ func _on_all_paths_set(rocket_moves: Array):
 # Emmited by the Rocket node, when the rocket has finished moving
 func _on_moves_matrix_completed(final_coords: Array):
 	$Map.clear_all_lines()
-	
+
 	if phases_manager.player_won($Map.convert_local_array_to_map(final_coords)):
 		# Player won
 		%WinScene.visible = true
