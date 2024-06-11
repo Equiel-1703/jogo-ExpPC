@@ -3,7 +3,7 @@ extends Node2D
 func _ready():
 	var file_path: String = "res://levels_json/level_1.json"
 
-	var level = LevelLoader.load_level(file_path)
+	var level = JsonLoader.load_level(file_path)
 
 	print(level)
 

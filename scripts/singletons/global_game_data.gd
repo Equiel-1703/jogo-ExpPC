@@ -6,6 +6,8 @@ const MAX_PATH_LENGTH: int = 30
 
 var player_won: bool = false
 var tutorial_phase: bool = true
+var start_level_index: int = 0
+var levels_table: Array
 
 # Current game status
 var current_level: int = 1

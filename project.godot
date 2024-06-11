@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Uma Aventura no Espaço"
 config/version="0.1"
-run/main_scene="res://scenes/main_screen.tscn"
+run/main_scene="res://scenes/main_screen/main_screen.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
 
@@ -20,7 +20,7 @@ config/icon="res://icon.svg"
 
 PathProcessor="*res://scripts/singletons/path_processor.gd"
 GlobalGameData="*res://scripts/singletons/global_game_data.gd"
-LevelLoader="*res://scripts/singletons/level_loader.gd"
+JsonLoader="*res://scripts/singletons/json_loader.gd"
 
 [display]
 

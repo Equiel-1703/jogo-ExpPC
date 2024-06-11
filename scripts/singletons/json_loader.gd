@@ -32,13 +32,19 @@ func _parse_level_dictionary(level_dic: Dictionary):
 	
 	return phases
 
-func load_level(level_path: String) -> Array:
-	if not FileAccess.file_exists(level_path):
-		printerr("JSON Loader> File not found: " + level_path)
+func load_json_file(file_path: String) -> Variant:
+	if not FileAccess.file_exists(file_path):
+		printerr("JSON Loader> File not found: " + file_path)
 		get_tree().quit()
 
-	var file = FileAccess.open(level_path, FileAccess.READ)
+	var file = FileAccess.open(file_path, FileAccess.READ)
 	var json_file = JSON.parse_string(file.get_as_text())
+
+	file.close()
+	return json_file
+
+func load_level(level_path: String) -> Array:
+	var json_file = load_json_file(level_path)	
 
 	if json_file is Dictionary:
 		return _parse_level_dictionary(json_file)

@@ -39,7 +39,7 @@ func _ready():
 		return
 	
 	# Load the level JSON file.
-	_phases = LevelLoader.load_level(level_json_path)
+	_phases = JsonLoader.load_level(level_json_path)
 
 	_last_destinations = ["terra"]
 
@@ -108,7 +108,7 @@ func player_won(_rocket_final_coords: Array) -> bool:
 		# Get the planet using the destination name.
 		var planet_dest = GlobalGameData.PLANETS_COORDS[destination.planet_name]
 
-		if destination.mode == LevelLoader.DEST_MODE.MIN_PATH:
+		if destination.mode == JsonLoader.DEST_MODE.MIN_PATH:
 			# Check if the player reached the destination with the minimum path.
 			if !_check_minimum_path(i):
 				get_tree().call_group("lose_screen", "set_lose_screen_text", "Você não seguiu o caminho mínimo para o planeta " + planet_dest.planet_name + "!")
@@ -199,10 +199,10 @@ func show_current_destination():
 
 	# Check the destination mode and show the screen accordingly.
 	match destination.mode:
-		LevelLoader.DEST_MODE.MIN_PATH:
+		JsonLoader.DEST_MODE.MIN_PATH:
 			# Show the min path screen.
 			%NextPhaseScene.show_destination_min_path(planet_name)
-		LevelLoader.DEST_MODE.NORMAL:
+		JsonLoader.DEST_MODE.NORMAL:
 			# Show the next phase screen.
 			%NextPhaseScene.show_destination(planet_name)
 	

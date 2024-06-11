@@ -1,0 +1,111 @@
+[gd_scene load_steps=9 format=3 uid="uid://bbap2gx8e7xb6"]
+
+[ext_resource type="Script" path="res://scripts/main_screen/main_screen.gd" id="1_hbi2j"]
+[ext_resource type="Texture2D" uid="uid://bhk673yex75io" path="res://res/CAPA.jpg" id="2_4s6nc"]
+[ext_resource type="FontFile" uid="uid://bci6fkabidcfe" path="res://fonts/Warzone.ttf" id="3_v7cdq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5hpv3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6msl4"]
+bg_color = Color(0, 0, 0, 0.588235)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4th0e"]
+bg_color = Color(1, 1, 1, 0.54902)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_12nmo"]
+blend_mode = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xwn4b"]
+
+[node name="MainScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hbi2j")
+levels_table_path = "res://levels_json/levels.json"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1923.0
+offset_bottom = 980.0
+texture = ExtResource("2_4s6nc")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 1381.0
+offset_top = 693.0
+offset_right = 1836.0
+offset_bottom = 925.0
+theme_override_constants/separation = 10
+
+[node name="Jogar" type="Button" parent="VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_v7cdq")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5hpv3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6msl4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4th0e")
+text = "Jogar"
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Jogar"]
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_12nmo")
+layout_mode = 2
+offset_right = 455.0
+offset_bottom = 73.0
+mouse_filter = 2
+color = Color(0.219608, 0.219608, 0.219608, 0.690196)
+
+[node name="Niveis" type="Button" parent="VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_v7cdq")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxEmpty_xwn4b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6msl4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4th0e")
+text = "Niveis"
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Niveis"]
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_12nmo")
+layout_mode = 2
+offset_right = 455.0
+offset_bottom = 73.0
+mouse_filter = 2
+color = Color(0.219608, 0.219608, 0.219608, 0.690196)
+
+[node name="Sair" type="Button" parent="VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_v7cdq")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxEmpty_xwn4b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6msl4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_4th0e")
+text = "Sair"
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Sair"]
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_12nmo")
+layout_mode = 2
+offset_right = 455.0
+offset_bottom = 73.0
+mouse_filter = 2
+color = Color(0.219608, 0.219608, 0.219608, 0.690196)
+
+[connection signal="pressed" from="VBoxContainer/Jogar" to="." method="_on_jogar_pressed"]
+[connection signal="pressed" from="VBoxContainer/Niveis" to="." method="_on_niveis_pressed"]
+[connection signal="pressed" from="VBoxContainer/Sair" to="." method="_on_sair_pressed"]
