@@ -23,7 +23,7 @@ var _destinations: Array = []
 # Last destinations visited by the player.
 var _last_destinations: Array
 
-# Player and correct answers for the current destination.
+# Player and correct answers for the current destination. These are also Arrays of Arrays.
 var _player_answers: Array
 var _correct_answers: Array
 
@@ -83,9 +83,16 @@ func get_current_destination_index() -> int:
 func set_player_answer(answer: Array):
 	_player_answers[_dest_index] = answer.duplicate()
 
+func set_player_answer_at(answer: Array, index: int):
+	_player_answers[index] = answer.duplicate()
+
 ## Set the correct answer for the current destination.
 func set_correct_answer(answer: Array):
 	_correct_answers[_dest_index] = answer.duplicate()
+
+## Get player answers
+func get_player_answers() -> Array:
+	return _player_answers.duplicate(true)
 
 ## Check if the player won the game.
 ##
@@ -129,13 +136,13 @@ func go_to_next_destination():
 
 	# Increment the path index.
 	_dest_index += 1
-	GlobalGameData.current_path = _dest_index
+	GlobalGameData.current_path = _dest_index + 1
 
 	# If the path index is greater than the destinations size, we setted all paths.
 	if _dest_index > _destinations.size() - 1:
 		# Reset the current path.
 		_dest_index = 0
-		GlobalGameData.current_path = _dest_index
+		GlobalGameData.current_path = _dest_index + 1
 
 		all_paths_set.emit(_player_answers.duplicate(true))
 	else:
@@ -165,18 +172,19 @@ func go_to_next_phase():
 	# Reset the path index.
 	_dest_index = 0
 
-	GlobalGameData.current_phase = _current_phase_num
-	GlobalGameData.current_path = _dest_index
-
-	# Pop the visited planets from the list.
-	for i in range(_destinations.size()):
-		_destinations.pop_front()
+	# Clear the visited planets from the list.
+	_destinations.clear()
 	
 	# Maintain only the last element from last destinations array.
 	_last_destinations = [_last_destinations.pop_back()]
 	
 	# Get the next destinations from the next phase.
 	_destinations = _phases.pop_front()
+	
+	# Update global variables.
+	GlobalGameData.current_phase = _current_phase_num
+	GlobalGameData.current_path = _dest_index + 1
+	GlobalGameData.no_of_paths = _destinations.size()
 
 	# Clear the player and correct answers arrays.
 	_player_answers.clear()

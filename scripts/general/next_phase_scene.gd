@@ -24,8 +24,6 @@ func show_destination(planet_name: String):
 	_label_instrucoes.text = _message_default if GlobalGameData.current_path == 0 else _message_default_mp
 	_label_destino.text = _destino_text if GlobalGameData.current_path == 0 else _destino_text_mp
 
-	print("NextPhaseScene> Current path: ", GlobalGameData.current_path)
-
 	# Show instruction label if we are in the tutorial phase
 	_container_instrucoes.visible = GlobalGameData.tutorial_phase
 	_label_planeta.text = planet_name

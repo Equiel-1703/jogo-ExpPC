@@ -13,6 +13,7 @@ var levels_table: Array
 var current_level: int = 1
 var current_phase: int
 var current_path: int
+var no_of_paths: int
 
 # Planets coordinates
 var PLANETS_COORDS = {

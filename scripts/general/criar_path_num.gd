@@ -72,13 +72,13 @@ func _on_ok_pressed():
 		return
 
 	# Get the path size from the text field and check if it is valid
-	_path_lenght = %TamRotaLineField.text.to_int()
+	_new_path_len = %TamRotaLineField.text.to_int()
 
-	if _path_lenght <= 0:
+	if _new_path_len <= 0:
 		_show_alert(_invalid_negative_alert)
 		return
 	
-	if _path_lenght > GlobalGameData.MAX_PATH_LENGTH:
+	if _new_path_len > GlobalGameData.MAX_PATH_LENGTH:
 		_show_alert(_route_too_big)
 		return
 

@@ -331,4 +331,3 @@ unique_name_in_owner = true
 
 [node name="LevelPhasesManager" type="Node" parent="."]
 script = ExtResource("21_skpn5")
-level_json_path = "res://levels_json/level_2.json"
