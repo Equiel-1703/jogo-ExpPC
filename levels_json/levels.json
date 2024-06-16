@@ -1,11 +1,11 @@
 [
 	{
 		"level_no": 1,
-		"scene_path": "res://scenes/level_1/level_1.tscn"
+		"scene_path": "res://scenes/levels/level_1.tscn"
 	},
 
 	{
 		"level_no": 2,
-		"scene_path": "res://scenes/level_2/level_2.tscn"
+		"scene_path": "res://scenes/levels/level_2.tscn"
 	}
 ]

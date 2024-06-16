@@ -12,7 +12,7 @@ var _path_colors: Array
 
 func _ready():
 	# Load _direction_button scene
-	_direction_button = preload ("res://scenes/level_1/direction_button.tscn")
+	_direction_button = preload ("res://scenes/general/direction_button.tscn")
 	
 	# Hide the menu
 	self.visible = false
@@ -91,9 +91,6 @@ func _on_ok_pressed():
 		var direction = button.button_direction
 		player_path.append(direction)
 		button.free()
-
-	# Clear the buttons
-	# _clear_buttons()
 
 	# Print the player path for debug
 	print("CriarPath> New player path:")

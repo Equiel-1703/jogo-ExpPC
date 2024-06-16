@@ -7,9 +7,12 @@ const _invalid_int_alert: String = "Por favor, insira um tamanho de rota válido
 const _invalid_negative_alert: String = "Por favor, insira um tamanho de rota positivo!"
 const _route_too_big: String = "O tamanho máximo de uma rota é 30!"
 
-func show_path_menu(_p_len: int=0):
+func show_path_menu(_new_path_lenght: int, path_color: Color):
 	# We will read the path size first
 	_reading_path_size = true
+
+	# Set path color
+	_path_colors.append(path_color)
 
 	# Hide gradient background and set the normal background visible
 	%GradientBG.visible = false
@@ -44,22 +47,8 @@ func _on_ok_pressed():
 
 	# If we are not reading the path size, we are getting the player path and emitting the signal
 	if not _reading_path_size:
-		self.visible = false
-
-		# Get the player path from the buttons
-		var player_path = []
-		for child in %PathButtons.get_children():
-			player_path.append(child.button_direction)
-
-		# Clear the buttons
-		_clear_buttons()
-
-		# Print the player path for debug
-		print("CriarPath> Player path:")
-		PathProcessor.print_moves(player_path)
-		
-		# Emit the path done signal with the player path
-		player_path_done.emit(player_path)
+		# The parent class implements exactly what we need to do here
+		super._on_ok_pressed()
 		return
 	
 	# If the path size is empty, return
@@ -71,13 +60,13 @@ func _on_ok_pressed():
 		_show_alert(_invalid_int_alert)
 		return
 
-	# Get the path size from the text field and check if it is valid
+	# Get the path size from the text field
 	_new_path_len = %TamRotaLineField.text.to_int()
 
+	# Check if the path size is valid
 	if _new_path_len <= 0:
 		_show_alert(_invalid_negative_alert)
 		return
-	
 	if _new_path_len > GlobalGameData.MAX_PATH_LENGTH:
 		_show_alert(_route_too_big)
 		return

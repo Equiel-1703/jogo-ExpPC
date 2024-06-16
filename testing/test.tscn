@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://btvk0x05tgewp"]
 
 [ext_resource type="Script" path="res://testing/test.gd" id="1_vgntq"]
-[ext_resource type="PackedScene" uid="uid://cj0mpdxnupbgl" path="res://scenes/level_1/direction_button.tscn" id="2_nal7t"]
+[ext_resource type="PackedScene" uid="uid://cj0mpdxnupbgl" path="res://scenes/general/direction_button.tscn" id="2_nal7t"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_umxcc"]
 bg_color = Color(1, 1, 0, 1)
