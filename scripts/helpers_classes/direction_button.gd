@@ -7,6 +7,8 @@ var button_direction: PathProcessor.MOVES = PathProcessor.MOVES.RIGHT:
 		button_direction = value
 		%Seta.rotation_degrees = 90 * (value - 1)
 
+var enabled: bool = true
+
 static var button_index_label: int = 1
 
 static func reset_labels_count():
@@ -18,8 +20,9 @@ func _ready():
 	button_index_label += 1
 
 func _on_seta_pressed():
-	%Seta.rotation_degrees += 90
-	self.button_direction = (self.button_direction + 1) % PathProcessor.MOVES.size() as PathProcessor.MOVES
+	if enabled:
+		%Seta.rotation_degrees += 90
+		self.button_direction = (self.button_direction + 1) % PathProcessor.MOVES.size() as PathProcessor.MOVES
 
 func set_color(color: Color):
 	%ButtonBG.material.set_shader_parameter("color_rgb", color)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://bi8chh3jjrgc3"]
+[gd_scene load_steps=45 format=3 uid="uid://bi8chh3jjrgc3"]
 
 [ext_resource type="Script" path="res://scripts/general/level_main.gd" id="1_u4ehn"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="2_sxtaq"]
@@ -15,10 +15,14 @@
 [ext_resource type="PackedScene" uid="uid://di4d6nr6gxb8t" path="res://scenes/general/rocket.tscn" id="13_pbxw8"]
 [ext_resource type="PackedScene" uid="uid://b3dk076igvbbl" path="res://scenes/general/message.tscn" id="14_jwuti"]
 [ext_resource type="PackedScene" uid="uid://cig2gpf3kuqkq" path="res://scenes/criar_path/criar_path.tscn" id="14_v3fbq"]
+[ext_resource type="PackedScene" uid="uid://btsetkvtbaonl" path="res://scenes/criar_path/criar_path_reverse.tscn" id="16_puhcc"]
 [ext_resource type="PackedScene" uid="uid://04und56j0g87" path="res://scenes/general/intermediate_message.tscn" id="16_vraao"]
-[ext_resource type="PackedScene" uid="uid://c3pvrpj2n21cd" path="res://scenes/general/next_phase_scene.tscn" id="17_bodho"]
+[ext_resource type="Script" path="res://scripts/next_phase/next_phase_manager.gd" id="17_5p58l"]
+[ext_resource type="PackedScene" uid="uid://c3pvrpj2n21cd" path="res://scenes/next_phase/next_phase_scene.tscn" id="17_bodho"]
+[ext_resource type="Script" path="res://scripts/next_phase/next_phase_min_path.gd" id="18_43jfl"]
 [ext_resource type="PackedScene" uid="uid://diik6iqcg1u36" path="res://scenes/general/win_scene.tscn" id="18_m1gs2"]
 [ext_resource type="PackedScene" uid="uid://btif7hfb7i3rc" path="res://scenes/general/lose_scene.tscn" id="19_0av6b"]
+[ext_resource type="Script" path="res://scripts/next_phase/next_phase_reverse.gd" id="19_lj6df"]
 [ext_resource type="PackedScene" uid="uid://6eh3ia4g6l8g" path="res://scenes/general/level_num.tscn" id="20_oyqg7"]
 [ext_resource type="Script" path="res://scripts/general/multiline_phases_manager.gd" id="21_skpn5"]
 
@@ -137,9 +141,11 @@ _data = {
 "sun_shine": SubResource("Animation_fkius")
 }
 
-[node name="Level_2" type="Node2D" node_paths=PackedStringArray("phases_manager") groups=["main_level"]]
+[node name="Level_2" type="Node2D" node_paths=PackedStringArray("phases_manager", "path_creator", "reverse_path_creator") groups=["main_level"]]
 script = ExtResource("1_u4ehn")
 phases_manager = NodePath("LevelPhasesManager")
+path_creator = NodePath("CanvasLayer/CriarPath")
+reverse_path_creator = NodePath("CanvasLayer/CriarPathReverse")
 
 [node name="MapSpr" type="Sprite2D" parent="."]
 texture = ExtResource("2_sxtaq")
@@ -305,16 +311,34 @@ unique_name_in_owner = true
 visible = false
 time_visible = 3.0
 
-[node name="CriarPath" parent="CanvasLayer" node_paths=PackedStringArray("phases_manager") instance=ExtResource("14_v3fbq")]
-unique_name_in_owner = true
+[node name="CriarPath" parent="CanvasLayer" node_paths=PackedStringArray("phases_manager") groups=["path_creators"] instance=ExtResource("14_v3fbq")]
 visible = false
 phases_manager = NodePath("../../LevelPhasesManager")
 
-[node name="IntermMessage" parent="CanvasLayer" instance=ExtResource("16_vraao")]
-unique_name_in_owner = true
-visible = false
+[node name="CriarPathReverse" parent="CanvasLayer" node_paths=PackedStringArray("line_manager") groups=["path_creators"] instance=ExtResource("16_puhcc")]
+line_manager = NodePath("../../LineManager")
 
-[node name="NextPhaseScene" parent="CanvasLayer" instance=ExtResource("17_bodho")]
+[node name="NextPhaseManager" type="Control" parent="CanvasLayer"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1890.0
+offset_bottom = 980.0
+mouse_filter = 2
+script = ExtResource("17_5p58l")
+
+[node name="Simple" parent="CanvasLayer/NextPhaseManager" instance=ExtResource("17_bodho")]
+layout_mode = 1
+
+[node name="MinPath" parent="CanvasLayer/NextPhaseManager" instance=ExtResource("17_bodho")]
+layout_mode = 1
+script = ExtResource("18_43jfl")
+
+[node name="Reverse" parent="CanvasLayer/NextPhaseManager" instance=ExtResource("17_bodho")]
+layout_mode = 1
+script = ExtResource("19_lj6df")
+
+[node name="IntermMessage" parent="CanvasLayer" instance=ExtResource("16_vraao")]
 unique_name_in_owner = true
 visible = false
 
@@ -329,6 +353,8 @@ visible = false
 [node name="LevelNum" parent="CanvasLayer" instance=ExtResource("20_oyqg7")]
 unique_name_in_owner = true
 
-[node name="LevelPhasesManager" type="Node" parent="."]
+[node name="LevelPhasesManager" type="Node" parent="." node_paths=PackedStringArray("rocket", "next_phase_manager")]
 script = ExtResource("21_skpn5")
 level_json_path = "res://levels_json/level_2.json"
+rocket = NodePath("../Rocket")
+next_phase_manager = NodePath("../CanvasLayer/NextPhaseManager")

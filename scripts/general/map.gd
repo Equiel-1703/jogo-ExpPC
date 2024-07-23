@@ -91,11 +91,11 @@ func _process(_delta):
 			var x_diff = _mouse_coord.x - _last_mouse_coord.x
 			var y_diff = _mouse_coord.y - _last_mouse_coord.y
 
-			print("x_diff: ", x_diff, " y_diff: ", y_diff)
+			# print("x_diff: ", x_diff, " y_diff: ", y_diff)
 
 			# Detecting vertical movement missing (drag mouse too fast)
 			if abs(y_diff) > _tile_size:
-				print("Vertical movement detected")
+				# print("Vertical movement detected")
 				var steps: int = abs(y_diff) / _tile_size
 				var middle_point: Vector2
 
@@ -112,7 +112,7 @@ func _process(_delta):
 
 			# Detecting horizontal movement missing (drag mouse too fast)
 			if abs(x_diff) > _tile_size:
-				print("Horizontal movement detected")
+				# print("Horizontal movement detected")
 				var steps: int = abs(x_diff) / _tile_size
 				var middle_point: Vector2
 
@@ -129,7 +129,7 @@ func _process(_delta):
 			
 			# Detecting diagonal movement
 			if abs(x_diff) == _tile_size and abs(y_diff) == _tile_size:
-				print("Diagonal movement detected")
+				# print("Diagonal movement detected")
 				# Now we need to add a point in the middle of the two points
 				var middle_point: Vector2 = _mouse_coord
 				if x_diff > 0:
@@ -150,7 +150,7 @@ func _process(_delta):
 
 			# Single point movement
 			elif abs(x_diff) == _tile_size or abs(y_diff) == _tile_size:
-				print("Single point movement detected")
+				# print("Single point movement detected")
 				# Add the new point to the path commands
 				_path_commands_answer.append(PathProcessor.determine_direction(_last_mouse_coord, _mouse_coord))
 				# Add the new point to the path line
@@ -160,7 +160,7 @@ func _process(_delta):
 	
 	if Input.is_action_just_released("LeftClick") and _draw_state:
 		# For debugging purposes
-		print("LeftClick released")
+		# print("LeftClick released")
 		
 		# Finished drawing
 		_draw_state = false

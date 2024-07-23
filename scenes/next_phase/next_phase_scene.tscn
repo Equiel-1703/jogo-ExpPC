@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://c3pvrpj2n21cd"]
 
-[ext_resource type="Script" path="res://scripts/general/next_phase_scene.gd" id="1_7p4xs"]
 [ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="1_a6fg7"]
+[ext_resource type="Script" path="res://scripts/next_phase/next_phase_base.gd" id="1_nxmja"]
 [ext_resource type="Material" uid="uid://ddpwqy41qf85d" path="res://shaders/bg_material.tres" id="2_fn2el"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_xamc4"]
@@ -30,7 +30,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_7p4xs")
+script = ExtResource("1_nxmja")
 
 [node name="BG" type="ColorRect" parent="."]
 material = ExtResource("2_fn2el")

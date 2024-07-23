@@ -1,29 +1,32 @@
 extends Node
 class_name PhasesManager
 
+signal reverse_path
+
 ## Important definitions for the PhasesManager class:
 ##
-## * Level: a level is a set of phases. After all phases completed, the level is over.
+## * Level: a level is a list of phases. After all phases completed, the level is over.
 ##
-## * Phase: a phase is a set of planets destinations. After all planets destinations visited, the phase is over.
+## * Phase: a phase is a list of Destinations. After all planets destinations visited, the phase is over.
 ## A phase can have one or more planets destinations.
 ##
-## * Path: a path is a set of moves to reach a planet. Therefore, we can call path simply as destination.
+## * Path: a path is a set of moves to reach a planet. Therefore, we can call a path simply as a destination.
 
-signal all_paths_set(rocket_moves: Array)
-signal went_to_next_destination
+signal rocket_finished_moving(final_coords: Array)
 
-@export var next_level_scene: PackedScene
 @export var level_json_path: String
+@export var next_level: PackedScene
+@export var rocket: Rocket
+@export var next_phase_manager: NextPhaseManager
 
-# Phases for the level. It is an Array containing Arrays of _destination.
+# Phases for the level. It is an Array containing Arrays of Destination.
 var _phases: Array = []
-# Destinations of the level. It is an Array of _destination.
+# Destinations of the phase. It is an Array of Destination.
 var _destinations: Array = []
 # Last destinations visited by the player.
 var _last_destinations: Array
 
-# Player and correct answers for the current destination. These are also Arrays of Arrays.
+# Player and correct answers for the current phase. These are Arrays of Arrays.
 var _player_answers: Array
 var _correct_answers: Array
 
@@ -33,8 +36,18 @@ var _dest_index: int = 0
 var _current_phase_num: int = 0
 
 func _ready():
+	if not rocket:
+		printerr("PhasesManager> Rocket is not set.")
+		get_tree().quit()
+		return
+
 	if not level_json_path:
 		printerr("PhasesManager> Level JSON path is not set.")
+		get_tree().quit()
+		return
+	
+	if not next_phase_manager:
+		printerr("PhasesManager> NextPhaseManager is not set.")
 		get_tree().quit()
 		return
 	
@@ -53,7 +66,6 @@ func _get_current_destination():
 	if _dest_index < _destinations.size():
 		return _destinations[_dest_index]
 	return null
-	
 
 ## Check if the player reached the destination with the minimum path.
 func _check_minimum_path(player_answer_index: int) -> bool:
@@ -64,6 +76,23 @@ func _check_minimum_path(player_answer_index: int) -> bool:
 	var minimum_dist: int = GlobalGameData.get_minimum_distance(orig_planet, dest_planet)
 
 	return player_answer_size <= minimum_dist
+
+## Reset _last_destinations array and configure the reverse destinations.
+func _parse_destinations():
+	# Maintain only the last element from last destinations array.
+	_last_destinations = [_last_destinations.pop_back()]
+	
+	if _destinations[0].mode == Destination.DEST_MODE.REVERSE:
+		# The first destination can't be a reverse destination. Turn it to normal.
+		_destinations[0] = Destination.DEST_MODE.NORMAL
+	
+	while _destinations.size() > 0 and _destinations[0].planet_name == _last_destinations[0]:
+		# If the first destination is the same as the last destination, remove it.
+		_destinations.pop_front()
+
+	if _destinations.size() == 0:
+		# In this case, skip the phase
+		go_to_next_phase()
 
 # ------------------------- Public Methods -------------------------
 
@@ -90,9 +119,20 @@ func set_player_answer_at(answer: Array, index: int):
 func set_correct_answer(answer: Array):
 	_correct_answers[_dest_index] = answer.duplicate()
 
+func set_correct_answer_reverse():
+	_correct_answers[_dest_index] = PathProcessor.invert_moves(_correct_answers[_dest_index - 1])
+
 ## Get player answers
 func get_player_answers() -> Array:
 	return _player_answers.duplicate(true)
+
+func get_player_answer_at(index: int) -> Array:
+	return _player_answers[index].duplicate(true)
+
+func clear_answers():
+	for i in range(GlobalGameData.no_of_paths):
+		_player_answers[i] = []
+		_correct_answers[i] = []
 
 ## Check if the player won the game.
 ##
@@ -104,35 +144,33 @@ func player_won(_rocket_final_coords: Array) -> bool:
 			var planet_name = GlobalGameData.PLANETS_COORDS[_destinations[i].planet_name].planet_name
 			
 			get_tree().call_group("lose_screen", "set_lose_screen_text", "Você não seguiu a rota traçada para o planeta " + planet_name + "!")
-
 			
 			return false
 
-	# Now, let's check if the player reached the destination and followed the minimum path.
+	# Now, let's check if the player reached the destination and followed the minimum path (if it's the case).
 	for i in range(_rocket_final_coords.size()):
 		# Get the destination relative to the i index.
 		var destination = _destinations[i]
 		# Get the planet using the destination name.
 		var planet_dest = GlobalGameData.PLANETS_COORDS[destination.planet_name]
 
-		if destination.mode == JsonLoader.DEST_MODE.MIN_PATH:
+		if destination.mode == Destination.DEST_MODE.MIN_PATH:
 			# Check if the player reached the destination with the minimum path.
 			if !_check_minimum_path(i):
 				get_tree().call_group("lose_screen", "set_lose_screen_text", "Você não seguiu o caminho mínimo para o planeta " + planet_dest.planet_name + "!")
 				return false
-		else:
-			# Check if the player reached the destination.
-			if _rocket_final_coords[i] != planet_dest.planet_coord:
-				get_tree().call_group("lose_screen", "set_lose_screen_text", "Você não chegou ao planeta " + planet_dest.planet_name + "!")
-				return false
-	
+		
+		# Check if the player reached the destination.
+		if _rocket_final_coords[i] != planet_dest.planet_coord:
+			get_tree().call_group("lose_screen", "set_lose_screen_text", "Você não chegou ao planeta " + planet_dest.planet_name + "!")
+			return false
+
 	# If nothing failed, the player won the phase.
 	return true
 
 ## Go to next destination.
 func go_to_next_destination():
-	# Append new last destination.
-	_last_destinations.push_back(_get_current_destination().planet_name)
+	_last_destinations.append(_destinations[_dest_index].planet_name)
 
 	# Increment the path index.
 	_dest_index += 1
@@ -144,12 +182,16 @@ func go_to_next_destination():
 		_dest_index = 0
 		GlobalGameData.current_path = _dest_index + 1
 
-		all_paths_set.emit(_player_answers.duplicate(true))
+		# Launch the rocket
+		rocket.execute_move_commands(_player_answers.duplicate(true))
+		# Waits for the rocket to finish moving and emit the signal.
+		var final_coords = await rocket.moves_matrix_completed
+		
+		rocket_finished_moving.emit(final_coords)
 	else:
-		# Signal that leads to the next destination.
-		went_to_next_destination.emit()
+		# If not, just show the next destination.
+		show_current_destination()
 	
-
 ## Update the internal variables to go to the next phase.
 func go_to_next_phase():
 	# If there are no more phases, the level is over.
@@ -160,8 +202,8 @@ func go_to_next_phase():
 		GlobalGameData.current_level += 1
 
 		# Change the scene to the next level, if there is one.
-		if next_level_scene:
-			get_tree().change_scene_to_packed(next_level_scene)
+		if next_level:
+			get_tree().change_scene_to_packed(next_level)
 		else:
 			# The game is over.
 			get_tree().quit()
@@ -169,17 +211,12 @@ func go_to_next_phase():
 
 	# Increment the current phase number.
 	_current_phase_num += 1
-	# Reset the path index.
+	# Reset the destination index.
 	_dest_index = 0
 
-	# Clear the visited planets from the list.
-	_destinations.clear()
-	
-	# Maintain only the last element from last destinations array.
-	_last_destinations = [_last_destinations.pop_back()]
-	
 	# Get the next destinations from the next phase.
 	_destinations = _phases.pop_front()
+	_parse_destinations()
 	
 	# Update global variables.
 	GlobalGameData.current_phase = _current_phase_num
@@ -191,8 +228,15 @@ func go_to_next_phase():
 	_correct_answers.clear()
 
 	# Resize the player and correct answers arrays.
-	_player_answers.resize(_destinations.size())
-	_correct_answers.resize(_destinations.size())
+	_player_answers.resize(GlobalGameData.no_of_paths)
+	_correct_answers.resize(GlobalGameData.no_of_paths)
+
+	# Debug print of the next destinations.
+	var str_out: String = "PhasesManager> Next destinations: "
+	var sep: String = ", "
+	for d in _destinations:
+		str_out += d._to_string() + sep
+	print(str_out.trim_suffix(sep))
 
 ## Show the current destination on the screen.
 func show_current_destination():
@@ -202,17 +246,19 @@ func show_current_destination():
 
 	# Get the current destination.
 	var destination = _get_current_destination()
-	# Get the planet destination.
+	# Get the planet name from the destination.
 	var planet_name = GlobalGameData.PLANETS_COORDS[destination.planet_name].planet_name
+
+	print("PhasesManager> Current destination: ", planet_name)
 
 	# Check the destination mode and show the screen accordingly.
 	match destination.mode:
-		JsonLoader.DEST_MODE.MIN_PATH:
-			# Show the min path screen.
-			%NextPhaseScene.show_destination_min_path(planet_name)
-		JsonLoader.DEST_MODE.NORMAL:
+		Destination.DEST_MODE.NORMAL:
 			# Show the next phase screen.
-			%NextPhaseScene.show_destination(planet_name)
-	
-	# For debug only.
-	print("Next phase: ", planet_name)
+			next_phase_manager.show_destination(planet_name)
+		Destination.DEST_MODE.MIN_PATH:
+			# Show the min path screen.
+			next_phase_manager.show_destination_min_path(planet_name)
+		Destination.DEST_MODE.REVERSE:
+			# Show the reverse path creation screen.
+			next_phase_manager.show_destination_reverse(planet_name)

@@ -1,16 +1,5 @@
 extends Node
 
-# Enum for the destination mode.
-enum DEST_MODE {NORMAL, MIN_PATH, REVERSE}
-
-class _destination:
-	var planet_name: String
-	var mode: DEST_MODE
-
-	func _init(p_name: String, p_mode: DEST_MODE=DEST_MODE.NORMAL):
-		planet_name = p_name
-		mode = p_mode
-
 func _parse_level_dictionary(level_dic: Dictionary):
 	var phases_json: Array = level_dic["phases"]
 
@@ -21,7 +10,7 @@ func _parse_level_dictionary(level_dic: Dictionary):
 	for p in phases_json:
 		# Get the destinations in the phase p.
 		for dest in p:
-			var dest_obj = _destination.new(dest["planet_name"],dest["mode"])
+			var dest_obj = Destination.new(dest["planet_name"],dest["mode"])
 			
 			print("Destination: " + dest_obj.planet_name + " Mode: " + str(dest_obj.mode))
 			

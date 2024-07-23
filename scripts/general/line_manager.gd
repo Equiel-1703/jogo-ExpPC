@@ -8,6 +8,7 @@ signal all_lines_looped
 
 var _array_of_lines: Array = []
 var _active_index: int = 0
+var _last_index: int = 0
 
 func _ready():
 	if !base_line:
@@ -56,10 +57,30 @@ func set_num_of_lines(value: int):
 func get_active_line() -> Line2D:
 	return _array_of_lines[_active_index]
 
+## Returns the last line of the internal array.
+func get_last_line() -> Line2D:
+	return _array_of_lines[_last_index]
+
 ## Will set the index to the next line in the array. If we were in the last line, the signal all_lines_looped will be emitted and the active index will reset to 0.
 func go_to_next_line():
 	if _active_index == _array_of_lines.size() - 1:
 		# We have looped all lines (visited all lines)
 		all_lines_looped.emit()
 
+	_last_index = _active_index
 	_active_index = (_active_index + 1) % _array_of_lines.size()
+
+## Set the start position of the active line to the end of the last and follow the moves
+func add_moves_to_line(moves: Array):
+	var line = get_active_line()
+
+	# Get the last end coord
+	var last_end = get_last_line().points[-1]
+	
+	line.add_point(last_end)
+
+	# Add the moves to the active line
+	for move in moves:
+		line.add_point(line.points[-1] + (PathProcessor.move_to_vector2(move) * GlobalGameData.MAP_TILE_SIZE))
+
+	

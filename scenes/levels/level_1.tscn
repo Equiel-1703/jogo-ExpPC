@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://cnjmi0oabpifi"]
+[gd_scene load_steps=45 format=3 uid="uid://cnjmi0oabpifi"]
 
 [ext_resource type="Script" path="res://scripts/general/level_main.gd" id="1_jp7ys"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="1_woosl"]
@@ -15,12 +15,15 @@
 [ext_resource type="Script" path="res://scripts/general/line_manager.gd" id="12_1814d"]
 [ext_resource type="PackedScene" uid="uid://di4d6nr6gxb8t" path="res://scenes/general/rocket.tscn" id="12_lbtbs"]
 [ext_resource type="PackedScene" uid="uid://c0onqu281fee5" path="res://scenes/criar_path/criar_path_num.tscn" id="12_o06rq"]
-[ext_resource type="PackedScene" uid="uid://c3pvrpj2n21cd" path="res://scenes/general/next_phase_scene.tscn" id="12_re1tg"]
+[ext_resource type="PackedScene" uid="uid://c3pvrpj2n21cd" path="res://scenes/next_phase/next_phase_scene.tscn" id="12_re1tg"]
 [ext_resource type="PackedScene" uid="uid://btif7hfb7i3rc" path="res://scenes/general/lose_scene.tscn" id="13_2cdh5"]
 [ext_resource type="PackedScene" uid="uid://b3dk076igvbbl" path="res://scenes/general/message.tscn" id="13_msuy3"]
 [ext_resource type="PackedScene" uid="uid://04und56j0g87" path="res://scenes/general/intermediate_message.tscn" id="16_lob6l"]
+[ext_resource type="Script" path="res://scripts/next_phase/next_phase_manager.gd" id="17_5xjk1"]
 [ext_resource type="PackedScene" uid="uid://6eh3ia4g6l8g" path="res://scenes/general/level_num.tscn" id="18_m3eb5"]
+[ext_resource type="Script" path="res://scripts/next_phase/next_phase_min_path.gd" id="19_r7dk7"]
 [ext_resource type="PackedScene" uid="uid://bi8chh3jjrgc3" path="res://scenes/levels/level_2.tscn" id="20_cbin1"]
+[ext_resource type="Script" path="res://scripts/next_phase/next_phase_reverse.gd" id="20_r63s0"]
 [ext_resource type="Script" path="res://scripts/general/multiline_phases_manager.gd" id="20_xjjgy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s07oj"]
@@ -138,9 +141,10 @@ _data = {
 "sun_shine": SubResource("Animation_fkius")
 }
 
-[node name="Level_1" type="Node2D" node_paths=PackedStringArray("phases_manager") groups=["main_level"]]
+[node name="Level_1" type="Node2D" node_paths=PackedStringArray("phases_manager", "path_creator") groups=["main_level"]]
 script = ExtResource("1_jp7ys")
 phases_manager = NodePath("LevelPhasesManager")
+path_creator = NodePath("CanvasLayer/CriarPath")
 
 [node name="MapSpr" type="Sprite2D" parent="."]
 texture = ExtResource("1_woosl")
@@ -306,8 +310,7 @@ unique_name_in_owner = true
 visible = false
 time_visible = 3.0
 
-[node name="CriarPath" parent="CanvasLayer" node_paths=PackedStringArray("phases_manager") instance=ExtResource("12_o06rq")]
-unique_name_in_owner = true
+[node name="CriarPath" parent="CanvasLayer" node_paths=PackedStringArray("phases_manager") groups=["path_creators"] instance=ExtResource("12_o06rq")]
 visible = false
 phases_manager = NodePath("../../LevelPhasesManager")
 
@@ -315,9 +318,25 @@ phases_manager = NodePath("../../LevelPhasesManager")
 unique_name_in_owner = true
 visible = false
 
-[node name="NextPhaseScene" parent="CanvasLayer" instance=ExtResource("12_re1tg")]
+[node name="NextPhaseManager" type="Control" parent="CanvasLayer"]
 unique_name_in_owner = true
-visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1890.0
+offset_bottom = 980.0
+mouse_filter = 2
+script = ExtResource("17_5xjk1")
+
+[node name="Simple" parent="CanvasLayer/NextPhaseManager" instance=ExtResource("12_re1tg")]
+layout_mode = 1
+
+[node name="MinPath" parent="CanvasLayer/NextPhaseManager" instance=ExtResource("12_re1tg")]
+layout_mode = 1
+script = ExtResource("19_r7dk7")
+
+[node name="Reverse" parent="CanvasLayer/NextPhaseManager" instance=ExtResource("12_re1tg")]
+layout_mode = 1
+script = ExtResource("20_r63s0")
 
 [node name="WinScene" parent="CanvasLayer" instance=ExtResource("12_68fdk")]
 unique_name_in_owner = true
@@ -330,7 +349,9 @@ visible = false
 [node name="LevelNum" parent="CanvasLayer" instance=ExtResource("18_m3eb5")]
 unique_name_in_owner = true
 
-[node name="LevelPhasesManager" type="Node" parent="."]
+[node name="LevelPhasesManager" type="Node" parent="." node_paths=PackedStringArray("rocket", "next_phase_manager")]
 script = ExtResource("20_xjjgy")
-next_level_scene = ExtResource("20_cbin1")
 level_json_path = "res://levels_json/level_1.json"
+next_level = ExtResource("20_cbin1")
+rocket = NodePath("../Rocket")
+next_phase_manager = NodePath("../CanvasLayer/NextPhaseManager")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cj0mpdxnupbgl"]
 
 [ext_resource type="Texture2D" uid="uid://b2spr4bxiphnj" path="res://res/BOTÃO_JOGO.png" id="1_6jln3"]
-[ext_resource type="Script" path="res://scripts/helpers/direction_button.gd" id="1_ju0p0"]
+[ext_resource type="Script" path="res://scripts/helpers_classes/direction_button.gd" id="1_ju0p0"]
 [ext_resource type="Shader" path="res://shaders/color_overlay.gdshader" id="2_dfqmu"]
 [ext_resource type="Texture2D" uid="uid://dpfia8wfijihm" path="res://res/BOTÃO_JOGO_SETA.png" id="4_qoxfs"]
 

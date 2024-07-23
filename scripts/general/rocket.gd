@@ -41,6 +41,9 @@ func execute_move_commands(commands_matrix: Array) -> void:
 	var final_coords_array = []
 
 	for command_array in commands_matrix:
+		if not command_array:
+			break
+		
 		# Store the commands to process
 		_commands_to_process = command_array
 		# Turn on the propulsion effect
@@ -59,6 +62,9 @@ func execute_move_commands(commands_matrix: Array) -> void:
 
 func explode():
 	_exploded = true
+	_commands_to_process.clear()
+
+
 	_propulsion.emitting = false
 	_rocket_sprite.visible = false
 	_explosion.emitting = true
