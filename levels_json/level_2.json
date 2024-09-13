@@ -8,9 +8,13 @@
 				"mode": 0
 			},
 			{
-				"planet_name": "terra",
+				"planet_name": "mercurio",
+				"mode": 1
+			},
+			{
+				"planet_name": "venus",
 				"mode": 2
-			}	
+			}
 		],
 		[
 			{

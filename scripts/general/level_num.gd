@@ -20,4 +20,3 @@ func show_level_num():
 	await $Timer.timeout
 	$AnimationPlayer.play("exit")
 	level_num_finished.emit()
-
