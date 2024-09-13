@@ -28,7 +28,7 @@ func _ready():
 	# Connect Map signal
 	$Map.path_set.connect(_on_path_set)
 	# Connect Rocket signal from PhasesManager
-	phases_manager.rocket_finished_moving.connect(_on_rocket_finished_moving)
+	phases_manager.phase_is_over.connect(_on_phase_is_over)
 
 	# Connect CriarPath's signals
 	for pc in get_tree().get_nodes_in_group("path_creators"):
@@ -85,14 +85,14 @@ func _on_play_reverse():
 	var player_last_answer_index = phases_manager.get_current_destination_index() - 1
 	var player_last_answer = phases_manager.get_player_answer_at(player_last_answer_index)
 	
-	var last_line: Line2D = $Map.line_manager.get_last_line()
+	var last_line: Line2D = await $Map.get_last_line()
 	var last_answer_color = last_line.default_color
 
 	# The new last end coord should be the start coord of the last line
 	_temp_last_end = last_line.points[0]
 
 	# Show the reverse path menu
-	reverse_path_creator.show_reverse_path_menu($Map.line.default_color, player_last_answer, last_answer_color)
+	reverse_path_creator.show_reverse_path_menu($Map.get_line().default_color, player_last_answer, last_answer_color)
 
 # Emmited by Map when the player has finished creating the path for the rocket
 func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
@@ -139,7 +139,7 @@ func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
 	_temp_last_end = end_coord
 
 	$Map.disable_map()
-	path_creator.show_path_menu(path_answer.size(), $Map.line.default_color)
+	path_creator.show_path_menu(path_answer.size(), $Map.get_line().default_color)
 
 # Emmited by the CriarPath screen, when the player has finished creating the path
 func _on_player_path_done(player_path_answer: Array):
@@ -162,7 +162,7 @@ func _on_player_path_done(player_path_answer: Array):
 	phases_manager.go_to_next_destination()
 
 # Emmited by the PhasesManager node, when the rocket has finished moving
-func _on_rocket_finished_moving(final_coords: Array):
+func _on_phase_is_over(final_coords: Array):
 	if check_if_player_won(final_coords):
 		# Player won
 		%WinScene.visible = true
@@ -187,7 +187,6 @@ func _lose():
 # Emmited by the NextPhaseManager when the player clicks on the "OK" button
 func _on_play():
 	$Map.enable_map()
-	$Map.clear_active_line()
 
 # Emmited by the CriarPath screen, when the player has cancelled the path creation
 func _on_player_path_cancelled():

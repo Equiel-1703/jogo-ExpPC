@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=4 uid="uid://cwrl3t86dpahv"]
+[gd_scene load_steps=11 format=4 uid="uid://cwrl3t86dpahv"]
 
 [ext_resource type="Script" path="res://scripts/map/map_node.gd" id="1_s76ug"]
 [ext_resource type="Texture2D" uid="uid://dlv0e3hvm6es5" path="res://res/grid.png" id="2_2ctdj"]
 [ext_resource type="Texture2D" uid="uid://da8if3xp7bvsc" path="res://res/selection.png" id="3_ocly8"]
 [ext_resource type="Texture2D" uid="uid://ciifhkfrwevv1" path="res://res/selection_active.png" id="4_i1t2r"]
-[ext_resource type="Script" path="res://scripts/map/selection.gd" id="6_3ba7e"]
+[ext_resource type="Script" path="res://scripts/map/selection.gd" id="5_utlu3"]
+[ext_resource type="Script" path="res://scripts/map/active_selection.gd" id="6_1ijfw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_b573k"]
 texture = ExtResource("2_2ctdj")
@@ -38,9 +39,11 @@ tile_set = SubResource("TileSet_kxrnv")
 [node name="Selection" type="TileMapLayer" parent="."]
 use_parent_material = true
 tile_set = SubResource("TileSet_kxrnv")
-script = ExtResource("6_3ba7e")
+script = ExtResource("5_utlu3")
 
 [node name="ActiveSelection" type="TileMapLayer" parent="."]
-visible = false
 use_parent_material = true
 tile_set = SubResource("TileSet_kxrnv")
+script = ExtResource("6_1ijfw")
+
+[connection signal="selection_started" from="Selection" to="ActiveSelection" method="_on_selection_started"]

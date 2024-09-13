@@ -12,7 +12,7 @@ signal reverse_path
 ##
 ## * Path: a path is a set of moves to reach a planet. Therefore, we can call a path simply as a destination.
 
-signal rocket_finished_moving(final_coords: Array)
+signal phase_is_over(final_coords: Array)
 
 @export var level_json_path: String
 @export var next_level: PackedScene
@@ -187,7 +187,7 @@ func go_to_next_destination():
 		# Waits for the rocket to finish moving and emit the signal.
 		var final_coords = await rocket.moves_matrix_completed
 		
-		rocket_finished_moving.emit(final_coords)
+		phase_is_over.emit(final_coords)
 	else:
 		# If not, just show the next destination.
 		show_current_destination()

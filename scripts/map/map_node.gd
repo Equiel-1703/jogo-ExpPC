@@ -3,49 +3,30 @@ class_name Map
 
 signal path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2)
 
-var _tile_size: int
+var tile_size: int
 
 var _map_w_tiles: int
 var _map_h_tiles: int
 
 @onready var grid_map: TileMapLayer = $Grid
-@onready var selection_map: TileMapLayer = $Selection
-@onready var active_selection_map: TileMapLayer = $ActiveSelection
+@onready var selection_map: SelectionMap = $Selection
+@onready var active_selection_map: ActiveSelectionMap = $ActiveSelection
 
 const id_grid_tile = 1
 const id_selection_tile = 2
 const id_active_selection_tile = 3
 
-var _draw_state: bool = false
-var _movement_enabled: bool = true
-var _can_erase: bool = true
-
-var _path_commands_answer: Array = []
-
-var _mouse_coord: Vector2 = Vector2.ZERO
-var _last_mouse_coord: Vector2 = Vector2.ZERO
-var _line_from: Vector2 = Vector2.ZERO
-
-@export var line : Line2D
 @export var line_manager: LineManager
 
 func _ready():
-	# # Check if the user did not provide a line or a line manager
-	# if not line and not line_manager:
-	# 	printerr("Map> You need to provide a Line2D or a LineManager node to the map!")
-	# 	get_tree().quit()
-	# 	return
+	# Check if the user did not provide a line or a line manager
+	if not line_manager:
+		printerr("Map> You need to provide a Line2D or a LineManager node to the map!")
+		get_tree().quit()
+		return
 	
-	# # Check if the user provided a line or a line manager, and await the ready signal
-	# if line:
-	# 	if not line.is_node_ready(): await line.ready
-	# else:
-	# 	# If the line was not provided, we get it from the line manager
-	# 	if not line_manager.is_node_ready(): await line_manager.ready
-	# 	line = line_manager.get_active_line()
-
 	# Getting the tile size
-	_tile_size = int(GlobalGameData.MAP_TILE_SIZE.x)
+	tile_size = int(GlobalGameData.MAP_TILE_SIZE.x)
 
 	# Setting the tiles size on the maps
 	grid_map.tile_set.tile_size = GlobalGameData.MAP_TILE_SIZE
@@ -53,7 +34,47 @@ func _ready():
 	active_selection_map.tile_set.tile_size = GlobalGameData.MAP_TILE_SIZE
 
 	# Setting number of map tiles
-	_map_w_tiles = int(GlobalGameData.WINDOW_SIZE.x / _tile_size)
-	_map_h_tiles = int(GlobalGameData.WINDOW_SIZE.y / _tile_size)
+	_map_w_tiles = int(GlobalGameData.WINDOW_SIZE.x / tile_size)
+	_map_h_tiles = int(GlobalGameData.WINDOW_SIZE.y / tile_size)
 
 	print("Map> Map size: ", _map_w_tiles, "x", _map_h_tiles)
+
+func get_line() -> Line2D:
+	if not line_manager.is_node_ready(): await line_manager.ready
+	return line_manager.get_active_line()
+
+func get_last_line() -> Line2D:
+	if not line_manager.is_node_ready(): await line_manager.ready
+	return line_manager.get_last_line()
+
+func disable_map():
+	active_selection_map.set_active_selection_map_enabled(false)
+	selection_map.set_selection_map_enabled(false)
+
+func enable_map():
+	selection_map.set_selection_map_enabled(true)
+
+func clear_active_line():
+	line_manager.get_active_line().clear_points()
+
+func clear_all_lines():
+	line_manager.clear_all_lines()
+
+func go_to_next_line():
+	line_manager.go_to_next_line()
+
+func map_to_local(coord: Vector2) -> Vector2:
+	return grid_map.map_to_local(coord)
+
+func local_to_map(coord: Vector2) -> Vector2:
+	return grid_map.local_to_map(coord)
+
+func convert_local_array_to_map(array: Array):
+	var new_array: Array = []
+	
+	new_array.resize(array.size())
+
+	for i in range(array.size()):
+		new_array[i] = grid_map.local_to_map(array[i])
+
+	return new_array

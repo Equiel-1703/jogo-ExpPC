@@ -64,7 +64,6 @@ func explode():
 	_exploded = true
 	_commands_to_process.clear()
 
-
 	_propulsion.emitting = false
 	_rocket_sprite.visible = false
 	_explosion.emitting = true
