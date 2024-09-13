@@ -107,21 +107,17 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_released("LeftClick"):
 		# Single click with no movement
 		if _path_commands_answer.size() <= 0:
+			leave_active_selection_map()
 			return
 
 		# For debugging purposes
 		print("Map> Answer: ")
 		PathProcessor.print_moves(_path_commands_answer)
 		
-		# Let's clear the yellow selection
-		_map.selection_map.clear()
-		# Enable erase last cell in selection layer (disable yellow trail)
-		_map.selection_map.set_erase_last_cell(true)
+		leave_active_selection_map()
 
 		# Emit the signal with the path answer
 		_map.path_set.emit(_path_commands_answer, _start_coord, _last_mouse_coord)
-
-		set_active_selection_map_enabled(false)
 
 # Here the selection will start and the active selection map will be enabled
 func _on_selection_started() -> void:
@@ -151,3 +147,11 @@ func _on_selection_started() -> void:
 func set_active_selection_map_enabled(e: bool):
 	visible = e
 	set_process(e)
+
+func leave_active_selection_map():
+	# Let's clear the yellow selection
+	_map.selection_map.clear()
+	# Enable erase last cell in selection layer (disable yellow trail)
+	_map.selection_map.set_erase_last_cell(true)
+	# Disable itself
+	set_active_selection_map_enabled(false)
