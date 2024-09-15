@@ -25,6 +25,9 @@ func _ready():
 		get_tree().quit()
 		return
 	
+	# Hide NomePlaneta
+	%NomePlaneta.visible = false
+
 	# Connect Map signal
 	$Map.path_set.connect(_on_path_set)
 	# Connect Rocket signal from PhasesManager
@@ -76,26 +79,10 @@ func _on_level_num_finished():
 	# Show first phase
 	phases_manager.show_current_destination()
 
-## Emmited by the NextPhaseManager when the player clicks on the "Ok" button in a reverse destination
-func _on_play_reverse():
-	# Set the correct answer in the PhasesManager
-	phases_manager.set_correct_answer_reverse()
-
-	# Get the last answer of the player and the last answer color
-	var player_last_answer_index = phases_manager.get_current_destination_index() - 1
-	var player_last_answer = phases_manager.get_player_answer_at(player_last_answer_index)
-	
-	var last_line: Line2D = await $Map.get_last_line()
-	var last_answer_color = last_line.default_color
-
-	# The new last end coord should be the start coord of the last line
-	_temp_last_end = last_line.points[0]
-
-	# Show the reverse path menu
-	reverse_path_creator.show_reverse_path_menu($Map.get_line().default_color, player_last_answer, last_answer_color)
-
 # Emmited by Map when the player has finished creating the path for the rocket
 func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
+	%NomePlaneta.visible = false
+
 	# Get the current phase number
 	var path_index = phases_manager.get_current_destination_index()
 
@@ -174,12 +161,14 @@ func _on_phase_is_over(final_coords: Array):
 
 # Function to lose the game
 func _lose():
+	%NomePlaneta.visible = false
+	
 	$Map.clear_all_lines()
 
 	# Player lost (The message is set in phases_manager.player_won() function)
 	%LoseScene.visible = true
 
-	phases_manager.clear_answers()
+	phases_manager.player_lose()
 
 	# As the player lost, the last coord is now its respawn coord
 	_last_end_coord = _rocket_respawn_coord
@@ -187,9 +176,31 @@ func _lose():
 # Emmited by the NextPhaseManager when the player clicks on the "OK" button
 func _on_play():
 	$Map.enable_map()
+	%NomePlaneta.visible = true
+
+## Emmited by the NextPhaseManager when the player clicks on the "Ok" button in a reverse destination
+func _on_play_reverse():
+	%NomePlaneta.visible = true
+	
+	# Set the correct answer in the PhasesManager
+	phases_manager.set_correct_answer_reverse()
+
+	# Get the last answer of the player and the last answer color
+	var player_last_answer_index = phases_manager.get_current_destination_index() - 1
+	var player_last_answer = phases_manager.get_player_answer_at(player_last_answer_index)
+	
+	var last_line: Line2D = await $Map.get_last_line()
+	var last_answer_color = last_line.default_color
+
+	# The new last end coord should be the start coord of the last line
+	_temp_last_end = last_line.points[0]
+
+	# Show the reverse path menu
+	reverse_path_creator.show_reverse_path_menu($Map.get_line().default_color, player_last_answer, last_answer_color)
 
 # Emmited by the CriarPath screen, when the player has cancelled the path creation
 func _on_player_path_cancelled():
+	$Map.cancel_path()
 	_on_play()
 
 # Emmited by the LoseScene

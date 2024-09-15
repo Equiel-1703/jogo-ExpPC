@@ -6,14 +6,14 @@ func _ready():
 
 	self.visible = false
 
-func show_destination(planet_name: String):
+func show_destination():
 	# Set texts
-	_label_instrucoes.text = _message.format([planet_name])
+	_label_instrucoes.text = _message.format([GlobalGameData.destination_planet_name])
 	_label_destino.text = _destino_text
 
 	# Show instruction label if we are in the tutorial phase
 	_container_instrucoes.visible = GlobalGameData.tutorial_phase
-	_label_planeta.text = planet_name
+	_label_planeta.text = GlobalGameData.destination_planet_name
 
 	self.visible = true
 

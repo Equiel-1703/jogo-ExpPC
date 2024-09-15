@@ -26,7 +26,8 @@ func _process(_delta):
 	if _map.grid_map.get_cell_tile_data(_mouse_coord):
 		set_cell(_mouse_coord, Map.id_selection_tile, Vector2i(0,0), 0)
 	else:
-		return
+		if _map.active_selection_map.is_active_selection_map_enabled():
+			_map.active_selection_map.abort_selection()
 
 	if Input.is_action_just_pressed("LeftClick"):
 		selection_started.emit()

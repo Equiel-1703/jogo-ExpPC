@@ -14,6 +14,7 @@ var current_level: int = 1
 var current_phase: int
 var current_path: int
 var no_of_paths: int
+var destination_planet_name: String
 
 # Planets coordinates
 var PLANETS_COORDS = {

@@ -66,6 +66,9 @@ func _on_ok_pressed():
 	
 	# Add the moves to the line manager
 	line_manager.add_moves_to_line(player_path)
+	
+	# Clear the buttons
+	_clear_buttons()
 
 	# Emit the path done signal with the player path
 	player_path_done.emit(player_path)

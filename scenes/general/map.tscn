@@ -28,7 +28,7 @@ sources/2 = SubResource("TileSetAtlasSource_jgaeg")
 sources/1 = SubResource("TileSetAtlasSource_b573k")
 sources/3 = SubResource("TileSetAtlasSource_12l57")
 
-[node name="Map" type="Node2D"]
+[node name="Map" type="Node2D" groups=["map"]]
 script = ExtResource("1_s76ug")
 
 [node name="Grid" type="TileMapLayer" parent="."]

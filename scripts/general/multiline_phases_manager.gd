@@ -129,10 +129,18 @@ func get_player_answers() -> Array:
 func get_player_answer_at(index: int) -> Array:
 	return _player_answers[index].duplicate(true)
 
-func clear_answers():
+func player_lose():
+	# Clearing all answers
 	for i in range(GlobalGameData.no_of_paths):
 		_player_answers[i] = []
 		_correct_answers[i] = []
+	
+	# Reset destination index
+	_dest_index = 0
+
+	# Update GlobalGameData variables
+	GlobalGameData.current_path = _dest_index + 1
+	GlobalGameData.destination_planet_name = GlobalGameData.PLANETS_COORDS[_destinations[0].planet_name].planet_name
 
 ## Check if the player won the game.
 ##
@@ -248,6 +256,8 @@ func show_current_destination():
 	var destination = _get_current_destination()
 	# Get the planet name from the destination.
 	var planet_name = GlobalGameData.PLANETS_COORDS[destination.planet_name].planet_name
+	# Save planet name in GlobalGameData
+	GlobalGameData.destination_planet_name = planet_name
 
 	print("PhasesManager> Current destination: ", planet_name)
 
@@ -255,10 +265,10 @@ func show_current_destination():
 	match destination.mode:
 		Destination.DEST_MODE.NORMAL:
 			# Show the next phase screen.
-			next_phase_manager.show_destination(planet_name)
+			next_phase_manager.show_destination()
 		Destination.DEST_MODE.MIN_PATH:
 			# Show the min path screen.
-			next_phase_manager.show_destination_min_path(planet_name)
+			next_phase_manager.show_destination_min_path()
 		Destination.DEST_MODE.REVERSE:
 			# Show the reverse path creation screen.
-			next_phase_manager.show_destination_reverse(planet_name)
+			next_phase_manager.show_destination_reverse()

@@ -57,11 +57,17 @@ func enable_map():
 func clear_active_line():
 	line_manager.get_active_line().clear_points()
 
+func clear_last_line():
+	(await get_last_line()).clear_points()
+
 func clear_all_lines():
 	line_manager.clear_all_lines()
 
 func go_to_next_line():
 	line_manager.go_to_next_line()
+
+func cancel_path():
+	clear_active_line()
 
 func map_to_local(coord: Vector2) -> Vector2:
 	return grid_map.map_to_local(coord)

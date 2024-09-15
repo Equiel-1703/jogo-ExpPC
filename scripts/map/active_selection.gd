@@ -148,6 +148,9 @@ func set_active_selection_map_enabled(e: bool):
 	visible = e
 	set_process(e)
 
+func is_active_selection_map_enabled():
+	return visible
+
 func leave_active_selection_map():
 	# Let's clear the yellow selection
 	_map.selection_map.clear()
@@ -155,3 +158,7 @@ func leave_active_selection_map():
 	_map.selection_map.set_erase_last_cell(true)
 	# Disable itself
 	set_active_selection_map_enabled(false)
+
+func abort_selection():
+	_line.clear_points()
+	leave_active_selection_map()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://bi8chh3jjrgc3"]
+[gd_scene load_steps=42 format=3 uid="uid://bi8chh3jjrgc3"]
 
 [ext_resource type="Script" path="res://scripts/general/level_main.gd" id="1_u4ehn"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="2_sxtaq"]
@@ -7,8 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://dbryvpjdpfce5" path="res://res/SUN_SHINE.png" id="8_ov8m6"]
 [ext_resource type="Texture2D" uid="uid://yx5t6di3guma" path="res://res/SUN.png" id="9_638uh"]
 [ext_resource type="Shader" path="res://shaders/fire_heat.gdshader" id="10_cql53"]
+[ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="11_5wqy8"]
 [ext_resource type="Texture2D" uid="uid://bmptqxie7ni4c" path="res://res/Flame.png" id="11_ek25m"]
 [ext_resource type="Script" path="res://scripts/general/line_manager.gd" id="12_6blrr"]
+[ext_resource type="Script" path="res://scripts/general/nome_planeta_label.gd" id="12_udm1l"]
 [ext_resource type="PackedScene" uid="uid://di4d6nr6gxb8t" path="res://scenes/general/rocket.tscn" id="13_pbxw8"]
 [ext_resource type="PackedScene" uid="uid://b3dk076igvbbl" path="res://scenes/general/message.tscn" id="14_jwuti"]
 [ext_resource type="PackedScene" uid="uid://cig2gpf3kuqkq" path="res://scenes/criar_path/criar_path.tscn" id="14_v3fbq"]
@@ -116,6 +118,15 @@ _data = {
 "RESET": SubResource("Animation_useid"),
 "sun_shine": SubResource("Animation_fkius")
 }
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jxvo"]
+bg_color = Color(1, 0.803922, 0.219608, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4dho5"]
+font = ExtResource("11_5wqy8")
+font_size = 42
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Level_2" type="Node2D" node_paths=PackedStringArray("phases_manager", "path_creator", "reverse_path_creator") groups=["main_level"]]
 script = ExtResource("1_u4ehn")
@@ -275,6 +286,21 @@ libraries = {
 autoplay = "sun_shine"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 247.0
+offset_bottom = 106.0
+
+[node name="NomePlaneta" type="Label" parent="CanvasLayer/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_1jxvo")
+text = "PLANETA"
+label_settings = SubResource("LabelSettings_4dho5")
+script = ExtResource("12_udm1l")
 
 [node name="MessageScene" parent="CanvasLayer" groups=["alert"] instance=ExtResource("14_jwuti")]
 unique_name_in_owner = true
