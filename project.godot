@@ -11,8 +11,9 @@ config_version=5
 [application]
 
 config/name="Uma Aventura no Espaço"
-config/version="0.1"
+config/version="0.2"
 run/main_scene="res://scenes/main_screen/main_screen.tscn"
+config/use_custom_user_dir=true
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://icon.svg"
 
@@ -21,6 +22,8 @@ config/icon="res://icon.svg"
 PathProcessor="*res://scripts/singletons/path_processor.gd"
 GlobalGameData="*res://scripts/singletons/global_game_data.gd"
 JsonLoader="*res://scripts/singletons/json_loader.gd"
+JsonSaver="*res://scripts/singletons/json_saver.gd"
+Log="*res://scripts/singletons/log.gd"
 
 [display]
 

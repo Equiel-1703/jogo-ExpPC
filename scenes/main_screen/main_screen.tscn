@@ -4,13 +4,13 @@
 [ext_resource type="Texture2D" uid="uid://bhk673yex75io" path="res://res/CAPA.jpg" id="2_4s6nc"]
 [ext_resource type="FontFile" uid="uid://bci6fkabidcfe" path="res://fonts/Warzone.ttf" id="3_v7cdq"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5hpv3"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6msl4"]
 bg_color = Color(0, 0, 0, 0.588235)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4th0e"]
 bg_color = Color(1, 1, 1, 0.54902)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5hpv3"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_12nmo"]
 blend_mode = 2
@@ -50,9 +50,9 @@ size_flags_vertical = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_v7cdq")
 theme_override_font_sizes/font_size = 50
-theme_override_styles/normal = SubResource("StyleBoxEmpty_5hpv3")
 theme_override_styles/hover = SubResource("StyleBoxFlat_6msl4")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_4th0e")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5hpv3")
 text = "Jogar"
 
 [node name="ColorRect" type="ColorRect" parent="VBoxContainer/Jogar"]
@@ -71,9 +71,9 @@ size_flags_vertical = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_v7cdq")
 theme_override_font_sizes/font_size = 50
-theme_override_styles/normal = SubResource("StyleBoxEmpty_xwn4b")
 theme_override_styles/hover = SubResource("StyleBoxFlat_6msl4")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_4th0e")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_xwn4b")
 text = "Niveis"
 
 [node name="ColorRect" type="ColorRect" parent="VBoxContainer/Niveis"]
@@ -92,9 +92,9 @@ size_flags_vertical = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_v7cdq")
 theme_override_font_sizes/font_size = 50
-theme_override_styles/normal = SubResource("StyleBoxEmpty_xwn4b")
 theme_override_styles/hover = SubResource("StyleBoxFlat_6msl4")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_4th0e")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_xwn4b")
 text = "Sair"
 
 [node name="ColorRect" type="ColorRect" parent="VBoxContainer/Sair"]
