@@ -18,6 +18,10 @@ var _last_end_coord: Vector2
 # Coordenada de fim do caminho temporária (é usada caso o jogador cancele a criação do path)
 var _temp_last_end: Vector2
 
+# Variaveis de controle de tempo
+var _start_time: float
+var _end_time: float
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if not phases_manager:
@@ -151,13 +155,25 @@ func _on_player_path_done(player_path_answer: Array):
 # Emmited by the PhasesManager node, when the rocket has finished moving
 func _on_phase_is_over(final_coords: Array):
 	if check_if_player_won(final_coords):
+		Log.num_acertos += 1
+
+		# Calculate the time spent in the phase
+		_end_time = Time.get_unix_time_from_system()
+		var time_spent = _end_time - _start_time
+		Log.add_tempo_por_fase(GlobalGameData.current_level, GlobalGameData.current_phase, time_spent)
+
 		# Player won
 		%WinScene.visible = true
 
 		# Get the last coord to use as the respawn coord
 		_rocket_respawn_coord = _last_end_coord
 	else:
+		Log.num_erros += 1
+
 		_lose()
+	
+	# Save log
+	Log.save_log()
 
 # Function to lose the game
 func _lose():
@@ -168,6 +184,7 @@ func _lose():
 	# Player lost (The message is set in phases_manager.player_won() function)
 	%LoseScene.visible = true
 
+	# Set PhasesManager internal state to player lost
 	phases_manager.player_lose()
 
 	# As the player lost, the last coord is now its respawn coord
@@ -175,12 +192,18 @@ func _lose():
 
 # Emmited by the NextPhaseManager when the player clicks on the "OK" button
 func _on_play():
+	_setup_to_play()
 	$Map.enable_map()
+
+func _setup_to_play():
 	%NomePlaneta.visible = true
+	
+	# Starting time count
+	_start_time = Time.get_unix_time_from_system()
 
 ## Emmited by the NextPhaseManager when the player clicks on the "Ok" button in a reverse destination
 func _on_play_reverse():
-	%NomePlaneta.visible = true
+	_setup_to_play()
 	
 	# Set the correct answer in the PhasesManager
 	phases_manager.set_correct_answer_reverse()
@@ -232,3 +255,7 @@ func lose_immediately(lose_screen_text: String):
 
 func check_if_player_won(coords: Array) -> bool:
 	return phases_manager.player_won($Map.convert_local_array_to_map(coords))
+
+func _on_tree_exiting() -> void:
+	# Save log
+	Log.save_log()

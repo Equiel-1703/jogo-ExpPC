@@ -346,3 +346,5 @@ level_json_path = "res://levels_json/level_1.json"
 next_level = ExtResource("20_cbin1")
 rocket = NodePath("../Rocket")
 next_phase_manager = NodePath("../CanvasLayer/NextPhaseManager")
+
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]

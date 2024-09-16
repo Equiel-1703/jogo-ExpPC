@@ -199,11 +199,17 @@ func go_to_next_destination():
 	else:
 		# If not, just show the next destination.
 		show_current_destination()
-	
+
+var level_is_over: bool = false
+
 ## Update the internal variables to go to the next phase.
 func go_to_next_phase():
 	# If there are no more phases, the level is over.
 	if _phases.size() == 0:
+		# The level is over.
+		level_is_over = true
+
+		# Debug message.
 		print("Level " + str(GlobalGameData.current_level) + " is over!")
 
 		# Increase level in GlobalGameData.
@@ -239,15 +245,11 @@ func go_to_next_phase():
 	_player_answers.resize(GlobalGameData.no_of_paths)
 	_correct_answers.resize(GlobalGameData.no_of_paths)
 
-	# Debug print of the next destinations.
-	var str_out: String = "PhasesManager> Next destinations: "
-	var sep: String = ", "
-	for d in _destinations:
-		str_out += d._to_string() + sep
-	print(str_out.trim_suffix(sep))
-
 ## Show the current destination on the screen.
 func show_current_destination():
+	if level_is_over:
+		return
+	
 	if _current_phase_num > 1:
 		# The first phase is the tutorial, now the player is in the second phase upwards.
 		GlobalGameData.tutorial_phase = false
@@ -258,8 +260,8 @@ func show_current_destination():
 	var planet_name = GlobalGameData.PLANETS_COORDS[destination.planet_name].planet_name
 	# Save planet name in GlobalGameData
 	GlobalGameData.destination_planet_name = planet_name
-
-	print("PhasesManager> Current destination: ", planet_name)
+	# Debug message.
+	print("PhasesManager> Going to planet " + planet_name + "!")
 
 	# Check the destination mode and show the screen accordingly.
 	match destination.mode:
