@@ -4,18 +4,62 @@
 		
 		[
 			{
-				"planet_name": "venus",
+				"planet_name": "marte",
 				"mode": 0
 			},
 			{
+				"planet_name": "jupiter",
+				"mode": 0
+			}
+		],
+		[
+			{
+				"planet_name": "saturno",
+				"mode": 0
+			},
+			{
+				"planet_name": "jupiter",
+				"mode": 2
+			}
+		],
+		[
+			{
+				"planet_name": "urano",
+				"mode": 0
+			},
+			{
+				"planet_name": "netuno",
+				"mode": 0
+			}
+		],
+		[
+			{
+				"planet_name": "saturno",
+				"mode": 0
+			},
+			{
+				"planet_name": "jupiter",
+				"mode": 0
+			}
+		],
+		[
+			{
 				"planet_name": "terra",
+				"mode": 0
+			},
+			{
+				"planet_name": "jupiter",
 				"mode": 2
 			}
 		],
 		[
 			{
 				"planet_name": "marte",
-				"mode": 1
+				"mode":0
+			},
+			{
+				"planet_name": "terra",
+				"mode": 0
 			}
 		]
 	]
