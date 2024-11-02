@@ -190,6 +190,9 @@ func go_to_previous_destination():
 		_dest_index = 0
 		GlobalGameData.current_path = _dest_index + 1
 		
+		# Show the current destination.
+		show_current_destination()
+
 		return
 	else:
 		# Remove the last destination from the _last_destinations array.
