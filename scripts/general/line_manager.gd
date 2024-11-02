@@ -79,8 +79,8 @@ func go_to_next_line():
 	_last_index = _active_index
 	_active_index = (_active_index + 1) % _array_of_lines.size()
 
-## Set the start position of the active line to the end of the last and follow the moves
-func add_moves_to_line(moves: Array):
+## Set the start position of the active line to the end of the last line and follow the moves. The last point of the line will be returned.
+func add_moves_to_line(moves: Array) -> Vector2:
 	var line = get_active_line()
 
 	# Get the last end coord
@@ -91,5 +91,5 @@ func add_moves_to_line(moves: Array):
 	# Add the moves to the active line
 	for move in moves:
 		line.add_point(line.points[-1] + (PathProcessor.move_to_vector2(move) * GlobalGameData.MAP_TILE_SIZE))
-
 	
+	return line.points[-1]

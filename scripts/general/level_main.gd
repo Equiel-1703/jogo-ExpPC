@@ -39,7 +39,12 @@ func _ready():
 
 	# Connect CriarPath's signals
 	for pc in get_tree().get_nodes_in_group("path_creators"):
-		pc.player_path_done.connect(_on_player_path_done)
+		if pc.has_signal("player_path_done"):
+			pc.player_path_done.connect(_on_player_path_done)
+
+		if pc.has_signal("player_reverse_path_done"):
+			pc.player_reverse_path_done.connect(_on_player_reverse_path_done)
+
 		if pc.has_signal("player_path_cancelled"):
 			pc.player_path_cancelled.connect(_on_player_path_cancelled)
 
@@ -134,6 +139,14 @@ func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
 	$Map.disable_map()
 	path_creator.show_path_menu(path_answer.size())
 
+# Emmited by the CriarPathReverse screen, when the player has finished creating the reverse path
+func _on_player_reverse_path_done(player_reverse_path_answer: Array, reverse_last_coord: Vector2):
+	# Save new last end coord
+	_temp_last_end = reverse_last_coord
+
+	# Do the same as the normal path
+	_on_player_path_done(player_reverse_path_answer)
+
 # Emmited by the CriarPath screen, when the player has finished creating the path
 func _on_player_path_done(player_path_answer: Array):
 	# Set the new last end coord (player didn't cancel the path creation)
@@ -192,8 +205,8 @@ func _lose():
 	# As the player lost, the last coord is now its respawn coord
 	_last_end_coord = _rocket_respawn_coord
 
-# Emmited by the NextPhaseManager when the player clicks on the "OK" button
-# DOCUMENTAR MELHOR ISSO AQUI (ESSA FUNCÇÃO É CHAMADA EM OTROS LUGARES TBM)
+# Emmited by the NextPhaseManager when the player clicks on the "OK" button, or whenever the game will be played normally.
+# This includes: _on_player_path_cancelled and _on_play_again
 func _on_play():
 	_setup_to_play()
 	$Map.enable_map()
@@ -216,7 +229,6 @@ func _on_play_reverse():
 	var player_last_answer = phases_manager.get_player_answer_at(player_last_answer_index)
 	
 	var last_line: Line2D = await $Map.get_last_line()
-	var last_answer_color = last_line.default_color
 
 	# The new last end coord should be the start coord of the last line
 	_temp_last_end = last_line.points[0]

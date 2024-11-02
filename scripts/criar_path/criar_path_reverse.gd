@@ -1,7 +1,7 @@
 extends Control
 class_name CriarPathReverse
 
-signal player_path_done(player_path_answer: Array)
+signal player_reverse_path_done(player_path_answer: Array, reverse_last_coord: Vector2)
 
 @export var line_manager: LineManager
 
@@ -65,13 +65,13 @@ func _on_ok_pressed():
 	PathProcessor.print_moves(player_path)
 	
 	# Add the moves to the line manager
-	line_manager.add_moves_to_line(player_path)
+	var reverse_last_coord = line_manager.add_moves_to_line(player_path)
 	
 	# Clear the buttons
 	_clear_buttons()
 
 	# Emit the path done signal with the player path
-	player_path_done.emit(player_path)
+	player_reverse_path_done.emit(player_path, reverse_last_coord)
 
 func _on_reset_pressed():
 	print("x Player resetted reverse path creation x")
