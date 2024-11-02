@@ -14,6 +14,8 @@ const MOVE_SPEED = 1.0
 var _tile_size = GlobalGameData.MAP_TILE_SIZE.x
 var _commands_to_process: Array
 var _execute_flag: bool
+var _is_last_array: bool = false
+var _is_last_command: bool = false
 var _exploded: bool
 
 @onready var _propulsion = $Propulsion
@@ -40,9 +42,17 @@ var _t: float = 0.0
 func execute_move_commands(commands_matrix: Array) -> void:
 	var final_coords_array = []
 
+	# Reset the last array and last command flags
+	_is_last_array = false
+	_is_last_command = false
+
 	for command_array in commands_matrix:
 		if not command_array:
 			break
+		
+		# Check if this is the last array of commands
+		if command_array == commands_matrix[-1]:
+			_is_last_array = true
 		
 		# Store the commands to process
 		_commands_to_process = command_array
@@ -56,6 +66,9 @@ func execute_move_commands(commands_matrix: Array) -> void:
 
 		# Store the final position of the rocket
 		final_coords_array.push_back(final_coord)
+
+	# Just before the function ends, set the rocket sprite to point up
+	# self.rotation_degrees = 0
 
 	# Emit the signal with the final coordinates
 	moves_matrix_completed.emit(final_coords_array)	
@@ -74,6 +87,8 @@ func _on_explosion_finished():
 func _execute_next_command() -> void:
 	if _commands_to_process.size() > 0:
 		var command = _commands_to_process.pop_front()
+		_is_last_command = _commands_to_process.size() == 0
+
 		_destination_pos = self.position
 		
 		match command:
@@ -108,6 +123,11 @@ func _physics_process(delta):
 			_t += MOVE_SPEED * delta
 		
 			self.position = self.position.lerp(_destination_pos, _t)
+			
+			if _is_last_array and _is_last_command:
+				# Adjust rotation to zero degrees slowly
+				self.rotation_degrees = lerp(self.rotation_degrees, 0.0, _t)
+
 			# Used for debug purposes only
 			# print(_t)
 			# print(self.position)
