@@ -7,16 +7,11 @@ const _invalid_int_alert: String = "Por favor, insira um tamanho de rota válido
 const _invalid_negative_alert: String = "Por favor, insira um tamanho de rota positivo!"
 const _route_too_big: String = "O tamanho máximo de uma rota é 30!"
 
-func show_path_menu(_new_path_lenght: int, path_color: Color):
+func show_path_menu(_new_path_lenght: int):
+	_path_menu_basic_setup()
+
 	# We will read the path size first
 	_reading_path_size = true
-
-	# Set path color
-	_path_colors.append(path_color)
-
-	# Hide gradient background and set the normal background visible
-	%GradientBG.visible = false
-	%BG.visible = true
 
 	# Hide path buttons
 	%PathButtons.visible = false
@@ -27,9 +22,6 @@ func show_path_menu(_new_path_lenght: int, path_color: Color):
 
 	# Hide alert label
 	%AlertLabel.visible = false
-
-	# Show instruction label if we are in the tutorial phase
-	%InstructionLabel.visible = GlobalGameData.tutorial_phase
 
 	self.visible = true
 

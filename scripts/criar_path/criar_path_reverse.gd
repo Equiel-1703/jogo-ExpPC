@@ -81,10 +81,10 @@ func _on_reset_pressed():
 		var button: DirectionButton = %PathButtons.get_child(i)
 		button.button_direction = _last_path[i]
 
-func show_reverse_path_menu(new_path_color: Color, last_path: Array, last_path_color: Color):
-	_new_path_color = new_path_color
+func show_reverse_path_menu(last_path: Array):
 	_last_path = last_path
-	_last_path_color = last_path_color
+	_new_path_color = line_manager.get_active_line_color()
+	_last_path_color = line_manager.get_last_line_color(1)
 
 	# Hide gradient background and set the normal background visible
 	%GradientBG.visible = false
@@ -94,4 +94,5 @@ func show_reverse_path_menu(new_path_color: Color, last_path: Array, last_path_c
 	%InstructionLabel.visible = GlobalGameData.tutorial_phase
 
 	_load_buttons()
+
 	self.visible = true

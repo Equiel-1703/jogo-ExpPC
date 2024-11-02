@@ -61,6 +61,15 @@ func get_active_line() -> Line2D:
 func get_last_line() -> Line2D:
 	return _array_of_lines[_last_index]
 
+## Returns the active line color.
+func get_active_line_color() -> Color:
+	return get_active_line().default_color
+
+## Returns the last i line color, based on the active index.
+func get_last_line_color(i: int) -> Color:
+	i = (_active_index - i) % _array_of_lines.size()
+	return _array_of_lines[i].default_color
+
 ## Will set the index to the next line in the array. If we were in the last line, the signal all_lines_looped will be emitted and the active index will reset to 0.
 func go_to_next_line():
 	if _active_index == _array_of_lines.size() - 1:

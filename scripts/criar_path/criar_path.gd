@@ -5,14 +5,27 @@ signal player_path_done(player_path_answer: Array)
 signal player_path_cancelled()
 
 @export var phases_manager: PhasesManager
+@export var line_manager: LineManager
 
 var _direction_button: PackedScene
 var _new_path_len: int
-var _path_colors: Array
+var _num_of_answers: int
+var _last_answers: Array
+# var _path_colors: Array = []
 
 func _ready():
+	if not phases_manager:
+		printerr("CriarPath> Phases manager is not set.")
+		get_tree().quit()
+		return
+	
+	if not line_manager:
+		printerr("CriarPath> Line manager is not set.")
+		get_tree().quit()
+		return
+	
 	# Load _direction_button scene
-	_direction_button = preload ("res://scenes/general/direction_button.tscn")
+	_direction_button = preload("res://scenes/general/direction_button.tscn")
 	
 	# Hide the menu
 	self.visible = false
@@ -20,18 +33,11 @@ func _ready():
 func _load_buttons():
 	DirectionButton.reset_labels_count()
 
-	# Let's create the buttons for the already set answers
-	var last_answers = phases_manager.get_player_answers()
-
 	# Iterate over last answers
-	for i in range(last_answers.size()):
-		var answer = last_answers[i]
+	for i in range(_num_of_answers):
+		var answer = _last_answers[i]
 
-		# Check if there are no more answers
-		if not answer:
-			break
-
-		var current_color = _path_colors[i]
+		var current_color = line_manager.get_last_line_color(_num_of_answers - i)
 
 		# Iterate over the directions
 		for j in range(answer.size()):
@@ -42,7 +48,7 @@ func _load_buttons():
 			%PathButtons.add_child(button)
 
 	# Create the buttons for the new path
-	var new_path_color = _path_colors.back()
+	var new_path_color = line_manager.get_active_line_color()
 
 	for i in range(_new_path_len):
 		var button = _direction_button.instantiate()
@@ -56,17 +62,12 @@ func _clear_buttons():
 func _on_ok_pressed():
 	self.visible = false
 
-	var last_answers = phases_manager.get_player_answers()
 	var player_path = []
 
 	# Update last answers
-	for i in range(last_answers.size()):
-		var answer = last_answers[i]
+	for i in range(_num_of_answers):
+		var answer = _last_answers[i]
 
-		# Check if there are no more answers
-		if not answer:
-			break
-		
 		player_path.clear()
 		
 		# Now we will cycle trough the buttons and get the directions
@@ -136,9 +137,10 @@ func _on_cancelar_pressed():
 
 	player_path_cancelled.emit()
 
-func show_path_menu(new_path_lenght: int, path_color: Color):
-	_new_path_len = new_path_lenght
-	_path_colors.append(path_color)
+func _path_menu_basic_setup():
+	# Get the last answers and calculate the number of valid answers
+	_last_answers = phases_manager.get_player_answers()
+	_num_of_answers = _last_answers.filter(func(el): if el != null: return el.size() > 0 else: return false).size()
 
 	# Hide gradient background and set the normal background visible
 	%GradientBG.visible = false
@@ -147,5 +149,10 @@ func show_path_menu(new_path_lenght: int, path_color: Color):
 	# Show instruction label if we are in the tutorial phase
 	%InstructionLabel.visible = GlobalGameData.tutorial_phase
 
+func show_path_menu(new_path_lenght: int):
+	_path_menu_basic_setup()
+
+	_new_path_len = new_path_lenght
+	
 	_load_buttons()
 	self.visible = true

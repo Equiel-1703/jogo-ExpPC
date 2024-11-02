@@ -122,6 +122,8 @@ func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
 			print("The start position of the 2nd path is different from the end position of the 1st path")
 			%MessageScene.show_message("Você deve começar o segundo caminho no final do primeiro!")
 
+		%NomePlaneta.visible = true
+
 		return
 
 	phases_manager.set_correct_answer(path_answer)
@@ -130,7 +132,7 @@ func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
 	_temp_last_end = end_coord
 
 	$Map.disable_map()
-	path_creator.show_path_menu(path_answer.size(), $Map.get_line().default_color)
+	path_creator.show_path_menu(path_answer.size())
 
 # Emmited by the CriarPath screen, when the player has finished creating the path
 func _on_player_path_done(player_path_answer: Array):
@@ -191,6 +193,7 @@ func _lose():
 	_last_end_coord = _rocket_respawn_coord
 
 # Emmited by the NextPhaseManager when the player clicks on the "OK" button
+# DOCUMENTAR MELHOR ISSO AQUI (ESSA FUNCÇÃO É CHAMADA EM OTROS LUGARES TBM)
 func _on_play():
 	_setup_to_play()
 	$Map.enable_map()
@@ -219,7 +222,7 @@ func _on_play_reverse():
 	_temp_last_end = last_line.points[0]
 
 	# Show the reverse path menu
-	reverse_path_creator.show_reverse_path_menu($Map.get_line().default_color, player_last_answer, last_answer_color)
+	reverse_path_creator.show_reverse_path_menu(player_last_answer)
 
 # Emmited by the CriarPath screen, when the player has cancelled the path creation
 func _on_player_path_cancelled():
