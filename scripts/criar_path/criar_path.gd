@@ -100,7 +100,7 @@ func _on_ok_pressed():
 	# Emit the path done signal with the player path
 	player_path_done.emit(player_path)
 
-var label_2: String = "Ver menu"
+var label_2: String = "Ver vetor"
 var temp: String
 
 func _on_ver_mapa_pressed():
