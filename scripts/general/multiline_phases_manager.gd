@@ -122,6 +122,9 @@ func set_correct_answer(answer: Array):
 func set_correct_answer_reverse():
 	_correct_answers[_dest_index] = PathProcessor.invert_moves(_correct_answers[_dest_index - 1])
 
+func has_next_destination() -> bool:
+	return _dest_index < _destinations.size() - 1
+
 ## Get player answers
 func get_player_answers() -> Array:
 	return _player_answers.duplicate(true)
@@ -220,7 +223,7 @@ func go_to_next_phase():
 			get_tree().change_scene_to_packed(next_level)
 		else:
 			# The game is over.
-			get_tree().quit()
+			get_tree().change_scene_to_packed(GlobalGameData.main_screen)
 		return
 
 	# Increment the current phase number.
