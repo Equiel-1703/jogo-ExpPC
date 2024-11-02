@@ -93,6 +93,10 @@ func show_reverse_path_menu(last_path: Array):
 	# Show instruction label if we are in the tutorial phase
 	%InstructionLabel.visible = GlobalGameData.tutorial_phase
 
+	# Clear buttons (if any)
+	_clear_buttons()
+
+	# Load the buttons
 	_load_buttons()
 
 	self.visible = true

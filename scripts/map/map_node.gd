@@ -66,6 +66,9 @@ func clear_all_lines():
 func go_to_next_line():
 	line_manager.go_to_next_line()
 
+func go_to_previous_line():
+	line_manager.go_to_previous_line()
+
 func cancel_path():
 	clear_active_line()
 

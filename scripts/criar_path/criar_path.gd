@@ -154,5 +154,10 @@ func show_path_menu(new_path_lenght: int):
 
 	_new_path_len = new_path_lenght
 	
+	# Clear existing buttons (if any)
+	_clear_buttons()
+	
+	# Load new buttons
 	_load_buttons()
+
 	self.visible = true

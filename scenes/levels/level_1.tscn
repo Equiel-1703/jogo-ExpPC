@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://cnjmi0oabpifi"]
+[gd_scene load_steps=44 format=3 uid="uid://cnjmi0oabpifi"]
 
 [ext_resource type="Script" path="res://scripts/general/level_main.gd" id="1_jp7ys"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="1_woosl"]
@@ -25,6 +25,7 @@
 [ext_resource type="Script" path="res://scripts/next_phase/next_phase_reverse.gd" id="20_r63s0"]
 [ext_resource type="Script" path="res://scripts/general/multiline_phases_manager.gd" id="20_xjjgy"]
 [ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="21_kuupl"]
+[ext_resource type="PackedScene" uid="uid://2jo5hkcplmdt" path="res://scenes/pause_menu/pause_menu.tscn" id="24_q7nvr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vkoee"]
 shader = ExtResource("10_xca78")
@@ -346,11 +347,14 @@ unique_name_in_owner = true
 [node name="LevelNum" parent="CanvasLayer" instance=ExtResource("18_m3eb5")]
 unique_name_in_owner = true
 
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("24_q7nvr")]
+unique_name_in_owner = true
+process_mode = 3
+visible = false
+
 [node name="LevelPhasesManager" type="Node" parent="." node_paths=PackedStringArray("rocket", "next_phase_manager")]
 script = ExtResource("20_xjjgy")
 level_json_path = "res://levels_json/level_1.json"
 next_level = ExtResource("20_cbin1")
 rocket = NodePath("../Rocket")
 next_phase_manager = NodePath("../CanvasLayer/NextPhaseManager")
-
-[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]

@@ -79,6 +79,17 @@ func go_to_next_line():
 	_last_index = _active_index
 	_active_index = (_active_index + 1) % _array_of_lines.size()
 
+func go_to_previous_line():
+	if _active_index <= 0:
+		all_lines_looped.emit()
+
+		_last_index = 0
+		_active_index = _array_of_lines.size() - 1
+		return
+	
+	_last_index = _active_index
+	_active_index -= 1
+
 ## Set the start position of the active line to the end of the last line and follow the moves. The last point of the line will be returned.
 func add_moves_to_line(moves: Array) -> Vector2:
 	var line = get_active_line()

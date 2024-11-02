@@ -21,8 +21,8 @@ signal phase_is_over(final_coords: Array)
 var _phases: Array = []
 # Destinations of the phase. It is an Array of Destination.
 var _destinations: Array = []
-# Last destinations visited by the player.
-var _last_destinations: Array
+# Last _destinations visited by the player. This is a stack with arrays of last destinations (Strings).
+var _last_destinations: Array = []
 
 # Player and correct answers for the current phase. These are Arrays of Arrays.
 var _player_answers: Array
@@ -52,8 +52,6 @@ func _ready():
 	# Load the level JSON file.
 	_phases = JsonLoader.load_level(level_json_path)
 
-	_last_destinations = ["terra"]
-
 	# Go to the first phase.
 	go_to_next_phase()
 
@@ -76,15 +74,14 @@ func _check_minimum_path(player_answer_index: int) -> bool:
 	return player_answer_size <= minimum_dist
 
 ## Reset _last_destinations array and configure the reverse destinations.
-func _parse_destinations():
-	# Maintain only the last element from last destinations array.
-	_last_destinations = [_last_destinations.pop_back()]
+func _verify_destinations():
+	var this_last_dest = get_last_destination()
 	
 	if _destinations[0].mode == Destination.DEST_MODE.REVERSE:
 		# The first destination can't be a reverse destination. Turn it to normal.
 		_destinations[0] = Destination.DEST_MODE.NORMAL
 	
-	while _destinations.size() > 0 and _destinations[0].planet_name == _last_destinations[0]:
+	while _destinations.size() > 0 and _destinations[0].planet_name == this_last_dest:
 		# If the first destination is the same as the last destination, remove it.
 		_destinations.pop_front()
 
@@ -105,6 +102,9 @@ func get_current_phase_num() -> int:
 
 func get_current_destination_index() -> int:
 	return _dest_index
+
+func get_last_destination() -> String:
+	return _last_destinations[-1]
 
 ## Set the player answer for the current destination.
 func set_player_answer(answer: Array):
@@ -177,15 +177,42 @@ func player_won(_rocket_final_coords: Array) -> bool:
 	# If nothing failed, the player won the phase.
 	return true
 
+## Go to previous destination.
+func go_to_previous_destination():
+	# Decrement the path index.
+	_dest_index -= 1
+	GlobalGameData.current_path = _dest_index + 1
+
+	# If the path index is less than 0, then we cannot go back.
+	# I'm not allowing the player to go back between phases, as this would be too complex.
+	if _dest_index < 0:
+		# Reset the path index and the current path.
+		_dest_index = 0
+		GlobalGameData.current_path = _dest_index + 1
+		
+		return
+	else:
+		# Remove the last destination from the _last_destinations array.
+		# This is because we are going back, and the last destination is where we are now.
+		_last_destinations.pop_back()
+
+		# Now, we need to remove the last answers from the player and correct answers arrays.
+		_player_answers[_dest_index].clear()
+		_correct_answers[_dest_index].clear()
+
+		# Show the previous destination.
+		show_current_destination()
+
 ## Go to next destination.
 func go_to_next_destination():
-	_last_destinations.append(_destinations[_dest_index].planet_name)
+	# Save the current destination in the _last_destinations stack.
+	_last_destinations.push_back(_destinations[_dest_index].planet_name)
 
-	# Increment the path index.
+	# Increment the path index to go to the next destination.
 	_dest_index += 1
 	GlobalGameData.current_path = _dest_index + 1
 
-	# If the path index is greater than the destinations size, we setted all paths.
+	# If the path index is greater than the _destinations size, we setted all paths.
 	if _dest_index > _destinations.size() - 1:
 		# Reset the current path.
 		_dest_index = 0
@@ -205,8 +232,16 @@ var level_is_over: bool = false
 
 ## Update the internal variables to go to the next phase.
 func go_to_next_phase():
-	# If there are no more phases, the level is over.
-	if _phases.size() == 0:
+	# Save the current destination in _last_destinations.
+	if _last_destinations.size() == 0:
+		# If the stack is empty, add the first destination (always "terra").
+		_last_destinations.push_front("terra")
+	else:
+		# If not, create a new array with the last destination of the previous one
+		_last_destinations = [_last_destinations[-1]]
+
+	# Check if the level is over.
+	if _current_phase_num == _phases.size():
 		# The level is over.
 		level_is_over = true
 
@@ -230,8 +265,8 @@ func go_to_next_phase():
 	_dest_index = 0
 
 	# Get the next destinations from the next phase.
-	_destinations = _phases.pop_front()
-	_parse_destinations()
+	_destinations = _phases[_current_phase_num - 1]
+	_verify_destinations()
 	
 	# Update global variables.
 	GlobalGameData.current_phase = _current_phase_num

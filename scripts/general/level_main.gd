@@ -60,6 +60,9 @@ func _ready():
 	# Connect LevelNum signal
 	%LevelNum.level_num_finished.connect(_on_level_num_finished)
 
+	# Connect Pause menu signal
+	%PauseMenu.undo_last_route.connect(_on_undo_last_route)
+
 	# Connecting barriers explosion signal
 	for barrier in $Barriers.get_children():
 		barrier.area_entered.connect(_on_explosion_area_entered)
@@ -82,6 +85,16 @@ func _ready():
 	# Show level num
 	%LevelNum.level_num = GlobalGameData.current_level
 	%LevelNum.show_level_num()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		print("LevelMain> Salvando Log antes de fechar...")
+		
+		# Save log
+		Log.save_log()
+
+		# Close the game
+		get_tree().quit()
 
 # Emmited by LevelNum when the level number has finished showing
 func _on_level_num_finished():
@@ -166,6 +179,26 @@ func _on_player_path_done(player_path_answer: Array):
 
 	# Go to next destination in the phase
 	phases_manager.go_to_next_destination()
+
+# Emmited by the PauseMenu node, when the player clicks on the "Undo last route" button
+func _on_undo_last_route():
+	$Map.clear_active_line()
+	$Map.go_to_previous_line()
+	$Map.clear_active_line()
+	$Map.disable_map()
+
+	# Hide any CriarPath screen
+	for pc in get_tree().get_nodes_in_group("path_creators"):
+		pc.visible = false
+
+	phases_manager.go_to_previous_destination()
+
+	# Set the last end to the previous destination
+	var previous_coord = GlobalGameData.PLANETS_COORDS[phases_manager.get_last_destination()].planet_coord
+	previous_coord = $Map.map_to_local(previous_coord)
+
+	_last_end_coord = previous_coord
+	
 
 # Emmited by the PhasesManager node, when the rocket has finished moving
 func _on_phase_is_over(final_coords: Array):
@@ -270,7 +303,3 @@ func lose_immediately(lose_screen_text: String):
 
 func check_if_player_won(coords: Array) -> bool:
 	return phases_manager.player_won($Map.convert_local_array_to_map(coords))
-
-func _on_tree_exiting() -> void:
-	# Save log
-	Log.save_log()

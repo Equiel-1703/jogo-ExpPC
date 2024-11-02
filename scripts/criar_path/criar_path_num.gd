@@ -63,6 +63,9 @@ func _on_ok_pressed():
 		_show_alert(_route_too_big)
 		return
 
+	# Clear buttons (if any)
+	_clear_buttons()
+	
 	# Load the buttons and make them visible
 	_load_buttons()
 	%PathButtons.visible = true
