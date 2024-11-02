@@ -1,8 +1,6 @@
 extends Node
 class_name PhasesManager
 
-signal reverse_path
-
 ## Important definitions for the PhasesManager class:
 ##
 ## * Level: a level is a list of phases. After all phases completed, the level is over.
