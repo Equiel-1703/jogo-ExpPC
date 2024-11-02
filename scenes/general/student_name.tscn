@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bid4tmoowipf7"]
+[gd_scene load_steps=8 format=3 uid="uid://bid4tmoowipf7"]
 
 [ext_resource type="Script" path="res://scripts/general/student_name.gd" id="1_h1uka"]
 [ext_resource type="Texture2D" uid="uid://bhk673yex75io" path="res://res/CAPA.jpg" id="1_mwqbe"]
@@ -10,6 +10,12 @@ shader = ExtResource("2_d4oxb")
 shader_parameter/lod = 3.0
 shader_parameter/brightness_decrease = 0.075
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbndi"]
+bg_color = Color(1, 0.805, 0.22, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qj3tu"]
+bg_color = Color(1, 0, 0.219608, 1)
+
 [node name="StudentName" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -20,6 +26,7 @@ grow_vertical = 2
 script = ExtResource("1_h1uka")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
 offset_right = 1923.0
 offset_bottom = 980.0
 texture = ExtResource("1_mwqbe")
@@ -34,6 +41,7 @@ offset_bottom = 980.0
 color = Color(1, 1, 1, 0)
 
 [node name="InstructionLabel" type="Label" parent="."]
+layout_mode = 0
 offset_right = 1890.0
 offset_bottom = 451.0
 text = "Digite seu nome"
@@ -42,6 +50,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SetNumContainer" type="CenterContainer" parent="."]
+layout_mode = 0
 offset_right = 1890.0
 offset_bottom = 980.0
 
@@ -53,4 +62,33 @@ theme_override_font_sizes/font_size = 50
 placeholder_text = "Nome"
 alignment = 1
 
+[node name="Buttons" type="HBoxContainer" parent="."]
+offset_top = 873.0
+offset_right = 1890.0
+offset_bottom = 980.0
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Ok" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_lbndi")
+text = "Ok"
+
+[node name="Cancelar" type="Button" parent="Buttons"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_qj3tu")
+text = "Cancelar"
+
 [connection signal="text_submitted" from="SetNumContainer/TamRotaLineField" to="." method="_on_tam_rota_line_field_text_submitted"]
+[connection signal="pressed" from="Buttons/Ok" to="." method="_on_ok_pressed"]
+[connection signal="pressed" from="Buttons/Cancelar" to="." method="_on_cancelar_pressed"]
