@@ -6,4 +6,4 @@ func _on_tam_rota_line_field_text_submitted(new_text: String) -> void:
 	Log.nome_aluno = new_text
 
 	# Going to first level
-	get_tree().change_scene_to_packed(GlobalGameData.start_level_scene)
+	get_tree().change_scene_to_file(GlobalGameData.start_level_scene_path)

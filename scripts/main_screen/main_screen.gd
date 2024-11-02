@@ -16,8 +16,9 @@ func _ready():
 		printerr("MainScreen> Error loading levels.json: it is not an Array.")
 		get_tree().quit()
 	
-	# Loading first level scene
-	GlobalGameData.start_level_scene = load(GlobalGameData.levels_table[0]["scene_path"])
+	# Saving first level scene path if not set
+	if GlobalGameData.start_level_scene_path == "":
+		GlobalGameData.start_level_scene_path = GlobalGameData.levels_table[0]["scene_path"]
 	
 	# Printing levels table
 	for item in GlobalGameData.levels_table:

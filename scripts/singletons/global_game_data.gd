@@ -6,7 +6,8 @@ const MAX_PATH_LENGTH: int = 30
 
 var player_won: bool = false
 var tutorial_phase: bool = true
-var start_level_scene: PackedScene
+var start_level_scene_path: String
+var start_level_index: int = 0
 var levels_table: Array
 
 # Current game status
@@ -15,6 +16,9 @@ var current_phase: int
 var current_path: int
 var no_of_paths: int
 var destination_planet_name: String
+
+# Main screen packed scene
+var main_screen: PackedScene = preload("res://scenes/main_screen/main_screen.tscn")
 
 # Planets coordinates
 var PLANETS_COORDS = {
@@ -45,3 +49,8 @@ func get_minimum_distance(planet1: String, planet2: String) -> int:
 	var planet2_index = PLANETS_COORDS[planet2].planet_index
 
 	return _MIN_DISTANCES[planet1_index][planet2_index]
+
+func set_start_level_by_index(index: int):
+	start_level_index = index
+	current_level = index + 1
+	start_level_scene_path = levels_table[index]["scene_path"]

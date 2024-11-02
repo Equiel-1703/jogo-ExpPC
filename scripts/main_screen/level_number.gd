@@ -36,8 +36,7 @@ func _input(event):
 				set_rec_color(LIGHT_LIGHT_BLUE)
 				
 				# Update global variables
-				GlobalGameData.current_level = _button_num
-				GlobalGameData.start_level_index = _button_num - 1 # Button nums are 1-based and indexes are 0-based
+				GlobalGameData.set_start_level_by_index(_button_num - 1) # Button nums are 1-based and indexes are 0-based
 		else:
 			# Mouse button released
 			set_process(true)
