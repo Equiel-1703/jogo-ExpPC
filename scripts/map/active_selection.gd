@@ -106,7 +106,8 @@ func _process(_delta: float) -> void:
 	
 	if Input.is_action_just_released("LeftClick"):
 		# Single click with no movement
-		if _path_commands_answer.size() <= 0:
+		if _path_commands_answer.size() <= 0 or not GlobalGameData.is_valid_planet_coord(_map.local_to_map(_last_mouse_coord)):
+			_map.clear_active_line()
 			leave_active_selection_map()
 			return
 

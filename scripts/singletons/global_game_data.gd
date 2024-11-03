@@ -50,6 +50,13 @@ func get_minimum_distance(planet1: String, planet2: String) -> int:
 
 	return _MIN_DISTANCES[planet1_index][planet2_index]
 
+func is_valid_planet_coord(coord: Vector2i) -> bool:
+	for planet in PLANETS_COORDS:
+		if PLANETS_COORDS[planet].planet_coord == coord:
+			return true
+	
+	return false
+
 func set_start_level_by_index(index: int):
 	start_level_index = index
 	current_level = index + 1
