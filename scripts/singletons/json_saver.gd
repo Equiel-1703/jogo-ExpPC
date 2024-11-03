@@ -22,6 +22,10 @@ func create_json_file(file_path: String, data: Dictionary) -> FileAccess:
 	return file
 
 func update_json_file(file: FileAccess, data: Dictionary) -> void:
+	if not file:
+		print("JSON Saver> File is null. Cannot update.")
+		return
+	
 	file.seek(0)
 	file.store_string(JSON.stringify(data, "\t"))
 	file.flush()
