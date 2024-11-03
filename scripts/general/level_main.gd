@@ -18,7 +18,7 @@ var _last_end_coord: Vector2
 # Coordenada de fim do caminho temporária (é usada caso o jogador cancele a criação do path)
 var _temp_last_end: Vector2
 
-# Variaveis de controle de tempo
+# Variaveis de controle de tempo para o Log
 var _start_time: float
 var _end_time: float
 
@@ -85,16 +85,6 @@ func _ready():
 	# Show level num
 	%LevelNum.level_num = GlobalGameData.current_level
 	%LevelNum.show_level_num()
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_WM_GO_BACK_REQUEST:
-		print("LevelMain> Salvando Log antes de fechar...")
-		
-		# Save log
-		Log.save_log()
-
-		# Close the game
-		get_tree().quit()
 
 # Emmited by LevelNum when the level number has finished showing
 func _on_level_num_finished():
@@ -199,32 +189,37 @@ func _on_undo_last_route():
 
 	_last_end_coord = previous_coord
 	
-
 # Emmited by the PhasesManager node, when the rocket has finished moving
 func _on_phase_is_over(final_coords: Array):
 	if check_if_player_won(final_coords):
-		Log.num_acertos += 1
-
-		# Calculate the time spent in the phase
-		_end_time = Time.get_unix_time_from_system()
-		var time_spent = _end_time - _start_time
-		Log.add_tempo_por_fase(GlobalGameData.current_level, GlobalGameData.current_phase, time_spent)
-
-		# Player won
-		%WinScene.visible = true
-
-		# Get the last coord to use as the respawn coord
-		_rocket_respawn_coord = _last_end_coord
+		_win()
 	else:
-		Log.num_erros += 1
-
 		_lose()
+
+# Function to win the game
+func _win():
+	Log.num_acertos += 1
+
+	# Calculate the time spent in the phase
+	_end_time = Time.get_unix_time_from_system()
+	var time_spent = _end_time - _start_time
+
+	# Add the time spent in the phase to the log
+	Log.add_tempo_por_fase(GlobalGameData.current_level, GlobalGameData.current_phase, time_spent)
+
+	# Player won
+	%WinScene.visible = true
+
+	# Get the last coord to use as the respawn coord
+	_rocket_respawn_coord = _last_end_coord
 	
 	# Save log
-	Log.save_log()
+	Log.update_log()
 
 # Function to lose the game
 func _lose():
+	Log.num_erros += 1
+
 	%NomePlaneta.visible = false
 	
 	$Map.clear_all_lines()
@@ -238,36 +233,42 @@ func _lose():
 	# As the player lost, the last coord is now its respawn coord
 	_last_end_coord = _rocket_respawn_coord
 
+	# Save log
+	Log.update_log()
+
+# Can be used by other nodes to lose the game immediately
+func lose_immediately(lose_screen_text: String):
+	$Map.disable_map()
+	%LoseScene.set_lose_screen_text(lose_screen_text)
+
+	_lose()
+	
+
 # Emmited by the NextPhaseManager when the player clicks on the "OK" button, or whenever the game will be played normally.
 # This includes: _on_player_path_cancelled and _on_play_again
 func _on_play():
-	_setup_to_play()
+	%NomePlaneta.visible = true	
 	$Map.enable_map()
 
-func _setup_to_play():
-	%NomePlaneta.visible = true
-	
 	# Starting time count
 	_start_time = Time.get_unix_time_from_system()
 
 ## Emmited by the NextPhaseManager when the player clicks on the "Ok" button in a reverse destination
 func _on_play_reverse():
-	_setup_to_play()
-	
+	%NomePlaneta.visible = false
+
 	# Set the correct answer in the PhasesManager
 	phases_manager.set_correct_answer_reverse()
 
-	# Get the last answer of the player and the last answer color
+	# Get the last answer of the player
 	var player_last_answer_index = phases_manager.get_current_destination_index() - 1
 	var player_last_answer = phases_manager.get_player_answer_at(player_last_answer_index)
 	
-	var last_line: Line2D = await $Map.get_last_line()
-
-	# The new last end coord should be the start coord of the last line
-	_temp_last_end = last_line.points[0]
-
 	# Show the reverse path menu
 	reverse_path_creator.show_reverse_path_menu(player_last_answer)
+
+	# Starting time count
+	_start_time = Time.get_unix_time_from_system()
 
 # Emmited by the CriarPath screen, when the player has cancelled the path creation
 func _on_player_path_cancelled():
@@ -293,13 +294,6 @@ func _on_explosion_area_entered(_area):
 	$Rocket.explode()
 	await $Rocket.explosion_animation_finished
 	lose_immediately("Seu foguete explodiu! Tente novamente.")
-
-# Can be used by other nodes to lose immediately
-func lose_immediately(lose_screen_text: String):
-	$Map.disable_map()
-	%LoseScene.set_lose_screen_text(lose_screen_text)
-
-	_lose()
 
 func check_if_player_won(coords: Array) -> bool:
 	return phases_manager.player_won($Map.convert_local_array_to_map(coords))
