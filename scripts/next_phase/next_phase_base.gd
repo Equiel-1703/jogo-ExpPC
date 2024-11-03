@@ -25,13 +25,14 @@ func _ready():
 
 	self.visible = false
 
-func show_destination():
+func show_destination(instructions_visible: bool = true):
 	# Set texts
 	_label_instrucoes.text = _message if GlobalGameData.current_path == 1 else _message_mp
 	_label_destino.text = _destino_text if GlobalGameData.current_path == 1 else _destino_text_mp
 
 	# Show instruction label if we are in the tutorial phase
-	_container_instrucoes.visible = GlobalGameData.tutorial_phase
+	_container_instrucoes.visible = instructions_visible
+
 	_label_planeta.text = GlobalGameData.destination_planet_name
 
 	self.visible = true

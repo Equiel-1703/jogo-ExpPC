@@ -8,7 +8,7 @@ const _invalid_negative_alert: String = "Por favor, insira um tamanho de rota po
 const _route_too_big: String = "O tamanho máximo de uma rota é 30!"
 
 func show_path_menu(_new_path_lenght: int):
-	_path_menu_basic_setup()
+	_path_menu_basic_setup(GlobalGameData.tutorial_phase_normal)
 
 	# We will read the path size first
 	_reading_path_size = true

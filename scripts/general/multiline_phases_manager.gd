@@ -284,14 +284,14 @@ func go_to_next_phase():
 	_player_answers.resize(GlobalGameData.no_of_paths)
 	_correct_answers.resize(GlobalGameData.no_of_paths)
 
+var _played_normal: bool = false
+var _played_min_path: bool = false
+var _played_reverse: bool = false
+
 ## Show the current destination on the screen.
 func show_current_destination():
 	if level_is_over:
 		return
-	
-	if _current_phase_num > 1:
-		# The first phase is the tutorial, now the player is in the second phase upwards.
-		GlobalGameData.tutorial_phase = false
 
 	# Get the current destination.
 	var destination = _get_current_destination()
@@ -305,11 +305,26 @@ func show_current_destination():
 	# Check the destination mode and show the screen accordingly.
 	match destination.mode:
 		Destination.DEST_MODE.NORMAL:
+			if _played_normal:
+				GlobalGameData.tutorial_phase_normal = false
+			
 			# Show the next phase screen.
 			next_phase_manager.show_destination()
+
+			_played_normal = true
 		Destination.DEST_MODE.MIN_PATH:
+			if _played_min_path:
+				GlobalGameData.tutorial_phase_normal = false
+						
 			# Show the min path screen.
 			next_phase_manager.show_destination_min_path()
+
+			_played_min_path = true
 		Destination.DEST_MODE.REVERSE:
+			if _played_reverse:
+				GlobalGameData.tutorial_phase_reverse = false			
+			
 			# Show the reverse path creation screen.
 			next_phase_manager.show_destination_reverse()
+
+			_played_reverse = true

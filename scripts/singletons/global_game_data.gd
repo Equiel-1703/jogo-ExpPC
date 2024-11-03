@@ -5,7 +5,8 @@ const MAP_TILE_SIZE: Vector2 = Vector2(70, 70)
 const MAX_PATH_LENGTH: int = 30
 
 var player_won: bool = false
-var tutorial_phase: bool = true
+var tutorial_phase_normal: bool = true
+var tutorial_phase_reverse: bool = true
 var start_level_scene_path: String
 var start_level_index: int = 0
 var levels_table: Array

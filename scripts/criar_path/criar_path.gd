@@ -11,7 +11,7 @@ var _direction_button: PackedScene
 var _new_path_len: int
 var _num_of_answers: int
 var _last_answers: Array
-# var _path_colors: Array = []
+var _tutorial_phase: bool
 
 func _ready():
 	if not phases_manager:
@@ -116,7 +116,7 @@ func _on_ver_mapa_pressed():
 	%BG.visible = ! %BG.visible
 	%GradientBG.visible = ! %GradientBG.visible
 	
-	if GlobalGameData.tutorial_phase:
+	if _tutorial_phase:
 		# Hide instruction label
 		%InstructionLabel.visible = ! %InstructionLabel.visible
 
@@ -137,7 +137,9 @@ func _on_cancelar_pressed():
 
 	player_path_cancelled.emit()
 
-func _path_menu_basic_setup():
+func _path_menu_basic_setup(show_instructions: bool = true):
+	_tutorial_phase = show_instructions
+
 	# Get the last answers and calculate the number of valid answers
 	_last_answers = phases_manager.get_player_answers()
 	_num_of_answers = _last_answers.filter(func(el): if el != null: return el.size() > 0 else: return false).size()
@@ -147,10 +149,10 @@ func _path_menu_basic_setup():
 	%BG.visible = true
 
 	# Show instruction label if we are in the tutorial phase
-	%InstructionLabel.visible = GlobalGameData.tutorial_phase
+	%InstructionLabel.visible = _tutorial_phase
 
 func show_path_menu(new_path_lenght: int):
-	_path_menu_basic_setup()
+	_path_menu_basic_setup(GlobalGameData.tutorial_phase_normal)
 
 	_new_path_len = new_path_lenght
 	
