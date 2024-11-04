@@ -1,0 +1,133 @@
+[gd_scene load_steps=8 format=3 uid="uid://dw0pabylvvle5"]
+
+[ext_resource type="Script" path="res://scripts/battery/battery.gd" id="1_37bdo"]
+[ext_resource type="Texture2D" uid="uid://b11oumuge3smn" path="res://res/bateria_outline.png" id="1_057k5"]
+[ext_resource type="Texture2D" uid="uid://4sxtl5m7lcog" path="res://res/celula_bateria_cheia.png" id="1_mt5l0"]
+[ext_resource type="Script" path="res://scripts/battery/cells_container.gd" id="2_nf5ys"]
+[ext_resource type="Texture2D" uid="uid://dky85kw0no04f" path="res://res/bateria_mascara.png" id="3_04md5"]
+
+[sub_resource type="Gradient" id="Gradient_oihgb"]
+offsets = PackedFloat32Array(0, 0.291096, 0.452055, 0.571918, 0.729452, 0.849315, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.297654, 0.297654, 0.297654, 1, 0.182133, 0.182133, 0.182133, 1, 0.154127, 0.154127, 0.154127, 1, 0.126712, 0.126712, 0.126712, 1, 0.0416588, 0.0416588, 0.0416588, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_34o4k"]
+gradient = SubResource("Gradient_oihgb")
+width = 439
+height = 90
+use_hdr = true
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.488764, 0.137016)
+
+[node name="Battery" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_37bdo")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(756, 134)
+color = Color(1, 1, 1, 0.643137)
+energy = 1.18
+texture = SubResource("GradientTexture2D_34o4k")
+texture_scale = 5.43
+
+[node name="CellsMask" type="TextureRect" parent="."]
+clip_children = 1
+layout_mode = 0
+offset_right = 1523.0
+offset_bottom = 280.0
+texture = ExtResource("3_04md5")
+stretch_mode = 3
+
+[node name="CellsContainer" type="HBoxContainer" parent="CellsMask"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 6.0
+offset_top = 5.0
+offset_right = 316.0
+offset_bottom = 275.0
+theme_override_constants/separation = -10
+script = ExtResource("2_nf5ys")
+fill_animation_delay = 0.1
+
+[node name="1" type="TextureRect" parent="CellsMask/CellsContainer"]
+layout_mode = 2
+texture = ExtResource("1_mt5l0")
+stretch_mode = 2
+
+[node name="2" type="TextureRect" parent="CellsMask/CellsContainer"]
+layout_mode = 2
+texture = ExtResource("1_mt5l0")
+stretch_mode = 2
+
+[node name="3" type="TextureRect" parent="CellsMask/CellsContainer"]
+layout_mode = 2
+texture = ExtResource("1_mt5l0")
+stretch_mode = 2
+
+[node name="4" type="TextureRect" parent="CellsMask/CellsContainer"]
+layout_mode = 2
+texture = ExtResource("1_mt5l0")
+stretch_mode = 2
+
+[node name="5" type="TextureRect" parent="CellsMask/CellsContainer"]
+layout_mode = 2
+texture = ExtResource("1_mt5l0")
+stretch_mode = 2
+
+[node name="6" type="TextureRect" parent="CellsMask/CellsContainer"]
+layout_mode = 2
+texture = ExtResource("1_mt5l0")
+stretch_mode = 2
+
+[node name="7" type="TextureRect" parent="CellsMask/CellsContainer"]
+layout_mode = 2
+texture = ExtResource("1_mt5l0")
+stretch_mode = 2
+
+[node name="8" type="TextureRect" parent="CellsMask/CellsContainer"]
+layout_mode = 2
+texture = ExtResource("1_mt5l0")
+stretch_mode = 2
+
+[node name="9" type="TextureRect" parent="CellsMask/CellsContainer"]
+layout_mode = 2
+texture = ExtResource("1_mt5l0")
+stretch_mode = 2
+
+[node name="10" type="TextureRect" parent="CellsMask/CellsContainer"]
+layout_mode = 2
+texture = ExtResource("1_mt5l0")
+stretch_mode = 2
+
+[node name="BatteryFrame" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1560.0
+offset_bottom = 280.0
+texture = ExtResource("1_057k5")
+stretch_mode = 3
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 497.0
+offset_top = 668.0
+offset_right = 916.0
+offset_bottom = 886.0
+theme_override_font_sizes/font_size = 32
+text = "consumir bateria"
+
+[node name="Button2" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1015.0
+offset_top = 668.0
+offset_right = 1434.0
+offset_bottom = 886.0
+theme_override_font_sizes/font_size = 32
+text = "encher bateria"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
