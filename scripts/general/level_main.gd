@@ -7,6 +7,8 @@ class_name LevelMain
 @export var path_creator: CriarPath
 # Reverse path creator
 @export var reverse_path_creator: CriarPathReverse
+# Battery node
+@export var battery: BatteryMainContainer
 
 # Used to spawn the rocket in the start of the level
 var _rocket_default_start_coord: Vector2
@@ -29,8 +31,8 @@ func _ready():
 		get_tree().quit()
 		return
 	
-	# Hide NomePlaneta
-	%NomePlaneta.visible = false
+	# Hide map UI
+	_set_map_ui_visible(false)
 
 	# Connect Map signal
 	$Map.path_set.connect(_on_path_set)
@@ -86,6 +88,11 @@ func _ready():
 	%LevelNum.level_num = GlobalGameData.current_level
 	%LevelNum.show_level_num()
 
+func _set_map_ui_visible(v: bool):
+	%NomePlaneta.visible = v
+	if battery:
+		battery.visible = v
+
 # Emmited by LevelNum when the level number has finished showing
 func _on_level_num_finished():
 	# Show first phase
@@ -93,7 +100,7 @@ func _on_level_num_finished():
 
 # Emmited by Map when the player has finished creating the path for the rocket
 func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
-	%NomePlaneta.visible = false
+	_set_map_ui_visible(false)
 
 	# Get the current phase number
 	var path_index = phases_manager.get_current_destination_index()
@@ -130,7 +137,7 @@ func _on_path_set(path_answer: Array, start_coord: Vector2, end_coord: Vector2):
 			print("The start position of the 2nd path is different from the end position of the 1st path")
 			%MessageScene.show_message("Você deve começar o segundo caminho no final do primeiro!")
 
-		%NomePlaneta.visible = true
+		_set_map_ui_visible(true)
 
 		return
 
@@ -220,7 +227,7 @@ func _win():
 func _lose():
 	Log.num_erros += 1
 
-	%NomePlaneta.visible = false
+	_set_map_ui_visible(true)
 	
 	$Map.clear_all_lines()
 
@@ -241,13 +248,12 @@ func lose_immediately(lose_screen_text: String):
 	$Map.disable_map()
 	%LoseScene.set_lose_screen_text(lose_screen_text)
 
-	_lose()
-	
+	_lose()	
 
 # Emmited by the NextPhaseManager when the player clicks on the "OK" button, or whenever the game will be played normally.
 # This includes: _on_player_path_cancelled and _on_play_again
 func _on_play():
-	%NomePlaneta.visible = true	
+	_set_map_ui_visible(true)
 	$Map.enable_map()
 
 	# Starting time count
@@ -255,7 +261,7 @@ func _on_play():
 
 ## Emmited by the NextPhaseManager when the player clicks on the "Ok" button in a reverse destination
 func _on_play_reverse():
-	%NomePlaneta.visible = false
+	_set_map_ui_visible(false)
 
 	# Set the correct answer in the PhasesManager
 	phases_manager.set_correct_answer_reverse()
@@ -294,6 +300,15 @@ func _on_explosion_area_entered(_area):
 	$Rocket.explode()
 	await $Rocket.explosion_animation_finished
 	lose_immediately("Seu foguete explodiu! Tente novamente.")
+
+var _was_map_enabled: bool
+
+func _on_battery_clicked(on_center: bool):
+	if on_center:
+		_was_map_enabled = $Map.is_enabled()
+		$Map.disable_map()
+	elif _was_map_enabled:
+		$Map.enable_map()
 
 func check_if_player_won(coords: Array) -> bool:
 	return phases_manager.player_won($Map.convert_local_array_to_map(coords))

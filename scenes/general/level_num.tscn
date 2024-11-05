@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/general/level_num.gd" id="1_i5rw0"]
 [ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="3_a66xs"]
 
-[sub_resource type="Shader" id="Shader_f2von"]
+[sub_resource type="Shader" id="Shader_maage"]
 code = "shader_type canvas_item;
 
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
@@ -16,7 +16,7 @@ void fragment(){
 }"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vcfhj"]
-shader = SubResource("Shader_f2von")
+shader = SubResource("Shader_maage")
 shader_parameter/lod = 2.0
 shader_parameter/brightness_decrease = 0.07
 

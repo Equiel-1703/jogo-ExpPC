@@ -17,6 +17,9 @@ const id_selection_tile = 2
 const id_active_selection_tile = 3
 
 @export var line_manager: LineManager
+@export var prohibited_areas: Node2D
+
+var _is_map_enabled: bool = true
 
 func _ready():
 	# Check if the user did not provide a line or a line manager
@@ -24,6 +27,9 @@ func _ready():
 		printerr("Map> You need to provide a Line2D or a LineManager node to the map!")
 		get_tree().quit()
 		return
+	
+	if prohibited_areas:
+		_process_prohibited_areas()
 	
 	# Getting the tile size
 	tile_size = int(GlobalGameData.MAP_TILE_SIZE.x)
@@ -39,6 +45,10 @@ func _ready():
 
 	print("Map> Map size: ", _map_w_tiles, "x", _map_h_tiles)
 
+func _process_prohibited_areas():
+	var disabled_areas = prohibited_areas.get_children()
+	selection_map.process_prohibided_areas(disabled_areas)
+
 func get_line() -> Line2D:
 	if not line_manager.is_node_ready(): await line_manager.ready
 	return line_manager.get_active_line()
@@ -50,9 +60,14 @@ func get_last_line() -> Line2D:
 func disable_map():
 	active_selection_map.set_active_selection_map_enabled(false)
 	selection_map.set_selection_map_enabled(false)
+	_is_map_enabled = false
 
 func enable_map():
 	selection_map.set_selection_map_enabled(true)
+	_is_map_enabled = true
+
+func is_enabled() -> bool:
+	return _is_map_enabled
 
 func clear_active_line():
 	line_manager.get_active_line().clear_points()
