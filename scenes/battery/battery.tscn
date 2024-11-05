@@ -1,132 +1,124 @@
-[gd_scene load_steps=7 format=3 uid="uid://dw0pabylvvle5"]
+[gd_scene load_steps=5 format=3 uid="uid://dw0pabylvvle5"]
 
 [ext_resource type="Texture2D" uid="uid://b11oumuge3smn" path="res://res/bateria_outline.png" id="1_057k5"]
 [ext_resource type="Texture2D" uid="uid://4sxtl5m7lcog" path="res://res/celula_bateria_cheia.png" id="1_mt5l0"]
 [ext_resource type="Script" path="res://scripts/battery/battery.gd" id="2_nf5ys"]
 [ext_resource type="Texture2D" uid="uid://dky85kw0no04f" path="res://res/bateria_mascara.png" id="3_04md5"]
 
-[sub_resource type="Gradient" id="Gradient_oihgb"]
-offsets = PackedFloat32Array(0, 0.291096, 0.452055, 0.571918, 0.729452, 0.849315, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0.297654, 0.297654, 0.297654, 1, 0.182133, 0.182133, 0.182133, 1, 0.154127, 0.154127, 0.154127, 1, 0.126712, 0.126712, 0.126712, 1, 0.0416588, 0.0416588, 0.0416588, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_34o4k"]
-gradient = SubResource("Gradient_oihgb")
-width = 439
-height = 90
-use_hdr = true
-fill = 2
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.488764, 0.137016)
-
 [node name="Battery" type="Control"]
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
+anchor_right = 0.828
+anchor_bottom = 0.255
+offset_right = 0.079834
+offset_bottom = 0.0999756
+grow_horizontal = 0
 grow_vertical = 2
-size_flags_horizontal = 0
 mouse_filter = 2
 script = ExtResource("2_nf5ys")
-
-[node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(-16, 0)
-color = Color(1, 1, 1, 0.643137)
-energy = 1.18
-texture = SubResource("GradientTexture2D_34o4k")
-texture_scale = 5.43
 
 [node name="CellsMask" type="TextureRect" parent="."]
 clip_children = 1
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = -765.0
-offset_top = -126.0
-offset_right = 725.0
-offset_bottom = 124.0
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.034
+anchor_right = 0.963
+anchor_bottom = 0.966
+offset_left = 0.0499997
+offset_top = -0.00600004
+offset_right = -0.085022
+offset_bottom = 0.00600052
+grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_04md5")
-stretch_mode = 3
+expand_mode = 1
 
 [node name="CellsContainer" type="HBoxContainer" parent="CellsMask"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = -13.0
-offset_top = -9.0
-offset_right = 1497.0
-offset_bottom = 261.0
-theme_override_constants/separation = -10
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.004
+anchor_top = -0.034
+anchor_right = 1.006
+anchor_bottom = 1.039
+offset_left = 0.309577
+offset_top = -0.0775919
+offset_right = -0.358521
+offset_bottom = -0.099472
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = -2
 
 [node name="1" type="TextureRect" parent="CellsMask/CellsContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 texture = ExtResource("1_mt5l0")
-stretch_mode = 2
+expand_mode = 1
 
 [node name="2" type="TextureRect" parent="CellsMask/CellsContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 texture = ExtResource("1_mt5l0")
-stretch_mode = 2
+expand_mode = 1
 
 [node name="3" type="TextureRect" parent="CellsMask/CellsContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 texture = ExtResource("1_mt5l0")
-stretch_mode = 2
+expand_mode = 1
 
 [node name="4" type="TextureRect" parent="CellsMask/CellsContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 texture = ExtResource("1_mt5l0")
-stretch_mode = 2
+expand_mode = 1
 
 [node name="5" type="TextureRect" parent="CellsMask/CellsContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 texture = ExtResource("1_mt5l0")
-stretch_mode = 2
+expand_mode = 1
 
 [node name="6" type="TextureRect" parent="CellsMask/CellsContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 texture = ExtResource("1_mt5l0")
-stretch_mode = 2
+expand_mode = 1
 
 [node name="7" type="TextureRect" parent="CellsMask/CellsContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 texture = ExtResource("1_mt5l0")
-stretch_mode = 2
+expand_mode = 1
 
 [node name="8" type="TextureRect" parent="CellsMask/CellsContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 texture = ExtResource("1_mt5l0")
-stretch_mode = 2
+expand_mode = 1
 
 [node name="9" type="TextureRect" parent="CellsMask/CellsContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 texture = ExtResource("1_mt5l0")
-stretch_mode = 2
+expand_mode = 1
 
 [node name="10" type="TextureRect" parent="CellsMask/CellsContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 texture = ExtResource("1_mt5l0")
-stretch_mode = 2
+expand_mode = 1
 
 [node name="BatteryFrame" type="TextureRect" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -780.0
-offset_top = -140.0
-offset_right = 780.0
-offset_bottom = 140.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 2
 texture = ExtResource("1_057k5")
-stretch_mode = 3
+expand_mode = 1
 
 [connection signal="gui_input" from="BatteryFrame" to="." method="_on_battery_frame_gui_input"]

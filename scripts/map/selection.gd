@@ -29,6 +29,7 @@ func _process(_delta):
 	else:
 		if _map.active_selection_map.is_active_selection_map_enabled():
 			_map.active_selection_map.abort_selection()
+		return
 
 	if Input.is_action_just_pressed("LeftClick"):
 		selection_started.emit()

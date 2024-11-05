@@ -8,7 +8,9 @@ class_name LevelMain
 # Reverse path creator
 @export var reverse_path_creator: CriarPathReverse
 # Battery node
-@export var battery: BatteryMainContainer
+@export var battery: Battery
+# Expanded battery node
+@export var battery_big: Control
 
 # Used to spawn the rocket in the start of the level
 var _rocket_default_start_coord: Vector2
@@ -33,6 +35,9 @@ func _ready():
 	
 	# Hide map UI
 	_set_map_ui_visible(false)
+
+	if battery_big:
+		battery_big.visible = false
 
 	# Connect Map signal
 	$Map.path_set.connect(_on_path_set)
@@ -302,13 +307,19 @@ func _on_explosion_area_entered(_area):
 	lose_immediately("Seu foguete explodiu! Tente novamente.")
 
 var _was_map_enabled: bool
+var _expand_battery: bool = false
 
-func _on_battery_clicked(on_center: bool):
-	if on_center:
+func _on_battery_clicked():
+	_expand_battery = ! _expand_battery
+	
+	if _expand_battery:
 		_was_map_enabled = $Map.is_enabled()
 		$Map.disable_map()
+		battery_big.visible = true
+		_set_map_ui_visible(false)
 	elif _was_map_enabled:
 		$Map.enable_map()
+		_set_map_ui_visible(true)
 
 func check_if_player_won(coords: Array) -> bool:
 	return phases_manager.player_won($Map.convert_local_array_to_map(coords))

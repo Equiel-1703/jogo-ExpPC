@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://x31skbdgksdl"]
+[gd_scene load_steps=46 format=3 uid="uid://x31skbdgksdl"]
 
 [ext_resource type="Script" path="res://scripts/general/level_main.gd" id="1_nvldi"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="2_lokf7"]
@@ -12,7 +12,9 @@
 [ext_resource type="PackedScene" uid="uid://di4d6nr6gxb8t" path="res://scenes/general/rocket.tscn" id="10_pb5qy"]
 [ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="11_y2cco"]
 [ext_resource type="Script" path="res://scripts/general/nome_planeta_label.gd" id="12_k5yvr"]
+[ext_resource type="PackedScene" uid="uid://dw0pabylvvle5" path="res://scenes/battery/battery.tscn" id="13_k0o02"]
 [ext_resource type="PackedScene" uid="uid://b3dk076igvbbl" path="res://scenes/general/message.tscn" id="13_vrg1q"]
+[ext_resource type="PackedScene" uid="uid://lhqp0caarqll" path="res://scenes/battery/battery_big.tscn" id="14_d72d8"]
 [ext_resource type="PackedScene" uid="uid://cig2gpf3kuqkq" path="res://scenes/criar_path/criar_path.tscn" id="14_elq2t"]
 [ext_resource type="PackedScene" uid="uid://btsetkvtbaonl" path="res://scenes/criar_path/criar_path_reverse.tscn" id="15_8rmoi"]
 [ext_resource type="PackedScene" uid="uid://04und56j0g87" path="res://scenes/general/intermediate_message.tscn" id="16_m68l6"]
@@ -25,10 +27,9 @@
 [ext_resource type="PackedScene" uid="uid://6eh3ia4g6l8g" path="res://scenes/general/level_num.tscn" id="23_eu0x6"]
 [ext_resource type="PackedScene" uid="uid://2jo5hkcplmdt" path="res://scenes/pause_menu/pause_menu.tscn" id="24_6py77"]
 [ext_resource type="Script" path="res://scripts/general/multiline_phases_manager.gd" id="25_ww521"]
-[ext_resource type="PackedScene" uid="uid://lhqp0caarqll" path="res://scenes/battery/battery_main_container.tscn" id="26_cl7mg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ydd0g"]
-size = Vector2(399, 139)
+size = Vector2(421, 139)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vkoee"]
 shader = ExtResource("7_x13cr")
@@ -133,12 +134,13 @@ font_size = 42
 outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 
-[node name="Level_3" type="Node2D" node_paths=PackedStringArray("phases_manager", "path_creator", "reverse_path_creator", "battery") groups=["main_level"]]
+[node name="Level_3" type="Node2D" node_paths=PackedStringArray("phases_manager", "path_creator", "reverse_path_creator", "battery", "battery_big") groups=["main_level"]]
 script = ExtResource("1_nvldi")
 phases_manager = NodePath("LevelPhasesManager")
 path_creator = NodePath("CanvasLayer/CriarPath")
 reverse_path_creator = NodePath("CanvasLayer/CriarPathReverse")
-battery = NodePath("CanvasLayer/BatteryMainContainer")
+battery = NodePath("CanvasLayer/MapHUD/MarginContainer/Battery")
+battery_big = NodePath("CanvasLayer/BatteryBig")
 metadata/_edit_horizontal_guides_ = [50.0]
 
 [node name="MapSpr" type="Sprite2D" parent="."]
@@ -156,7 +158,7 @@ monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ProhibitedAreasMap/BatteryArea"]
-position = Vector2(1694.5, 68.5)
+position = Vector2(1683.5, 68.5)
 shape = SubResource("RectangleShape2D_ydd0g")
 
 [node name="MapSprOv" type="Sprite2D" parent="."]
@@ -305,30 +307,37 @@ autoplay = "sun_shine"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+[node name="MapHUD" type="HBoxContainer" parent="CanvasLayer"]
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 137.0
+offset_bottom = 106.0
 grow_horizontal = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MapHUD"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
 
-[node name="NomePlaneta" type="Label" parent="CanvasLayer/HBoxContainer/MarginContainer"]
+[node name="NomePlaneta" type="Label" parent="CanvasLayer/MapHUD/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-size_flags_vertical = 0
+size_flags_vertical = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_1jxvo")
 text = "PLANETA"
 label_settings = SubResource("LabelSettings_4dho5")
 vertical_alignment = 1
 script = ExtResource("12_k5yvr")
 
-[node name="BatteryMainContainer" parent="CanvasLayer" instance=ExtResource("26_cl7mg")]
+[node name="Battery" parent="CanvasLayer/MapHUD/MarginContainer" groups=["battery"] instance=ExtResource("13_k0o02")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="BatteryBig" parent="CanvasLayer" instance=ExtResource("14_d72d8")]
 
 [node name="MessageScene" parent="CanvasLayer" groups=["alert"] instance=ExtResource("13_vrg1q")]
 unique_name_in_owner = true
@@ -380,8 +389,9 @@ visible = false
 
 [node name="LevelPhasesManager" type="Node" parent="." node_paths=PackedStringArray("rocket", "next_phase_manager")]
 script = ExtResource("25_ww521")
-level_json_path = "res://levels_json/level_2.json"
+level_json_path = "res://levels_json/level_3.json"
 rocket = NodePath("../Rocket")
 next_phase_manager = NodePath("../CanvasLayer/NextPhaseManager")
 
-[connection signal="battery_clicked" from="CanvasLayer/BatteryMainContainer" to="." method="_on_battery_clicked"]
+[connection signal="battery_clicked" from="CanvasLayer/MapHUD/MarginContainer/Battery" to="." method="_on_battery_clicked"]
+[connection signal="battery_clicked" from="CanvasLayer/BatteryBig" to="." method="_on_battery_clicked"]
