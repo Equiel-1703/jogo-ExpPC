@@ -139,6 +139,28 @@ offset_bottom = 100.0
 mouse_filter = 2
 color = Color(0.219608, 0.219608, 0.219608, 0.690196)
 
+[node name="VoltarMenu" type="Button" parent="CenterContainer/VBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_6odk4")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/hover = SubResource("StyleBoxFlat_jprxp")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xrbx7")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_s6gpm")
+text = "Voltar ao Menu"
+
+[node name="ColorRect" type="ColorRect" parent="CenterContainer/VBoxContainer/VoltarMenu"]
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_bf6ig")
+layout_mode = 2
+offset_right = 455.0
+offset_bottom = 100.0
+mouse_filter = 2
+color = Color(0.219608, 0.219608, 0.219608, 0.690196)
+
 [node name="Sair" type="Button" parent="CenterContainer/VBoxContainer"]
 clip_contents = true
 custom_minimum_size = Vector2(0, 80)
@@ -164,4 +186,5 @@ color = Color(0.219608, 0.219608, 0.219608, 0.690196)
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Resumir" to="." method="_on_resumir_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ReiniciarNivel" to="." method="_on_reiniciar_nivel_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/DesfazerUltRota" to="." method="_on_desfazer_ult_rota_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/VoltarMenu" to="." method="_on_voltar_menu_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Sair" to="." method="_on_sair_pressed"]

@@ -24,3 +24,7 @@ func _on_desfazer_ult_rota_pressed() -> void:
 func _on_sair_pressed() -> void:
 	_toggle_pause()
 	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
+
+func _on_voltar_menu_pressed() -> void:
+	_toggle_pause()
+	get_tree().change_scene_to_packed(GlobalGameData.main_screen)
