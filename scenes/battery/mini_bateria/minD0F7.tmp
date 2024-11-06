@@ -1,0 +1,87 @@
+[gd_scene load_steps=13 format=3 uid="uid://c3eobo3v0parp"]
+
+[ext_resource type="Texture2D" uid="uid://df0mpke1qyx7m" path="res://res/mini_bateria/bateria_prwp0000.png" id="1_hmjup"]
+[ext_resource type="Script" path="res://scenes/battery/mini_bateria/mini_bateria.gd" id="1_ytxpx"]
+[ext_resource type="Texture2D" uid="uid://d2t7q6lrgrws0" path="res://res/mini_bateria/bateria_prwp0001.png" id="2_eaemx"]
+[ext_resource type="Texture2D" uid="uid://bqta54b1y1j1n" path="res://res/mini_bateria/bateria_prwp0002.png" id="3_qlsrc"]
+[ext_resource type="Texture2D" uid="uid://q3a73rpnjl22" path="res://res/mini_bateria/bateria_prwp0003.png" id="4_jl031"]
+[ext_resource type="Texture2D" uid="uid://bp7bjekjfdcg0" path="res://res/mini_bateria/bateria_prwp0004.png" id="5_jc3cm"]
+
+[sub_resource type="Gradient" id="Gradient_4xcrq"]
+offsets = PackedFloat32Array(0, 0.948012)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_k3adp"]
+gradient = SubResource("Gradient_4xcrq")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Curve2D" id="Curve2D_sc86e"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -46, 0, 0, 0, 0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_qax5u"]
+blend_mode = 1
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g1mlq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_hmjup")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_eaemx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_qlsrc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_jl031")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_jc3cm")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vkys3"]
+radius = 26.0192
+
+[node name="MiniBateria" type="Node2D"]
+script = ExtResource("1_ytxpx")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(0, 1)
+color = Color(0, 1, 0.316667, 1)
+energy = 1.34
+texture = SubResource("GradientTexture2D_k3adp")
+texture_scale = 3.36
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_sc86e")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+unique_name_in_owner = true
+rotation = -1.5708
+rotates = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Path2D/PathFollow2D"]
+material = SubResource("CanvasItemMaterial_qax5u")
+rotation = 1.5708
+scale = Vector2(0.15, 0.15)
+sprite_frames = SubResource("SpriteFrames_g1mlq")
+animation = &"idle"
+autoplay = "idle"
+frame = 2
+frame_progress = 0.426156
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_vkys3")
+
+[node name="Camera2D" type="Camera2D" parent="."]

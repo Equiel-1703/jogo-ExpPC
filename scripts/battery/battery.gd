@@ -3,14 +3,15 @@ class_name Battery
 
 signal battery_clicked
 
-@export var fill_animation_delay: float = 0.1
 
 @onready var _cells_container: HBoxContainer = %CellsContainer
 
 static var _cell_texture_on: Texture2D = preload("res://res/celula_bateria_cheia.png")
 static var _cell_texture_off: Texture2D = preload("res://res/celula_bateria_vazia.png")
 
+static var fill_animation_delay: float = 0.3
 static var initial_battery_level: int = 10
+
 var _battery_level: int = 0
 var _fill_animation_timer: Timer
 
@@ -53,13 +54,13 @@ func consume_battery() -> void:
 		_battery_level -= 1
 		_cells_container.get_child(_battery_level).texture = _cell_texture_off
 
-var is_filling: bool = false
+var _is_filling: bool = false
 
 func fill_battery(amount: int = _battery_capacity) -> void:
-	if is_filling or _battery_level == _battery_capacity:
+	if _is_filling or _battery_level == _battery_capacity:
 		return
 	else:
-		is_filling = true
+		_is_filling = true
 	
 	while _battery_level < _battery_capacity and amount > 0:
 		_fill_animation_timer.start()
@@ -69,8 +70,14 @@ func fill_battery(amount: int = _battery_capacity) -> void:
 		_cells_container.get_child(_battery_level).texture = _cell_texture_on
 		_battery_level += 1
 		amount -= 1
+
+	_fill_animation_timer.start()
+	await _fill_animation_timer.timeout
 	
-	is_filling = false
+	_is_filling = false
+
+func is_filling() -> bool:
+	return _is_filling
 
 func _on_battery_frame_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("LeftClick"):

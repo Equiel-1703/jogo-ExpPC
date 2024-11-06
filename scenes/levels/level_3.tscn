@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://x31skbdgksdl"]
+[gd_scene load_steps=48 format=3 uid="uid://x31skbdgksdl"]
 
 [ext_resource type="Script" path="res://scripts/general/level_main.gd" id="1_nvldi"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="2_lokf7"]
@@ -9,6 +9,7 @@
 [ext_resource type="Shader" path="res://shaders/fire_heat.gdshader" id="7_x13cr"]
 [ext_resource type="Texture2D" uid="uid://bmptqxie7ni4c" path="res://res/Flame.png" id="8_dquab"]
 [ext_resource type="Script" path="res://scripts/general/line_manager.gd" id="9_rijrw"]
+[ext_resource type="PackedScene" uid="uid://c3eobo3v0parp" path="res://scenes/battery/mini_bateria/mini_bateria.tscn" id="10_lt75o"]
 [ext_resource type="PackedScene" uid="uid://di4d6nr6gxb8t" path="res://scenes/general/rocket.tscn" id="10_pb5qy"]
 [ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="11_y2cco"]
 [ext_resource type="Script" path="res://scripts/general/nome_planeta_label.gd" id="12_k5yvr"]
@@ -194,6 +195,23 @@ joint_mode = 2
 begin_cap_mode = 1
 end_cap_mode = 2
 
+[node name="MiniBaterias" type="Node2D" parent="."]
+
+[node name="MiniBateria" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
+position = Vector2(385, 455)
+
+[node name="MiniBateria2" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
+position = Vector2(805, 595)
+
+[node name="MiniBateria3" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
+position = Vector2(1295, 525)
+
+[node name="MiniBateria5" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
+position = Vector2(1015, 385)
+
+[node name="MiniBateria4" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
+position = Vector2(1645, 595)
+
 [node name="Rocket" parent="." instance=ExtResource("10_pb5qy")]
 
 [node name="Barriers" type="Node2D" parent="."]
@@ -307,6 +325,7 @@ libraries = {
 autoplay = "sun_shine"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="MapHUD" type="HBoxContainer" parent="CanvasLayer"]
 anchors_preset = 10

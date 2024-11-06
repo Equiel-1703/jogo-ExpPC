@@ -172,6 +172,10 @@ func _physics_process(delta):
 			# print(_t)
 			# print(self.position)
 		else:
+			# Only process the next command if the battery is not being filled
+			if _use_battery and _battery.is_filling():
+				return
+			
 			_execute_flag = false
 
 			if _use_battery:
