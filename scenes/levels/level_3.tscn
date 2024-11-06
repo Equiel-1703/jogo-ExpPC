@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://x31skbdgksdl"]
+[gd_scene load_steps=47 format=3 uid="uid://x31skbdgksdl"]
 
 [ext_resource type="Script" path="res://scripts/general/level_main.gd" id="1_nvldi"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="2_lokf7"]
@@ -15,9 +15,10 @@
 [ext_resource type="PackedScene" uid="uid://dw0pabylvvle5" path="res://scenes/battery/battery.tscn" id="13_k0o02"]
 [ext_resource type="PackedScene" uid="uid://b3dk076igvbbl" path="res://scenes/general/message.tscn" id="13_vrg1q"]
 [ext_resource type="PackedScene" uid="uid://lhqp0caarqll" path="res://scenes/battery/battery_big.tscn" id="14_d72d8"]
-[ext_resource type="PackedScene" uid="uid://cig2gpf3kuqkq" path="res://scenes/criar_path/criar_path.tscn" id="14_elq2t"]
 [ext_resource type="PackedScene" uid="uid://btsetkvtbaonl" path="res://scenes/criar_path/criar_path_reverse.tscn" id="15_8rmoi"]
+[ext_resource type="PackedScene" uid="uid://bi37kon0ju7bv" path="res://scenes/criar_path/criar_path_battery.tscn" id="16_i70d8"]
 [ext_resource type="PackedScene" uid="uid://04und56j0g87" path="res://scenes/general/intermediate_message.tscn" id="16_m68l6"]
+[ext_resource type="Script" path="res://scripts/criar_path/criar_path.gd" id="17_kups6"]
 [ext_resource type="Script" path="res://scripts/next_phase/next_phase_manager.gd" id="17_p47hu"]
 [ext_resource type="PackedScene" uid="uid://c3pvrpj2n21cd" path="res://scenes/next_phase/next_phase_scene.tscn" id="18_r8h3i"]
 [ext_resource type="Script" path="res://scripts/next_phase/next_phase_min_path.gd" id="19_23pau"]
@@ -137,7 +138,7 @@ outline_color = Color(0, 0, 0, 1)
 [node name="Level_3" type="Node2D" node_paths=PackedStringArray("phases_manager", "path_creator", "reverse_path_creator", "battery", "battery_big") groups=["main_level"]]
 script = ExtResource("1_nvldi")
 phases_manager = NodePath("LevelPhasesManager")
-path_creator = NodePath("CanvasLayer/CriarPath")
+path_creator = NodePath("CanvasLayer/CriarPathBattery")
 reverse_path_creator = NodePath("CanvasLayer/CriarPathReverse")
 battery = NodePath("CanvasLayer/MapHUD/MarginContainer/Battery")
 battery_big = NodePath("CanvasLayer/BatteryBig")
@@ -331,7 +332,7 @@ label_settings = SubResource("LabelSettings_4dho5")
 vertical_alignment = 1
 script = ExtResource("12_k5yvr")
 
-[node name="Battery" parent="CanvasLayer/MapHUD/MarginContainer" groups=["battery"] instance=ExtResource("13_k0o02")]
+[node name="Battery" parent="CanvasLayer/MapHUD/MarginContainer" instance=ExtResource("13_k0o02")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
@@ -343,7 +344,8 @@ size_flags_horizontal = 8
 unique_name_in_owner = true
 time_visible = 3.0
 
-[node name="CriarPath" parent="CanvasLayer" node_paths=PackedStringArray("phases_manager", "line_manager") groups=["path_creators"] instance=ExtResource("14_elq2t")]
+[node name="CriarPathBattery" parent="CanvasLayer" node_paths=PackedStringArray("phases_manager", "line_manager") instance=ExtResource("16_i70d8")]
+script = ExtResource("17_kups6")
 phases_manager = NodePath("../../LevelPhasesManager")
 line_manager = NodePath("../../LineManager")
 
@@ -395,3 +397,5 @@ next_phase_manager = NodePath("../CanvasLayer/NextPhaseManager")
 
 [connection signal="battery_clicked" from="CanvasLayer/MapHUD/MarginContainer/Battery" to="." method="_on_battery_clicked"]
 [connection signal="battery_clicked" from="CanvasLayer/BatteryBig" to="." method="_on_battery_clicked"]
+[connection signal="player_path_cancelled" from="CanvasLayer/CriarPathBattery" to="." method="_on_player_path_cancelled"]
+[connection signal="player_path_done" from="CanvasLayer/CriarPathBattery" to="." method="_on_player_battery_path_done"]

@@ -1,0 +1,17 @@
+{
+	"level_no": 3,
+	"phases": [
+		[
+			{
+				"planet_name": "marte",
+				"mode": 0
+			}
+		],
+		[
+			{
+				"planet_name": "jupiter",
+				"mode": 0
+			}
+		]
+	]
+}
