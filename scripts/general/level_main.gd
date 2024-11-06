@@ -307,6 +307,9 @@ func _on_play_again():
 	$Rocket.set_start_position(_rocket_respawn_coord)
 	$Map.clear_all_lines()
 
+	# Reset the power ups
+	MiniBateria.reset_power_ups()
+
 	# Reset the battery level
 	if battery:
 		get_tree().call_group("battery", "fill_battery", _last_battery_level)
@@ -318,6 +321,10 @@ func _on_go_to_next_phase():
 	$Map.clear_all_lines()
 	# Go to the next phase
 	phases_manager.go_to_next_phase()
+
+	# Delete power ups
+	MiniBateria.delete_power_ups()
+
 	# Show the next phase
 	phases_manager.show_current_destination()
 
