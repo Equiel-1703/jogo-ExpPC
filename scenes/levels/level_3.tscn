@@ -31,7 +31,7 @@
 [ext_resource type="Script" path="res://scripts/general/multiline_phases_manager.gd" id="25_ww521"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ydd0g"]
-size = Vector2(421, 139)
+size = Vector2(495, 182)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vkoee"]
 shader = ExtResource("7_x13cr")
@@ -160,7 +160,7 @@ monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ProhibitedAreasMap/BatteryArea"]
-position = Vector2(1683.5, 68.5)
+position = Vector2(1646.5, 90)
 shape = SubResource("RectangleShape2D_ydd0g")
 
 [node name="MapSprOv" type="Sprite2D" parent="."]
@@ -198,13 +198,25 @@ end_cap_mode = 2
 [node name="MiniBaterias" type="Node2D" parent="."]
 
 [node name="MiniBateria" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
-position = Vector2(385, 455)
+position = Vector2(665, 385)
+
+[node name="MiniBateria6" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
+position = Vector2(385, 525)
 
 [node name="MiniBateria2" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
 position = Vector2(805, 595)
 
 [node name="MiniBateria3" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
 position = Vector2(1295, 525)
+
+[node name="MiniBateria7" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
+position = Vector2(1435, 455)
+
+[node name="MiniBateria8" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
+position = Vector2(1575, 455)
+
+[node name="MiniBateria9" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
+position = Vector2(1085, 455)
 
 [node name="MiniBateria5" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
 position = Vector2(1015, 385)
@@ -325,12 +337,11 @@ libraries = {
 autoplay = "sun_shine"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="MapHUD" type="HBoxContainer" parent="CanvasLayer"]
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 106.0
+offset_bottom = 158.0
 grow_horizontal = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MapHUD"]
@@ -344,7 +355,7 @@ theme_override_constants/margin_right = 50
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-size_flags_vertical = 1
+size_flags_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxFlat_1jxvo")
 text = "PLANETA"
 label_settings = SubResource("LabelSettings_4dho5")
@@ -353,7 +364,7 @@ script = ExtResource("12_k5yvr")
 
 [node name="Battery" parent="CanvasLayer/MapHUD/MarginContainer" instance=ExtResource("13_k0o02")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(350, 0)
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 
