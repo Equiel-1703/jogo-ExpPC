@@ -167,7 +167,7 @@ trail_lifetime = 1.83
 [node name="LineManager" type="Node2D" parent="." node_paths=PackedStringArray("base_line")]
 script = ExtResource("12_6blrr")
 base_line = NodePath("../BaseLine")
-num_of_lines = 5
+num_of_lines = 10
 
 [node name="BaseLine" type="Line2D" parent="."]
 default_color = Color(1, 0, 0, 1)
