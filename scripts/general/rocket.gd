@@ -21,6 +21,9 @@ var _use_battery: bool = false
 var _battery: Battery
 var falling: bool = false
 
+var _commands_matrix: Array
+var _final_coords_array: Array
+
 @onready var _propulsion = $Propulsion
 @onready var _rocket_sprite = $RocketSpr
 @onready var _explosion = $Explosion
@@ -31,7 +34,11 @@ const EXPLOSION_LOSE_MESSAGE: String = "Seu foguete explodiu! Tente novamente."
 
 func _ready():
 	_execute_flag = false
+
 	_propulsion.emitting = false
+
+	# Connect the signal to the function
+	_single_move_array_completed.connect(_on_single_move_array_completed)
 
 func set_use_battery(use_battery: bool) -> void:
 	_use_battery = use_battery
@@ -55,50 +62,55 @@ func set_start_position(start_pos: Vector2) -> void:
 	_propulsion.emitting = false
 	_explosion.emitting = false
 
-	set_physics_process(true)
-
 var _destination_pos: Vector2
 var _t: float = 0.0
 
 ## This function expects an array of arrays containing the commands to move the rocket
 func execute_move_commands(commands_matrix: Array) -> void:
-	var final_coords_array = []
+	_final_coords_array = []
 
 	# Reset the last array and last command flags
 	_is_last_array = false
 	_is_last_command = false
 
-	for command_array in commands_matrix:
-		if not command_array:
-			break
-		
-		# Check if this is the last array of commands
-		if command_array == commands_matrix[-1]:
-			_is_last_array = true
-		
-		# Store the commands to process
-		_commands_to_process = command_array
-		# Turn on the propulsion effect
-		_propulsion.emitting = true
-		# Start executing the commands
-		_execute_next_command()
+	# Store the commands matrix
+	_commands_matrix = commands_matrix
 
-		# Wait for the move to be completed
-		var final_coord = await _single_move_array_completed
+	# Get the first array of commands and start executing them
+	_next_moves_array()	
 
-		# Store the final position of the rocket
-		final_coords_array.push_back(final_coord)
+func _on_single_move_array_completed(final_position: Vector2) -> void:
+	# Store the final position of the rocket
+	_final_coords_array.push_back(final_position)
 
-	# Just before the function ends, set the rocket sprite to point up
-	# self.rotation_degrees = 0
+	if _is_last_array:
+		# Emit the signal with the final positions
+		moves_matrix_completed.emit(_final_coords_array)
+	else:
+		# Get the next array of commands
+		_next_moves_array()
 
-	# Emit the signal with the final coordinates
-	moves_matrix_completed.emit(final_coords_array)	
+func _next_moves_array() -> void:
+	# Get the next array of commands
+	var command_array = _commands_matrix.pop_front()
+
+	# Check if this is the last array of commands
+	if _commands_matrix.size() == 0:
+		_is_last_array = true
+	
+	# Store the commands to process
+	_commands_to_process = command_array
+	# Turn on the propulsion effect
+	_propulsion.emitting = true
+	# Start executing the commands
+	_execute_next_command()
 
 func fall():
 	_propulsion.emitting = false
 	_commands_to_process.clear()
 	falling = true
+	_execute_flag = false
+
 
 	await get_tree().create_timer(FALL_ANIMATION_DURATION).timeout
 
@@ -106,7 +118,7 @@ func fall():
 		get_tree().call_group("main_level", "lose_immediately", FALL_LOSE_MESSAGE)
 
 func explode():
-	set_physics_process(false)
+	_execute_flag = false
 
 	_exploded = true
 	_commands_to_process.clear()
@@ -129,6 +141,9 @@ func _execute_next_command() -> void:
 		if _use_battery and _battery.is_battery_empty():
 			battery_died.emit()
 			return
+		
+		if _use_battery:
+				get_tree().call_group("battery", "consume_battery")
 
 		_destination_pos = self.position
 		
@@ -168,19 +183,11 @@ func _physics_process(delta):
 			if _is_last_array and _is_last_command:
 				# Adjust rotation to zero degrees slowly
 				self.rotation_degrees = lerp(self.rotation_degrees, 0.0, _t)
-
-			# Used for debug purposes only
-			# print(_t)
-			# print(self.position)
 		else:
-			# Only process the next command if the battery is not being filled
 			if _use_battery and _battery.is_filling():
 				return
-			
-			_execute_flag = false
 
-			if _use_battery:
-				get_tree().call_group("battery", "consume_battery")
+			_execute_flag = false
 
 			_execute_next_command()
 	
