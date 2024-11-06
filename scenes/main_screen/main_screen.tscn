@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://bbap2gx8e7xb6"]
+[gd_scene load_steps=11 format=3 uid="uid://bbap2gx8e7xb6"]
 
 [ext_resource type="Script" path="res://scripts/main_screen/main_screen.gd" id="1_hbi2j"]
 [ext_resource type="Texture2D" uid="uid://bhk673yex75io" path="res://res/CAPA.jpg" id="2_4s6nc"]
 [ext_resource type="FontFile" uid="uid://bci6fkabidcfe" path="res://fonts/Warzone.ttf" id="3_v7cdq"]
+[ext_resource type="FontFile" uid="uid://bo5ti6l3ywjqj" path="res://fonts/CaviarDreams.ttf" id="4_tseyp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6msl4"]
 bg_color = Color(0, 0, 0, 0.588235)
@@ -17,6 +18,9 @@ blend_mode = 2
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xwn4b"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_rms4n"]
+font = ExtResource("4_tseyp")
+
 [node name="MainScreen" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -26,6 +30,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_hbi2j")
 levels_table_path = "res://levels_json/levels.json"
+metadata/_edit_horizontal_guides_ = [925.0]
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
@@ -105,6 +110,25 @@ offset_right = 455.0
 offset_bottom = 73.0
 mouse_filter = 2
 color = Color(0.219608, 0.219608, 0.219608, 0.690196)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -156.0
+offset_top = -87.0
+offset_right = 156.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Jogo feito por Henrique Rodrigues
+© 2024 - Universidade Federal de Pelotas
+Rio Grande do Sul"
+label_settings = SubResource("LabelSettings_rms4n")
+horizontal_alignment = 1
 
 [connection signal="pressed" from="VBoxContainer/Jogar" to="." method="_on_jogar_pressed"]
 [connection signal="pressed" from="VBoxContainer/Niveis" to="." method="_on_niveis_pressed"]
