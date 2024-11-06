@@ -44,6 +44,7 @@ func set_use_battery(use_battery: bool) -> void:
 			return
 
 func set_start_position(start_pos: Vector2) -> void:
+	_execute_flag = false
 	falling = false
 	_exploded = false
 
