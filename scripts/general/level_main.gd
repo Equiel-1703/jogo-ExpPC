@@ -21,6 +21,8 @@ var _rocket_respawn_coord: Vector2
 var _last_end_coord: Vector2
 # Coordenada de fim do caminho temporária (é usada caso o jogador cancele a criação do path)
 var _temp_last_end: Vector2
+# Salva o último valor da bateria antes de esgotar
+var _last_battery_level: int = 0
 
 # Variaveis de controle de tempo para o Log
 var _start_time: float
@@ -193,6 +195,7 @@ func _on_player_path_done(player_path_answer: Array):
 func _on_player_battery_path_done(player_path_done: Array):
 	$Rocket.set_use_battery(true)
 	battery.visible = true
+	_last_battery_level = battery.get_battery_level()
 	_on_player_path_done(player_path_done)
 
 # Emmited by the PauseMenu node, when the player clicks on the "Undo last route" button
@@ -303,6 +306,11 @@ func _on_player_path_cancelled():
 func _on_play_again():
 	$Rocket.set_start_position(_rocket_respawn_coord)
 	$Map.clear_all_lines()
+
+	# Reset the battery level
+	if battery:
+		get_tree().call_group("battery", "fill_battery", _last_battery_level)
+
 	_on_play()
 
 # Emmited by the WinScene, we go to the next phase

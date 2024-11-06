@@ -125,12 +125,9 @@ func _execute_next_command() -> void:
 		var command = _commands_to_process.pop_front()
 		_is_last_command = _commands_to_process.size() == 0
 
-		if _use_battery:
-			if _battery.is_battery_empty():
-				battery_died.emit()
-				return
-			else:
-				get_tree().call_group("battery", "consume_battery")
+		if _use_battery and _battery.is_battery_empty():
+			battery_died.emit()
+			return
 
 		_destination_pos = self.position
 		
@@ -176,6 +173,10 @@ func _physics_process(delta):
 			# print(self.position)
 		else:
 			_execute_flag = false
+
+			if _use_battery:
+				get_tree().call_group("battery", "consume_battery")
+
 			_execute_next_command()
 	
 	if falling:
