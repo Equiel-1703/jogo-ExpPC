@@ -4,6 +4,7 @@ class_name MiniBateria
 @onready var _path_follow: PathFollow2D = %PathFollow2D
 @onready var _light: PointLight2D = %PointLight2D
 @onready var _animated_sprite: AnimatedSprite2D = %AnimatedSprite2D
+@onready var collision_area: Area2D = $PowerUpCollision
 
 var ganho_text: PackedScene = preload("res://scenes/battery/mini_bateria/ganho_text.tscn")
 
@@ -35,6 +36,8 @@ func _on_power_up_collision_area_entered(area: Area2D) -> void:
 		get_tree().call_group("battery", "fill_battery", energy_to_add)
 		
 		self.visible = false
+		self.collision_area.set_deferred("monitoring", false)
+
 		_power_ups_to_delete.append(self)
 
 static func delete_power_ups() -> void:
@@ -45,4 +48,5 @@ static func delete_power_ups() -> void:
 static func reset_power_ups() -> void:
 	for power_up in _power_ups_to_delete:
 		power_up.visible = true
+		power_up.collision_area.monitoring = true
 	_power_ups_to_delete.clear()
