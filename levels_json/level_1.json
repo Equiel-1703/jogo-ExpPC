@@ -9,8 +9,38 @@
 		],
 		[
 			{
-				"planet_name": "mercurio",
+				"planet_name": "jupiter",
 				"mode": 0
+			}
+		],
+		[
+			{
+				"planet_name": "venus",
+				"mode": 0
+			}
+		],
+		[
+			{
+				"planet_name": "mercurio",
+				"mode": 1
+			}
+		],
+		[
+			{
+				"planet_name": "terra",
+				"mode": 0
+			}
+		],
+		[
+			{
+				"planet_name": "urano",
+				"mode": 1
+			}
+		],
+		[
+			{
+				"planet_name": "netuno",
+				"mode": 1
 			}
 		]
 	]
