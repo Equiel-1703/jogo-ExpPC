@@ -83,7 +83,7 @@ func _on_single_move_array_completed(final_position: Vector2) -> void:
 	# Store the final position of the rocket
 	_final_coords_array.push_back(final_position)
 
-	if _is_last_array:
+	if _is_last_array and _is_last_command and not (falling or _exploded):
 		# Emit the signal with the final positions
 		moves_matrix_completed.emit(_final_coords_array)
 	else:
@@ -106,11 +106,10 @@ func _next_moves_array() -> void:
 	_execute_next_command()
 
 func fall():
-	_propulsion.emitting = false
-	_commands_to_process.clear()
-	falling = true
 	_execute_flag = false
-
+	_commands_to_process.clear()
+	_propulsion.emitting = false
+	falling = true
 
 	await get_tree().create_timer(FALL_ANIMATION_DURATION).timeout
 
@@ -119,9 +118,9 @@ func fall():
 
 func explode():
 	_execute_flag = false
+	_commands_to_process.clear()
 
 	_exploded = true
-	_commands_to_process.clear()
 
 	_propulsion.emitting = false
 	_rocket_sprite.visible = false
