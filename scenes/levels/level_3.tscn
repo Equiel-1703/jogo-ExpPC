@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://x31skbdgksdl"]
+[gd_scene load_steps=47 format=3 uid="uid://x31skbdgksdl"]
 
 [ext_resource type="Script" path="res://scripts/general/level_main.gd" id="1_nvldi"]
 [ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="2_lokf7"]
@@ -19,7 +19,6 @@
 [ext_resource type="PackedScene" uid="uid://btsetkvtbaonl" path="res://scenes/criar_path/criar_path_reverse.tscn" id="15_8rmoi"]
 [ext_resource type="PackedScene" uid="uid://bi37kon0ju7bv" path="res://scenes/criar_path/criar_path_battery.tscn" id="16_i70d8"]
 [ext_resource type="PackedScene" uid="uid://04und56j0g87" path="res://scenes/general/intermediate_message.tscn" id="16_m68l6"]
-[ext_resource type="Script" path="res://scripts/criar_path/criar_path.gd" id="17_kups6"]
 [ext_resource type="Script" path="res://scripts/next_phase/next_phase_manager.gd" id="17_p47hu"]
 [ext_resource type="PackedScene" uid="uid://c3pvrpj2n21cd" path="res://scenes/next_phase/next_phase_scene.tscn" id="18_r8h3i"]
 [ext_resource type="Script" path="res://scripts/next_phase/next_phase_min_path.gd" id="19_23pau"]
@@ -215,11 +214,14 @@ position = Vector2(1435, 455)
 [node name="MiniBateria8" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
 position = Vector2(1575, 455)
 
+[node name="MiniBateria10" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
+position = Vector2(1645, 525)
+
 [node name="MiniBateria9" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
 position = Vector2(1085, 455)
 
 [node name="MiniBateria5" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
-position = Vector2(1015, 385)
+position = Vector2(1155, 455)
 
 [node name="MiniBateria4" parent="MiniBaterias" instance=ExtResource("10_lt75o")]
 position = Vector2(1645, 595)
@@ -375,7 +377,6 @@ unique_name_in_owner = true
 time_visible = 3.0
 
 [node name="CriarPathBattery" parent="CanvasLayer" node_paths=PackedStringArray("phases_manager", "line_manager") instance=ExtResource("16_i70d8")]
-script = ExtResource("17_kups6")
 phases_manager = NodePath("../../LevelPhasesManager")
 line_manager = NodePath("../../LineManager")
 
