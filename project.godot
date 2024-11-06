@@ -11,11 +11,12 @@ config_version=5
 [application]
 
 config/name="Uma Aventura no Espaço"
-config/version="0.2"
+config/version="1.0"
 run/main_scene="res://scenes/main_screen/main_screen.tscn"
 config/use_custom_user_dir=true
 config/features=PackedStringArray("4.3", "Mobile")
-config/icon="res://icon.svg"
+config/icon="res://res/icon/icon.png"
+config/windows_native_icon="res://res/icon/icon.ico"
 
 [autoload]
 
