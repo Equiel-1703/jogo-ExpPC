@@ -9,6 +9,8 @@ var ganho_text: PackedScene = preload("res://scenes/battery/mini_bateria/ganho_t
 
 var _bounce_speed: float = 0.0
 
+static var _power_ups_to_delete: Array = []
+
 func _ready() -> void:
 	_animated_sprite.speed_scale = randf_range(0.8, 2.0)
 	_bounce_speed = randf_range(0.1, 0.5)
@@ -22,7 +24,7 @@ func _on_power_up_collision_area_entered(area: Area2D) -> void:
 	var _parent = area.get_parent()
 
 	if _parent is Rocket:
-		var energy_to_add = randi_range(1, 4)
+		var energy_to_add = randi_range(4, 8)
 		
 		var node_text: Label = ganho_text.instantiate()
 		node_text.text = "+" + str(energy_to_add)
@@ -31,5 +33,16 @@ func _on_power_up_collision_area_entered(area: Area2D) -> void:
 		node_text.position = self.position
 		
 		get_tree().call_group("battery", "fill_battery", energy_to_add)
-	
-	self.queue_free()
+		
+		self.visible = false
+		_power_ups_to_delete.append(self)
+
+static func delete_power_ups() -> void:
+	for power_up in _power_ups_to_delete:
+		power_up.queue_free()
+	_power_ups_to_delete.clear()
+
+static func reset_power_ups() -> void:
+	for power_up in _power_ups_to_delete:
+		power_up.visible = true
+	_power_ups_to_delete.clear()
