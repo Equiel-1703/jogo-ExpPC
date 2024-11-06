@@ -1,0 +1,156 @@
+[gd_scene load_steps=9 format=3 uid="uid://bi37kon0ju7bv"]
+
+[ext_resource type="Material" uid="uid://ddpwqy41qf85d" path="res://shaders/bg_material.tres" id="2_7fqms"]
+[ext_resource type="LabelSettings" uid="uid://cgl76j25jy15c" path="res://themes/instructions_label_settings.tres" id="3_awkr5"]
+[ext_resource type="PackedScene" uid="uid://dw0pabylvvle5" path="res://scenes/battery/battery.tscn" id="4_gdrdt"]
+
+[sub_resource type="GDScript" id="GDScript_sgdvy"]
+script/source = "extends CriarPath
+class_name CriarPathBattery
+"
+
+[sub_resource type="Gradient" id="Gradient_mfpkk"]
+offsets = PackedFloat32Array(0, 0.201299)
+colors = PackedColorArray(0, 0, 0, 0.682353, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_keesj"]
+gradient = SubResource("Gradient_mfpkk")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n3fof"]
+bg_color = Color(1, 0.805, 0.22, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i026o"]
+bg_color = Color(1, 0, 0.219608, 1)
+
+[node name="CriarPathBattery" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_sgdvy")
+metadata/_edit_vertical_guides_ = [1840.0]
+metadata/_edit_horizontal_guides_ = [951.0, 873.0, 161.0]
+
+[node name="GradientBG" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 980.0
+texture = SubResource("GradientTexture2D_keesj")
+metadata/_edit_lock_ = true
+
+[node name="BG" type="ColorRect" parent="."]
+unique_name_in_owner = true
+visible = false
+material = ExtResource("2_7fqms")
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 980.0
+color = Color(0, 0, 0, 0.54902)
+metadata/_edit_lock_ = true
+
+[node name="InstructionLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 1890.0
+offset_bottom = 268.0
+text = "Crie a rota tomando cuidado com o nível da bateria!"
+label_settings = ExtResource("3_awkr5")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="ButtonsContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 161.0
+offset_bottom = -107.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PathButtons" type="HFlowContainer" parent="ButtonsContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1500, 0)
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 50
+alignment = 1
+
+[node name="BottomHUD" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -110.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_right = 50
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="BatteryContainer" type="Control" parent="BottomHUD"]
+layout_mode = 2
+
+[node name="Battery" parent="BottomHUD/BatteryContainer" instance=ExtResource("4_gdrdt")]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -458.0
+offset_top = -34.0
+offset_right = 0.0
+offset_bottom = 34.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Buttons" type="HBoxContainer" parent="BottomHUD"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="VerMapa" type="Button" parent="BottomHUD/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_n3fof")
+text = "Ver mapa"
+
+[node name="Ok" type="Button" parent="BottomHUD/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_n3fof")
+text = "Ok"
+
+[node name="Cancelar" type="Button" parent="BottomHUD/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_i026o")
+text = "Cancelar"
+
+[connection signal="pressed" from="BottomHUD/Buttons/VerMapa" to="." method="_on_ver_mapa_pressed"]
+[connection signal="pressed" from="BottomHUD/Buttons/Ok" to="." method="_on_ok_pressed"]
+[connection signal="pressed" from="BottomHUD/Buttons/Cancelar" to="." method="_on_cancelar_pressed"]

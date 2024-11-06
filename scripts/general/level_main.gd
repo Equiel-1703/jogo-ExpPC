@@ -33,9 +33,16 @@ func _ready():
 		get_tree().quit()
 		return
 	
+	# Check if battery is set
+	if battery and not battery_big:
+		printerr("LevelMain> Battery is set, but the expanded battery is not set!")
+		get_tree().quit()
+		return
+	
 	# Hide map UI
 	_set_map_ui_visible(false)
 
+	# Hide battery_big
 	if battery_big:
 		battery_big.visible = false
 
@@ -182,6 +189,12 @@ func _on_player_path_done(player_path_answer: Array):
 	# Go to next destination in the phase
 	phases_manager.go_to_next_destination()
 
+# Emmited by the CriarPath screen, when the player has finished creating the path using the battery
+func _on_player_battery_path_done(player_path_done: Array):
+	$Rocket.set_use_battery(true)
+	battery.visible = true
+	_on_player_path_done(player_path_done)
+
 # Emmited by the PauseMenu node, when the player clicks on the "Undo last route" button
 func _on_undo_last_route():
 	$Map.clear_active_line()
@@ -203,6 +216,8 @@ func _on_undo_last_route():
 	
 # Emmited by the PhasesManager node, when the rocket has finished moving
 func _on_phase_is_over(final_coords: Array):
+	_set_map_ui_visible(false)
+
 	if check_if_player_won(final_coords):
 		_win()
 	else:
@@ -232,8 +247,6 @@ func _win():
 func _lose():
 	Log.num_erros += 1
 
-	_set_map_ui_visible(true)
-	
 	$Map.clear_all_lines()
 
 	# Player lost (The message is set in phases_manager.player_won() function)
@@ -300,11 +313,9 @@ func _on_go_to_next_phase():
 	# Show the next phase
 	phases_manager.show_current_destination()
 
-# Emmited by the Rocket node, when the rocket enters a prohibited area
+# Emmited by the barriers when the rocket enters the explosion area.
 func _on_explosion_area_entered(_area):
 	$Rocket.explode()
-	await $Rocket.explosion_animation_finished
-	lose_immediately("Seu foguete explodiu! Tente novamente.")
 
 var _was_map_enabled: bool
 var _expand_battery: bool = false

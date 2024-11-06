@@ -7,20 +7,23 @@ signal battery_clicked
 
 @onready var _cells_container: HBoxContainer = %CellsContainer
 
-var _cell_texture_on: Texture2D = preload("res://res/celula_bateria_cheia.png")
-var _cell_texture_off: Texture2D = preload("res://res/celula_bateria_vazia.png")
+static var _cell_texture_on: Texture2D = preload("res://res/celula_bateria_cheia.png")
+static var _cell_texture_off: Texture2D = preload("res://res/celula_bateria_vazia.png")
 
-const _battery_capacity: int = 10
+static var initial_battery_level: int = 10
 var _battery_level: int = 0
 var _fill_animation_timer: Timer
+
+const _battery_capacity: int = 10
 
 func _ready():
 	_fill_animation_timer = Timer.new()
 	_fill_animation_timer.set_wait_time(fill_animation_delay)
 	_fill_animation_timer.set_one_shot(true)
 	
-	_cells_container.add_child(_fill_animation_timer)
+	self.add_child(_fill_animation_timer)
 
+	_battery_level = initial_battery_level
 	set_battery_level(_battery_level)
 
 func set_battery_level(level: int) -> void:

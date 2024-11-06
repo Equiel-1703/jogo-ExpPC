@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://scripts/battery/battery.gd" id="2_nf5ys"]
 [ext_resource type="Texture2D" uid="uid://dky85kw0no04f" path="res://res/bateria_mascara.png" id="3_04md5"]
 
-[node name="Battery" type="Control"]
+[node name="Battery" type="Control" groups=["battery"]]
 layout_mode = 3
 anchor_right = 0.828
 anchor_bottom = 0.255

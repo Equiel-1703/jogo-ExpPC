@@ -3,8 +3,8 @@ class_name Rocket
 
 ## Emmited when the rocket has finished moving ALL the arrays of commands
 signal moves_matrix_completed(final_coords: Array)
-## Emmited when the explosion animation has finished
-signal explosion_animation_finished()
+## Emmitted when the rocket's battery runs out
+signal battery_died()
 
 ## Emmited when the rocket has finished moving a single array of commands
 signal _single_move_array_completed(final_position: Vector2)
@@ -17,23 +17,44 @@ var _execute_flag: bool
 var _is_last_array: bool = false
 var _is_last_command: bool = false
 var _exploded: bool
+var _use_battery: bool = false
+var _battery: Battery
+var falling: bool = false
 
 @onready var _propulsion = $Propulsion
 @onready var _rocket_sprite = $RocketSpr
 @onready var _explosion = $Explosion
 
+const FALL_ANIMATION_DURATION: float = 2.0
+const FALL_LOSE_MESSAGE: String = "A bateria acabou no meio do caminho!"
+const EXPLOSION_LOSE_MESSAGE: String = "Seu foguete explodiu! Tente novamente."
+
 func _ready():
 	_execute_flag = false
 	_propulsion.emitting = false
 
+func set_use_battery(use_battery: bool) -> void:
+	_use_battery = use_battery
+
+	if _use_battery:
+		_battery = get_tree().get_first_node_in_group("battery")
+		if not _battery:
+			printerr("Rocket> The Rocket was set to use battery, but a battery node is not present in the scene.")
+			get_tree().quit()
+			return
+
 func set_start_position(start_pos: Vector2) -> void:
+	falling = false
+	_exploded = false
+
 	self.position = start_pos
 	self.rotation_degrees = 0
 
 	_rocket_sprite.visible = true
 	_propulsion.emitting = false
-	
-	_exploded = false
+	_explosion.emitting = false
+
+	set_physics_process(true)
 
 var _destination_pos: Vector2
 var _t: float = 0.0
@@ -73,7 +94,19 @@ func execute_move_commands(commands_matrix: Array) -> void:
 	# Emit the signal with the final coordinates
 	moves_matrix_completed.emit(final_coords_array)	
 
+func fall():
+	_propulsion.emitting = false
+	_commands_to_process.clear()
+	falling = true
+
+	await get_tree().create_timer(FALL_ANIMATION_DURATION).timeout
+
+	if not _exploded:
+		get_tree().call_group("main_level", "lose_immediately", FALL_LOSE_MESSAGE)
+
 func explode():
+	set_physics_process(false)
+
 	_exploded = true
 	_commands_to_process.clear()
 
@@ -82,12 +115,22 @@ func explode():
 	_explosion.emitting = true
 
 func _on_explosion_finished():
-	explosion_animation_finished.emit()
+	if falling:
+		get_tree().call_group("main_level", "lose_immediately", FALL_LOSE_MESSAGE)
+	else:
+		get_tree().call_group("main_level", "lose_immediately", EXPLOSION_LOSE_MESSAGE)
 
 func _execute_next_command() -> void:
 	if _commands_to_process.size() > 0:
 		var command = _commands_to_process.pop_front()
 		_is_last_command = _commands_to_process.size() == 0
+
+		if _use_battery:
+			if _battery.is_battery_empty():
+				battery_died.emit()
+				return
+			else:
+				get_tree().call_group("battery", "consume_battery")
 
 		_destination_pos = self.position
 		
@@ -134,3 +177,7 @@ func _physics_process(delta):
 		else:
 			_execute_flag = false
 			_execute_next_command()
+	
+	if falling:
+		self.position += Vector2.DOWN
+		self.rotation_degrees += 1

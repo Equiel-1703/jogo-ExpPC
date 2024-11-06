@@ -49,6 +49,10 @@ func _ready():
 		get_tree().quit()
 		return
 	
+	# Connect rocket signals
+	rocket.moves_matrix_completed.connect(_on_rocket_finished_moving)
+	rocket.battery_died.connect(_on_rocket_battery_died)
+
 	# Load the level JSON file.
 	_phases = JsonLoader.load_level(level_json_path)
 
@@ -223,13 +227,16 @@ func go_to_next_destination():
 
 		# Launch the rocket
 		rocket.execute_move_commands(_player_answers.duplicate(true))
-		# Waits for the rocket to finish moving and emit the signal.
-		var final_coords = await rocket.moves_matrix_completed
-		
-		phase_is_over.emit(final_coords)
 	else:
 		# If not, just show the next destination.
 		show_current_destination()
+
+## Signal from the rocket when it finishes moving.
+func _on_rocket_finished_moving(final_coords: Array):
+	phase_is_over.emit(final_coords)
+
+func _on_rocket_battery_died():
+	rocket.fall()
 
 var level_is_over: bool = false
 
