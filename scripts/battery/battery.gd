@@ -50,7 +50,7 @@ func is_battery_empty() -> bool:
 	return _battery_level == 0
 
 func consume_battery() -> void:
-	if _battery_level > 0:
+	if _battery_level > 0 and not _is_filling:
 		_battery_level -= 1
 		_cells_container.get_child(_battery_level).texture = _cell_texture_off
 
