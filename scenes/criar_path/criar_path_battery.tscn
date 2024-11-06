@@ -1,13 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://bi37kon0ju7bv"]
 
+[ext_resource type="Script" path="res://scripts/criar_path/criar_path.gd" id="1_v4kmh"]
 [ext_resource type="Material" uid="uid://ddpwqy41qf85d" path="res://shaders/bg_material.tres" id="2_7fqms"]
 [ext_resource type="LabelSettings" uid="uid://cgl76j25jy15c" path="res://themes/instructions_label_settings.tres" id="3_awkr5"]
 [ext_resource type="PackedScene" uid="uid://dw0pabylvvle5" path="res://scenes/battery/battery.tscn" id="4_gdrdt"]
-
-[sub_resource type="GDScript" id="GDScript_sgdvy"]
-script/source = "extends CriarPath
-class_name CriarPathBattery
-"
 
 [sub_resource type="Gradient" id="Gradient_mfpkk"]
 offsets = PackedFloat32Array(0, 0.201299)
@@ -31,7 +27,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = SubResource("GDScript_sgdvy")
+script = ExtResource("1_v4kmh")
 metadata/_edit_vertical_guides_ = [1840.0]
 metadata/_edit_horizontal_guides_ = [951.0, 873.0, 161.0]
 
@@ -88,13 +84,12 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -110.0
+offset_top = -107.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_right = 50
 metadata/_edit_group_ = true
-metadata/_edit_lock_ = true
 
 [node name="BatteryContainer" type="Control" parent="BottomHUD"]
 layout_mode = 2
@@ -102,15 +97,14 @@ layout_mode = 2
 [node name="Battery" parent="BottomHUD/BatteryContainer" instance=ExtResource("4_gdrdt")]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 1
-anchors_preset = 6
+anchors_preset = 11
 anchor_left = 1.0
-anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -458.0
-offset_top = -34.0
+anchor_bottom = 1.0
+offset_left = -606.0
+offset_top = -57.0
 offset_right = 0.0
-offset_bottom = 34.0
+offset_bottom = -29.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
