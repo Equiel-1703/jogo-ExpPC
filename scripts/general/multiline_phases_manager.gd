@@ -145,7 +145,7 @@ func player_lose():
 
 	# Update GlobalGameData variables
 	GlobalGameData.current_path = _dest_index + 1
-	GlobalGameData.destination_planet_name = GlobalGameData.PLANETS_COORDS[_destinations[0].planet_name].planet_name
+	GlobalGameData.destination_planet_name = _get_current_destination().planet_name
 
 ## Check if the player won the game.
 ##
