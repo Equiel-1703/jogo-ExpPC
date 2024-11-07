@@ -1,0 +1,64 @@
+[gd_scene load_steps=5 format=3 uid="uid://lhqp0caarqll"]
+
+[ext_resource type="Script" path="res://scripts/battery/battery_main_container.gd" id="1_0lhri"]
+[ext_resource type="PackedScene" uid="uid://dw0pabylvvle5" path="res://scenes/battery/battery.tscn" id="2_cs0ko"]
+
+[sub_resource type="Shader" id="Shader_f2von"]
+code = "shader_type canvas_item;
+
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+uniform float lod: hint_range(0.0, 5) = 0.0;
+uniform float brightness_decrease: hint_range(0, 1.0) = 0.0;
+
+void fragment(){
+	vec4 color = texture(SCREEN_TEXTURE, SCREEN_UV, lod);
+	COLOR = color - vec4(brightness_decrease, brightness_decrease, brightness_decrease, 0.0);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ysng"]
+shader = SubResource("Shader_f2von")
+shader_parameter/lod = 2.0
+shader_parameter/brightness_decrease = 0.07
+
+[node name="BatteryBig" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_0lhri")
+
+[node name="BlurredBG" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_3ysng")
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 980.0
+color = Color(0, 0, 0, 0)
+
+[node name="Center" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 188.0
+offset_top = 351.0
+offset_right = -188.0
+offset_bottom = -351.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Battery" parent="Center" instance=ExtResource("2_cs0ko")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(475, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+size_flags_horizontal = 8
+
+[connection signal="battery_clicked" from="Center/Battery" to="." method="_on_battery_clicked"]

@@ -1,60 +1,54 @@
-[gd_scene load_steps=8 format=3 uid="uid://btvk0x05tgewp"]
+[gd_scene load_steps=7 format=3 uid="uid://btvk0x05tgewp"]
 
 [ext_resource type="Script" path="res://testing/test.gd" id="1_vgntq"]
-[ext_resource type="Texture2D" uid="uid://dftpo1aex8ah0" path="res://res/Rocket_70x170.png" id="1_yux14"]
-[ext_resource type="Script" path="res://testing/rocket.gd" id="2_mec3w"]
-[ext_resource type="PackedScene" uid="uid://c3pvrpj2n21cd" path="res://scenes/level_1/next_phase_scene.tscn" id="2_r1g13"]
+[ext_resource type="PackedScene" uid="uid://cj0mpdxnupbgl" path="res://scenes/general/direction_button.tscn" id="2_nal7t"]
 
-[sub_resource type="Animation" id="Animation_ig4sy"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Rocket:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_umxcc"]
+bg_color = Color(1, 1, 0, 1)
 
-[sub_resource type="Animation" id="Animation_3xepk"]
-resource_name = "rocket_opacity"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Rocket:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fuqh7"]
+bg_color = Color(0, 0, 1, 1)
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_408eo"]
-_data = {
-"RESET": SubResource("Animation_ig4sy"),
-"rocket_opacity": SubResource("Animation_3xepk")
-}
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_joxyy"]
+bg_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_06f1o"]
+bg_color = Color(0, 1, 0, 1)
 
 [node name="Test" type="Node2D"]
 script = ExtResource("1_vgntq")
 
-[node name="NextPhaseScene" parent="." instance=ExtResource("2_r1g13")]
+[node name="DirectionButton" parent="." instance=ExtResource("2_nal7t")]
 
-[node name="Rocket" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(928, 543)
-texture = ExtResource("1_yux14")
-script = ExtResource("2_mec3w")
+[node name="yellow" type="Button" parent="."]
+offset_left = 384.0
+offset_top = 64.0
+offset_right = 448.0
+offset_bottom = 128.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_umxcc")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_408eo")
-}
-autoplay = "rocket_opacity"
+[node name="blue" type="Button" parent="."]
+offset_left = 384.0
+offset_top = 192.0
+offset_right = 448.0
+offset_bottom = 256.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_fuqh7")
+
+[node name="red" type="Button" parent="."]
+offset_left = 512.0
+offset_top = 64.0
+offset_right = 576.0
+offset_bottom = 128.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_joxyy")
+
+[node name="green" type="Button" parent="."]
+offset_left = 512.0
+offset_top = 192.0
+offset_right = 576.0
+offset_bottom = 256.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_06f1o")
+
+[connection signal="pressed" from="yellow" to="." method="_on_yellow_pressed"]
+[connection signal="pressed" from="blue" to="." method="_on_blue_pressed"]
+[connection signal="pressed" from="red" to="." method="_on_red_pressed"]
+[connection signal="pressed" from="green" to="." method="_on_green_pressed"]

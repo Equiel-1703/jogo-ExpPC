@@ -1,0 +1,190 @@
+[gd_scene load_steps=11 format=3 uid="uid://2jo5hkcplmdt"]
+
+[ext_resource type="Script" path="res://scripts/pause_menu/pause_menu.gd" id="1_vcqls"]
+[ext_resource type="FontFile" uid="uid://bci6fkabidcfe" path="res://fonts/Warzone.ttf" id="1_xfgnt"]
+[ext_resource type="FontFile" uid="uid://cp0dqor3wwrfs" path="res://fonts/kenyan coffee rg.otf" id="2_6odk4"]
+
+[sub_resource type="Shader" id="Shader_f2von"]
+code = "shader_type canvas_item;
+
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+uniform float lod: hint_range(0.0, 5) = 0.0;
+uniform float brightness_decrease: hint_range(0, 1.0) = 0.0;
+
+void fragment(){
+	vec4 color = texture(SCREEN_TEXTURE, SCREEN_UV, lod);
+	COLOR = color - vec4(brightness_decrease, brightness_decrease, brightness_decrease, 0.0);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ln5h3"]
+shader = SubResource("Shader_f2von")
+shader_parameter/lod = 2.0
+shader_parameter/brightness_decrease = 0.1
+
+[sub_resource type="LabelSettings" id="LabelSettings_oegpg"]
+font = ExtResource("1_xfgnt")
+font_size = 128
+shadow_size = 5
+shadow_color = Color(0, 0, 0, 0.341176)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jprxp"]
+bg_color = Color(0, 0, 0, 0.588235)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xrbx7"]
+bg_color = Color(1, 1, 1, 0.54902)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s6gpm"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_bf6ig"]
+blend_mode = 2
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vcqls")
+
+[node name="BlurBG" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_ln5h3")
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 980.0
+color = Color(0, 0, 0, 0)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 980.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="PauseLabel" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Pause"
+label_settings = SubResource("LabelSettings_oegpg")
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Resumir" type="Button" parent="CenterContainer/VBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_6odk4")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/hover = SubResource("StyleBoxFlat_jprxp")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xrbx7")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_s6gpm")
+text = "Resumir"
+
+[node name="ColorRect" type="ColorRect" parent="CenterContainer/VBoxContainer/Resumir"]
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_bf6ig")
+layout_mode = 2
+offset_right = 455.0
+offset_bottom = 95.0
+mouse_filter = 2
+color = Color(0.219608, 0.219608, 0.219608, 0.690196)
+
+[node name="ReiniciarNivel" type="Button" parent="CenterContainer/VBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_6odk4")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/hover = SubResource("StyleBoxFlat_jprxp")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xrbx7")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_s6gpm")
+text = "Reiniciar Nível"
+
+[node name="ColorRect" type="ColorRect" parent="CenterContainer/VBoxContainer/ReiniciarNivel"]
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_bf6ig")
+layout_mode = 2
+offset_right = 455.0
+offset_bottom = 95.0
+mouse_filter = 2
+color = Color(0.219608, 0.219608, 0.219608, 0.690196)
+
+[node name="DesfazerUltRota" type="Button" parent="CenterContainer/VBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_6odk4")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/hover = SubResource("StyleBoxFlat_jprxp")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xrbx7")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_s6gpm")
+text = "Desfazer Última Rota"
+
+[node name="ColorRect" type="ColorRect" parent="CenterContainer/VBoxContainer/DesfazerUltRota"]
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_bf6ig")
+layout_mode = 2
+offset_right = 455.0
+offset_bottom = 100.0
+mouse_filter = 2
+color = Color(0.219608, 0.219608, 0.219608, 0.690196)
+
+[node name="VoltarMenu" type="Button" parent="CenterContainer/VBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_6odk4")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/hover = SubResource("StyleBoxFlat_jprxp")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xrbx7")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_s6gpm")
+text = "Voltar ao Menu"
+
+[node name="ColorRect" type="ColorRect" parent="CenterContainer/VBoxContainer/VoltarMenu"]
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_bf6ig")
+layout_mode = 2
+offset_right = 455.0
+offset_bottom = 100.0
+mouse_filter = 2
+color = Color(0.219608, 0.219608, 0.219608, 0.690196)
+
+[node name="Sair" type="Button" parent="CenterContainer/VBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_6odk4")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/hover = SubResource("StyleBoxFlat_jprxp")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xrbx7")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_s6gpm")
+text = "Sair"
+
+[node name="ColorRect" type="ColorRect" parent="CenterContainer/VBoxContainer/Sair"]
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_bf6ig")
+layout_mode = 2
+offset_right = 455.0
+offset_bottom = 102.0
+mouse_filter = 2
+color = Color(0.219608, 0.219608, 0.219608, 0.690196)
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Resumir" to="." method="_on_resumir_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ReiniciarNivel" to="." method="_on_reiniciar_nivel_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/DesfazerUltRota" to="." method="_on_desfazer_ult_rota_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/VoltarMenu" to="." method="_on_voltar_menu_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Sair" to="." method="_on_sair_pressed"]

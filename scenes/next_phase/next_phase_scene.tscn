@@ -1,0 +1,101 @@
+[gd_scene load_steps=8 format=3 uid="uid://c3pvrpj2n21cd"]
+
+[ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="1_a6fg7"]
+[ext_resource type="Script" path="res://scripts/next_phase/next_phase_base.gd" id="1_nxmja"]
+[ext_resource type="Material" uid="uid://ddpwqy41qf85d" path="res://shaders/bg_material.tres" id="2_fn2el"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_xamc4"]
+font = ExtResource("1_a6fg7")
+font_size = 72
+font_color = Color(1, 0.803922, 0.219608, 1)
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cfiok"]
+bg_color = Color(1, 0.803922, 0.219608, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_daw6v"]
+font = ExtResource("1_a6fg7")
+font_size = 72
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skg7m"]
+bg_color = Color(1, 0.805, 0.22, 1)
+
+[node name="NextPhaseScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nxmja")
+
+[node name="BG" type="ColorRect" parent="."]
+material = ExtResource("2_fn2el")
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 980.0
+color = Color(0, 0, 0, 1)
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 873.0
+alignment = 1
+
+[node name="DestContainer" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+alignment = 1
+
+[node name="Destino" type="Label" parent="Content/DestContainer"]
+layout_mode = 2
+text = "Seu destino é "
+label_settings = SubResource("LabelSettings_xamc4")
+
+[node name="NomePlaneta" type="Label" parent="Content/DestContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_cfiok")
+text = "PLANETA"
+label_settings = SubResource("LabelSettings_daw6v")
+
+[node name="CenterContainer" type="CenterContainer" parent="Content"]
+custom_minimum_size = Vector2(0, 612)
+layout_mode = 2
+
+[node name="Instrucoes" type="RichTextLabel" parent="Content/CenterContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(1800, 0)
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.509804)
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_outline_size = 10
+theme_override_fonts/normal_font = ExtResource("1_a6fg7")
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[center]INSTRUÇÕES[center]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_top = 873.0
+offset_right = 1890.0
+offset_bottom = 980.0
+alignment = 1
+
+[node name="Ok" type="Button" parent="HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_skg7m")
+text = "Ok"
+
+[connection signal="pressed" from="HBoxContainer2/Ok" to="." method="_on_ok_pressed"]

@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0onqu281fee5"]
+
+[ext_resource type="PackedScene" uid="uid://cig2gpf3kuqkq" path="res://scenes/criar_path/criar_path.tscn" id="1_sxrka"]
+[ext_resource type="Script" path="res://scripts/criar_path/criar_path_num.gd" id="2_j4wwn"]
+[ext_resource type="LabelSettings" uid="uid://d0poqp6bcc1m5" path="res://themes/alert_label.tres" id="3_1u0a5"]
+
+[node name="CriarPath" instance=ExtResource("1_sxrka")]
+script = ExtResource("2_j4wwn")
+
+[node name="GradientBG" parent="." index="0"]
+visible = false
+
+[node name="BG" parent="." index="1"]
+visible = true
+
+[node name="SetNumContainer" type="CenterContainer" parent="." index="3"]
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 980.0
+
+[node name="TamRotaLineField" type="LineEdit" parent="SetNumContainer" index="0"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Tamanho da rota"
+alignment = 1
+
+[node name="AlertLabel" type="Label" parent="." index="4"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 340.0
+offset_top = 528.0
+offset_right = 1550.0
+offset_bottom = 873.0
+text = "Por favor, insira um tamanho de rota válido!"
+label_settings = ExtResource("3_1u0a5")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[connection signal="text_submitted" from="SetNumContainer/TamRotaLineField" to="." method="_on_tam_rota_line_field_text_submitted"]

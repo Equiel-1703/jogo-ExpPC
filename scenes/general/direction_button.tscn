@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://cj0mpdxnupbgl"]
+
+[ext_resource type="Texture2D" uid="uid://b2spr4bxiphnj" path="res://res/BOTÃO_JOGO.png" id="1_6jln3"]
+[ext_resource type="Script" path="res://scripts/helpers_classes/direction_button.gd" id="1_ju0p0"]
+[ext_resource type="Shader" path="res://shaders/color_overlay.gdshader" id="2_dfqmu"]
+[ext_resource type="Texture2D" uid="uid://dpfia8wfijihm" path="res://res/BOTÃO_JOGO_SETA.png" id="4_qoxfs"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lwasa"]
+resource_local_to_scene = true
+shader = ExtResource("2_dfqmu")
+shader_parameter/color_rgb = Vector3(0.115, 0.35, 0.77)
+
+[node name="DirectionButton" type="Control"]
+custom_minimum_size = Vector2(140, 182)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 140.0
+offset_bottom = 182.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_ju0p0")
+
+[node name="IndexLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 140.0
+offset_bottom = 42.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonBG" type="TextureButton" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_lwasa")
+layout_mode = 0
+offset_top = 42.0
+offset_right = 140.0
+offset_bottom = 182.0
+texture_normal = ExtResource("1_6jln3")
+
+[node name="Seta" type="TextureButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 42.0
+offset_right = 140.0
+offset_bottom = 182.0
+texture_normal = ExtResource("4_qoxfs")
+
+[connection signal="pressed" from="Seta" to="." method="_on_seta_pressed"]

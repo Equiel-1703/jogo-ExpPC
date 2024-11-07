@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1838xix3b5wi"]
+
+[ext_resource type="Script" path="res://scripts/main_screen/niveis_screen.gd" id="1_y0l56"]
+[ext_resource type="PackedScene" uid="uid://cluwjgstsb7wf" path="res://scenes/main_screen/level_number_button.tscn" id="2_v5208"]
+[ext_resource type="Texture2D" uid="uid://bca28gqaedghh" path="res://res/FASES_BG_BLURRED_2.jpg" id="3_r54to"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nyugc"]
+bg_color = Color(0.0943, 0.120608, 0.41, 1)
+
+[node name="Niveis" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_y0l56")
+button_scene = ExtResource("2_v5208")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1895.0
+offset_bottom = 984.0
+mouse_filter = 2
+texture = ExtResource("3_r54to")
+expand_mode = 1
+stretch_mode = 4
+metadata/_edit_lock_ = true
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_right = 1890.0
+offset_bottom = 980.0
+
+[node name="HFlowContainer" type="HFlowContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(1400, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+alignment = 1
+
+[node name="CenterContainer2" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_top = 842.0
+offset_right = 1890.0
+offset_bottom = 980.0
+
+[node name="Voltar" type="Button" parent="CenterContainer2"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_nyugc")
+text = "VOLTAR"
+
+[connection signal="pressed" from="CenterContainer2/Voltar" to="." method="_on_voltar_pressed"]

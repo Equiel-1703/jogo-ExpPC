@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://cluwjgstsb7wf"]
+
+[ext_resource type="Script" path="res://scripts/main_screen/level_number.gd" id="1_tlc20"]
+[ext_resource type="Shader" path="res://shaders/color_overlay.gdshader" id="2_kneug"]
+[ext_resource type="Texture2D" uid="uid://b2spr4bxiphnj" path="res://res/BOTÃO_JOGO.png" id="3_wk2lh"]
+[ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="4_dkins"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_usvdm"]
+resource_local_to_scene = true
+shader = ExtResource("2_kneug")
+shader_parameter/color_rgb = Vector3(0.004, 0.016, 0.082)
+
+[sub_resource type="LabelSettings" id="LabelSettings_wyyx0"]
+font = ExtResource("4_dkins")
+font_size = 65
+
+[node name="LevelNumber" type="CenterContainer"]
+custom_minimum_size = Vector2(140, 140)
+offset_right = 140.0
+offset_bottom = 140.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_tlc20")
+
+[node name="rec" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_usvdm")
+texture = ExtResource("3_wk2lh")
+centered = false
+
+[node name="num" type="Label" parent="."]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_wyyx0")
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -5,3 +5,5 @@
 [resource]
 font = ExtResource("1_sfbnl")
 font_size = 50
+shadow_size = 10
+shadow_color = Color(0, 0, 0, 0.509804)

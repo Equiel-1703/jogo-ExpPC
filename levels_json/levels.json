@@ -1,0 +1,16 @@
+[
+	{
+		"level_no": 1,
+		"scene_path": "res://scenes/levels/level_1.tscn"
+	},
+
+	{
+		"level_no": 2,
+		"scene_path": "res://scenes/levels/level_2.tscn"
+	},
+
+	{
+		"level_no": 3,
+		"scene_path": "res://scenes/levels/level_3.tscn"
+	}
+]

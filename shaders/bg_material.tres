@@ -5,4 +5,4 @@
 [resource]
 shader = ExtResource("1_vb81c")
 shader_parameter/lod = 2.0
-shader_parameter/brightness_decrease = 0.07
+shader_parameter/brightness_decrease = 0.08

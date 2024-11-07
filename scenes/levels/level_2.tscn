@@ -1,0 +1,360 @@
+[gd_scene load_steps=44 format=3 uid="uid://bi8chh3jjrgc3"]
+
+[ext_resource type="Script" path="res://scripts/general/level_main.gd" id="1_u4ehn"]
+[ext_resource type="Texture2D" uid="uid://b6xc8csuuhutd" path="res://res/MAPA_JOGO.jpg" id="2_sxtaq"]
+[ext_resource type="PackedScene" uid="uid://cwrl3t86dpahv" path="res://scenes/general/map.tscn" id="3_biice"]
+[ext_resource type="Texture2D" uid="uid://bmjnhcqpa4h1g" path="res://res/MAPA_JOGO_OV.png" id="7_grejy"]
+[ext_resource type="Texture2D" uid="uid://dbryvpjdpfce5" path="res://res/SUN_SHINE.png" id="8_ov8m6"]
+[ext_resource type="Texture2D" uid="uid://yx5t6di3guma" path="res://res/SUN.png" id="9_638uh"]
+[ext_resource type="Shader" path="res://shaders/fire_heat.gdshader" id="10_cql53"]
+[ext_resource type="FontFile" uid="uid://bon14dm77mpt8" path="res://fonts/KGRedHands.ttf" id="11_5wqy8"]
+[ext_resource type="Texture2D" uid="uid://bmptqxie7ni4c" path="res://res/Flame.png" id="11_ek25m"]
+[ext_resource type="Script" path="res://scripts/general/line_manager.gd" id="12_6blrr"]
+[ext_resource type="Script" path="res://scripts/general/nome_planeta_label.gd" id="12_udm1l"]
+[ext_resource type="PackedScene" uid="uid://di4d6nr6gxb8t" path="res://scenes/general/rocket.tscn" id="13_pbxw8"]
+[ext_resource type="PackedScene" uid="uid://b3dk076igvbbl" path="res://scenes/general/message.tscn" id="14_jwuti"]
+[ext_resource type="PackedScene" uid="uid://cig2gpf3kuqkq" path="res://scenes/criar_path/criar_path.tscn" id="14_v3fbq"]
+[ext_resource type="PackedScene" uid="uid://btsetkvtbaonl" path="res://scenes/criar_path/criar_path_reverse.tscn" id="16_puhcc"]
+[ext_resource type="PackedScene" uid="uid://04und56j0g87" path="res://scenes/general/intermediate_message.tscn" id="16_vraao"]
+[ext_resource type="Script" path="res://scripts/next_phase/next_phase_manager.gd" id="17_5p58l"]
+[ext_resource type="PackedScene" uid="uid://c3pvrpj2n21cd" path="res://scenes/next_phase/next_phase_scene.tscn" id="17_bodho"]
+[ext_resource type="Script" path="res://scripts/next_phase/next_phase_min_path.gd" id="18_43jfl"]
+[ext_resource type="PackedScene" uid="uid://diik6iqcg1u36" path="res://scenes/general/win_scene.tscn" id="18_m1gs2"]
+[ext_resource type="PackedScene" uid="uid://btif7hfb7i3rc" path="res://scenes/general/lose_scene.tscn" id="19_0av6b"]
+[ext_resource type="Script" path="res://scripts/next_phase/next_phase_reverse.gd" id="19_lj6df"]
+[ext_resource type="PackedScene" uid="uid://6eh3ia4g6l8g" path="res://scenes/general/level_num.tscn" id="20_oyqg7"]
+[ext_resource type="Script" path="res://scripts/general/multiline_phases_manager.gd" id="21_skpn5"]
+[ext_resource type="PackedScene" uid="uid://2jo5hkcplmdt" path="res://scenes/pause_menu/pause_menu.tscn" id="24_uxqub"]
+[ext_resource type="PackedScene" uid="uid://x31skbdgksdl" path="res://scenes/levels/level_3.tscn" id="26_d1s2b"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vkoee"]
+shader = ExtResource("10_cql53")
+shader_parameter/force = 0.26
+shader_parameter/scale = 0.01
+shader_parameter/debug = false
+
+[sub_resource type="Curve" id="Curve_mnmal"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.509881, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_cbof3"]
+curve = SubResource("Curve_mnmal")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nmlo5"]
+lifetime_randomness = 0.17
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1, 2, 1)
+emission_shape = 2
+emission_sphere_radius = 97.83
+angle_min = -30.9
+angle_max = 216.0
+direction = Vector3(0, -1, 0)
+spread = 32.144
+initial_velocity_min = 50.0
+initial_velocity_max = 70.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.3
+scale_max = 0.5
+alpha_curve = SubResource("CurveTexture_cbof3")
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vo5nc"]
+radius = 215.0
+height = 474.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fm3bj"]
+size = Vector2(266, 1005)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yjqdt"]
+size = Vector2(270, 1005)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8l0hq"]
+size = Vector2(171, 1948.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nwt4n"]
+size = Vector2(170.5, 1948.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sy2od"]
+size = Vector2(133, 132)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_js653"]
+size = Vector2(268.5, 269)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dqrl5"]
+size = Vector2(202.25, 203.5)
+
+[sub_resource type="Animation" id="Animation_useid"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SunShine:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_fkius"]
+resource_name = "sun_shine"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SunShine:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1.68179, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.454902), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_upr88"]
+_data = {
+"RESET": SubResource("Animation_useid"),
+"sun_shine": SubResource("Animation_fkius")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jxvo"]
+bg_color = Color(1, 0.803922, 0.219608, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4dho5"]
+font = ExtResource("11_5wqy8")
+font_size = 42
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Level_2" type="Node2D" node_paths=PackedStringArray("phases_manager", "path_creator", "reverse_path_creator") groups=["main_level"]]
+script = ExtResource("1_u4ehn")
+phases_manager = NodePath("LevelPhasesManager")
+path_creator = NodePath("CanvasLayer/CriarPath")
+reverse_path_creator = NodePath("CanvasLayer/CriarPathReverse")
+
+[node name="MapSpr" type="Sprite2D" parent="."]
+texture = ExtResource("2_sxtaq")
+centered = false
+
+[node name="Map" parent="." node_paths=PackedStringArray("line_manager") instance=ExtResource("3_biice")]
+line_manager = NodePath("../LineManager")
+
+[node name="MapSprOv" type="Sprite2D" parent="."]
+texture = ExtResource("7_grejy")
+centered = false
+
+[node name="SunShine" type="Sprite2D" parent="."]
+texture = ExtResource("8_ov8m6")
+centered = false
+
+[node name="Sun" type="Sprite2D" parent="."]
+texture = ExtResource("9_638uh")
+centered = false
+
+[node name="SunDistort" type="GPUParticles2D" parent="."]
+material = SubResource("ShaderMaterial_vkoee")
+position = Vector2(45, 524)
+amount = 50
+process_material = SubResource("ParticleProcessMaterial_nmlo5")
+texture = ExtResource("11_ek25m")
+lifetime = 2.0
+trail_lifetime = 1.83
+
+[node name="LineManager" type="Node2D" parent="." node_paths=PackedStringArray("base_line")]
+script = ExtResource("12_6blrr")
+base_line = NodePath("../BaseLine")
+num_of_lines = 10
+
+[node name="BaseLine" type="Line2D" parent="."]
+default_color = Color(1, 0, 0, 1)
+joint_mode = 2
+begin_cap_mode = 1
+end_cap_mode = 2
+
+[node name="Rocket" parent="." instance=ExtResource("13_pbxw8")]
+
+[node name="Barriers" type="Node2D" parent="."]
+metadata/_edit_group_ = true
+
+[node name="Sun" type="Area2D" parent="Barriers"]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/Sun"]
+position = Vector2(0, 490)
+shape = SubResource("CapsuleShape2D_vo5nc")
+
+[node name="left" type="Area2D" parent="Barriers"]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/left"]
+position = Vector2(-133, 487.5)
+shape = SubResource("RectangleShape2D_fm3bj")
+
+[node name="right" type="Area2D" parent="Barriers"]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/right"]
+position = Vector2(2025, 488)
+shape = SubResource("RectangleShape2D_yjqdt")
+
+[node name="bottom" type="Area2D" parent="Barriers"]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/bottom"]
+position = Vector2(947, 1065.5)
+rotation = 1.57079
+shape = SubResource("RectangleShape2D_8l0hq")
+
+[node name="top" type="Area2D" parent="Barriers"]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/top"]
+position = Vector2(947, -85.25)
+rotation = 1.57079
+shape = SubResource("RectangleShape2D_nwt4n")
+
+[node name="mercurio" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/mercurio"]
+position = Vector2(331.57, 751.02)
+shape = SubResource("RectangleShape2D_sy2od")
+
+[node name="venus" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/venus"]
+position = Vector2(472.07, 260.02)
+shape = SubResource("RectangleShape2D_sy2od")
+
+[node name="terra" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/terra"]
+position = Vector2(611.57, 540.02)
+shape = SubResource("RectangleShape2D_sy2od")
+
+[node name="marte" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/marte"]
+position = Vector2(821.57, 400.02)
+shape = SubResource("RectangleShape2D_sy2od")
+
+[node name="jupiter" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/jupiter"]
+position = Vector2(1031.32, 750.52)
+shape = SubResource("RectangleShape2D_js653")
+
+[node name="saturno" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/saturno"]
+position = Vector2(1276.44, 225.27)
+shape = SubResource("RectangleShape2D_dqrl5")
+
+[node name="urano" type="Area2D" parent="Barriers"]
+position = Vector2(18.43, 19.98)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/urano"]
+position = Vector2(1451.57, 679.02)
+shape = SubResource("RectangleShape2D_sy2od")
+
+[node name="netuno" type="Area2D" parent="Barriers"]
+position = Vector2(228, -329)
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barriers/netuno"]
+position = Vector2(1451.57, 679.02)
+shape = SubResource("RectangleShape2D_sy2od")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_upr88")
+}
+autoplay = "sun_shine"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 247.0
+offset_bottom = 106.0
+
+[node name="NomePlaneta" type="Label" parent="CanvasLayer/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_1jxvo")
+text = "PLANETA"
+label_settings = SubResource("LabelSettings_4dho5")
+script = ExtResource("12_udm1l")
+
+[node name="MessageScene" parent="CanvasLayer" groups=["alert"] instance=ExtResource("14_jwuti")]
+unique_name_in_owner = true
+time_visible = 3.0
+
+[node name="CriarPath" parent="CanvasLayer" node_paths=PackedStringArray("phases_manager", "line_manager") groups=["path_creators"] instance=ExtResource("14_v3fbq")]
+phases_manager = NodePath("../../LevelPhasesManager")
+line_manager = NodePath("../../LineManager")
+
+[node name="CriarPathReverse" parent="CanvasLayer" node_paths=PackedStringArray("line_manager") groups=["path_creators"] instance=ExtResource("16_puhcc")]
+line_manager = NodePath("../../LineManager")
+
+[node name="IntermMessage" parent="CanvasLayer" instance=ExtResource("16_vraao")]
+unique_name_in_owner = true
+
+[node name="NextPhaseManager" type="Control" parent="CanvasLayer"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1890.0
+offset_bottom = 980.0
+mouse_filter = 2
+script = ExtResource("17_5p58l")
+
+[node name="Simple" parent="CanvasLayer/NextPhaseManager" instance=ExtResource("17_bodho")]
+layout_mode = 1
+
+[node name="MinPath" parent="CanvasLayer/NextPhaseManager" instance=ExtResource("17_bodho")]
+layout_mode = 1
+script = ExtResource("18_43jfl")
+
+[node name="Reverse" parent="CanvasLayer/NextPhaseManager" instance=ExtResource("17_bodho")]
+layout_mode = 1
+script = ExtResource("19_lj6df")
+
+[node name="WinScene" parent="CanvasLayer" instance=ExtResource("18_m1gs2")]
+unique_name_in_owner = true
+
+[node name="LoseScene" parent="CanvasLayer" groups=["lose_screen"] instance=ExtResource("19_0av6b")]
+unique_name_in_owner = true
+
+[node name="LevelNum" parent="CanvasLayer" instance=ExtResource("20_oyqg7")]
+unique_name_in_owner = true
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("24_uxqub")]
+unique_name_in_owner = true
+process_mode = 3
+visible = false
+
+[node name="LevelPhasesManager" type="Node" parent="." node_paths=PackedStringArray("rocket", "next_phase_manager")]
+script = ExtResource("21_skpn5")
+level_json_path = "res://levels_json/level_2.json"
+next_level = ExtResource("26_d1s2b")
+rocket = NodePath("../Rocket")
+next_phase_manager = NodePath("../CanvasLayer/NextPhaseManager")
