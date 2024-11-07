@@ -312,7 +312,7 @@ func _on_play_again():
 
 	# Reset the battery level
 	if battery:
-		get_tree().call_group("battery", "fill_battery", _last_battery_level)
+		get_tree().call_group("battery", "set_battery_level", _last_battery_level)
 
 	_on_play()
 
@@ -346,6 +346,8 @@ func _on_battery_clicked():
 	elif _was_map_enabled:
 		$Map.enable_map()
 		_set_map_ui_visible(true)
+	else:
+		battery.visible = true
 
 func check_if_player_won(coords: Array) -> bool:
 	return phases_manager.player_won($Map.convert_local_array_to_map(coords))
