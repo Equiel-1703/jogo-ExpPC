@@ -52,6 +52,7 @@ func set_use_battery(use_battery: bool) -> void:
 
 func set_start_position(start_pos: Vector2) -> void:
 	_execute_flag = false
+	
 	falling = false
 	_exploded = false
 
@@ -106,6 +107,9 @@ func _next_moves_array() -> void:
 	_execute_next_command()
 
 func fall():
+	if _exploded:
+		return
+	
 	_execute_flag = false
 	_commands_to_process.clear()
 	_propulsion.emitting = false
@@ -115,6 +119,7 @@ func fall():
 
 	if not _exploded:
 		get_tree().call_group("main_level", "lose_immediately", FALL_LOSE_MESSAGE)
+		falling = false
 
 func explode():
 	_execute_flag = false
@@ -131,6 +136,9 @@ func _on_explosion_finished():
 		get_tree().call_group("main_level", "lose_immediately", FALL_LOSE_MESSAGE)
 	else:
 		get_tree().call_group("main_level", "lose_immediately", EXPLOSION_LOSE_MESSAGE)
+	
+	falling = false
+	_exploded = false
 
 func _execute_next_command() -> void:
 	if _commands_to_process.size() > 0:
