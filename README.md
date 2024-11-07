@@ -13,7 +13,7 @@ O game foi feito inteiramente na engine [Godot](https://godotengine.org/), na ve
 ![gameplay-3](https://github.com/user-attachments/assets/eb53bc15-5a62-43b7-ba57-d8a87794d293)
 
 # Créditos e Agradecimentos
-O jogo foi idealizado e desenvolvido inteiramente por [Henrique Gabriel Rodrigues](www.linkedin.com/in/henrique-gabriel-rod), sob orientação e auxílio das professoras doutoras [Luciana Foss](http://lattes.cnpq.br/1097468139544018) e [Simone André da Costa Cavalheiro](http://lattes.cnpq.br/2502796658601825), para aplicação no projeto de extensão [ExpPC](https://wp.ufpel.edu.br/pensamentocomputacional/pt/).
+O jogo foi idealizado e desenvolvido inteiramente por [Henrique Gabriel Rodrigues](https://www.linkedin.com/in/henrique-gabriel-rod), sob orientação e auxílio das professoras doutoras [Luciana Foss](http://lattes.cnpq.br/1097468139544018) e [Simone André da Costa Cavalheiro](http://lattes.cnpq.br/2502796658601825), para aplicação no projeto de extensão [ExpPC](https://wp.ufpel.edu.br/pensamentocomputacional/pt/).
 
 Meu muito obrigado às professoras pela oportunidade de atuar no ExpPC e por todo o apoio durante o projeto! Que o projeto siga forte e que possa alcançar cada vez mais pessoas.
 
