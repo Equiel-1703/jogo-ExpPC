@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://6hx5qh7aj652"]
+[gd_scene load_steps=6 format=3 uid="uid://6hx5qh7aj652"]
 
 [ext_resource type="LabelSettings" uid="uid://cgl76j25jy15c" path="res://themes/instructions_label_settings.tres" id="1_5x7sd"]
+[ext_resource type="Script" path="res://scripts/battery/ganho_text.gd" id="2_7ltc6"]
 
 [sub_resource type="Animation" id="Animation_j8emr"]
 length = 0.001
@@ -48,9 +49,12 @@ offset_bottom = 66.0
 grow_horizontal = 2
 text = "+2"
 label_settings = ExtResource("1_5x7sd")
+script = ExtResource("2_7ltc6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_ka7g3")
 }
 autoplay = "fade"
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
