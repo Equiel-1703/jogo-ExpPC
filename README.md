@@ -1,5 +1,5 @@
 # Uma Aventura no Espaço
-Este jogo foi desenvolvido por mim para o projeto de extensão da Universidade Federal de Pelotas (UFPel), **Explorando o Pensamento Computacional desde o Ensino Fundamental (ExpPC)**. A ideia era proporcionar uma forma plugada e divertida de auxiliar crianças do ensino fundamental a aprender conceitos da área de computação.
+Este jogo foi desenvolvido para o projeto de extensão da Universidade Federal de Pelotas (UFPel), **Explorando o Pensamento Computacional desde o Ensino Fundamental (ExpPC)**. A ideia era proporcionar uma forma plugada e divertida de auxiliar crianças do ensino fundamental a aprender conceitos da área de computação.
 
 ![Menu do jogo](https://github.com/user-attachments/assets/7e6034c0-bd83-438c-bfdf-dee8245ea391)
 
