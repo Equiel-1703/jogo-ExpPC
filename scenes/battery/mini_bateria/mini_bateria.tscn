@@ -1,7 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://c3eobo3v0parp"]
+[gd_scene load_steps=12 format=3 uid="uid://c3eobo3v0parp"]
 
 [ext_resource type="Texture2D" uid="uid://df0mpke1qyx7m" path="res://res/mini_bateria/bateria_prwp0000.png" id="1_hmjup"]
-[ext_resource type="Script" path="res://scenes/battery/mini_bateria/mini_bateria.gd" id="1_ytxpx"]
+[ext_resource type="Script" path="res://scripts/battery/mini_bateria.gd" id="1_ytxpx"]
 [ext_resource type="Texture2D" uid="uid://d2t7q6lrgrws0" path="res://res/mini_bateria/bateria_prwp0001.png" id="2_eaemx"]
 [ext_resource type="Texture2D" uid="uid://bqta54b1y1j1n" path="res://res/mini_bateria/bateria_prwp0002.png" id="3_qlsrc"]
 [ext_resource type="Texture2D" uid="uid://q3a73rpnjl22" path="res://res/mini_bateria/bateria_prwp0003.png" id="4_jl031"]
@@ -24,9 +24,6 @@ width = 128
 height = 128
 fill = 2
 fill_from = Vector2(0.5, 0.5)
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_qax5u"]
-blend_mode = 1
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_g1mlq"]
 animations = [{
@@ -76,14 +73,14 @@ texture_scale = 1.79
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Path2D/PathFollow2D"]
 unique_name_in_owner = true
-material = SubResource("CanvasItemMaterial_qax5u")
+modulate = Color(1, 1, 1, 0.666667)
 rotation = 1.5708
 scale = Vector2(0.15, 0.15)
 sprite_frames = SubResource("SpriteFrames_g1mlq")
 animation = &"idle"
 autoplay = "idle"
-frame = 2
-frame_progress = 0.426156
+frame = 1
+frame_progress = 0.202411
 
 [node name="PowerUpCollision" type="Area2D" parent="."]
 

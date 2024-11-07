@@ -13,6 +13,7 @@ var _bounce_speed: float = 0.0
 static var _power_ups_to_delete: Array = []
 
 func _ready() -> void:
+	self.visible = true
 	_animated_sprite.speed_scale = randf_range(0.8, 2.0)
 	_bounce_speed = randf_range(0.1, 0.5)
 
