@@ -53,6 +53,15 @@ func _ready():
 	rocket.moves_matrix_completed.connect(_on_rocket_finished_moving)
 	rocket.battery_died.connect(_on_rocket_battery_died)
 
+	if OS.has_feature("editor"):
+		print("PhasesManager> We are in the editor, we'll use 'res://' path.")
+		level_json_path = ProjectSettings.globalize_path("res://" + level_json_path)
+	else:
+		print("PhasesManager> We are not in the editor, we'll use global path with the executable base folder.")
+		level_json_path = OS.get_executable_path().get_base_dir().path_join(level_json_path)
+
+	print("PhasesManager> Loading level from: " + level_json_path)
+
 	# Load the level JSON file.
 	_phases = JsonLoader.load_level(level_json_path)
 

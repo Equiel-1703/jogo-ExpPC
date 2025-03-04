@@ -354,7 +354,7 @@ visible = false
 
 [node name="LevelPhasesManager" type="Node" parent="." node_paths=PackedStringArray("rocket", "next_phase_manager")]
 script = ExtResource("20_xjjgy")
-level_json_path = "res://levels_json/level_1.json"
+level_json_path = "levels_json/level_1.json"
 next_level = ExtResource("26_fy5al")
 rocket = NodePath("../Rocket")
 next_phase_manager = NodePath("../CanvasLayer/NextPhaseManager")
