@@ -153,9 +153,11 @@ Estes tipos de rotas podem ser combinados em uma mesma fase ou ao longo dos nív
 ```
 <p align="center"><em>Código 8: Exemplo de uma fase com dois destinos (Marte e Vênus) e tipos de rotas diferentes.</em></p>
 
-Esses recursos permitem que você crie fases mais desafiadoras e interessantes para os jogadores. Você pode criar fases com rotas simples, rotas de caminho mínimo, rotas inversas ou combinações desses tipos de rotas. Além disso, você pode criar fases com mais de um destino, permitindo que o jogador crie rotas compostas para alcançar os planetas de destino.
+Esses recursos permitem que você crie fases mais desafiadoras e interessantes para os jogadores. Você pode criar fases com rotas simples, rotas de caminho mínimo, rotas inversas ou combinações desses tipos de rotas. Além disso, você pode criar fases com mais de um destino, permitindo que o jogador crie rotas compostas para visitar mais de um planeta na mesma viagem.
 
 ## Alguns cuidados!
+
+Os JSON's mostrados aqui, com exceção do _Código 1_, não são códigos JSON válidos. Isso porque o formato JSON não possui sintaxe de comentários. Comentários são textos que programadores costumam adicionar em um código para documentá-lo, conforme fizemos nos códigos apresentados aqui. Por exemplo, em 
 
 Todas as fases iniciam com o foguete na Terra. Portanto, não é necessário adicionar a Terra como o primeiro destino de um nível - o foguete já estará lá. Se você fizer isso, o jogo vai ignorar e pular para o próximo destino.
 
