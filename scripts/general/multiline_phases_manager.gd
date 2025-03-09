@@ -92,12 +92,21 @@ func _verify_destinations():
 	
 	if _destinations[0].mode == Destination.DEST_MODE.REVERSE:
 		# The first destination can't be a reverse destination. Turn it to normal.
-		_destinations[0] = Destination.DEST_MODE.NORMAL
+		_destinations[0].mode = Destination.DEST_MODE.NORMAL
 	
 	while _destinations.size() > 0 and _destinations[0].planet_name == this_last_dest:
 		# If the first destination is the same as the last destination, remove it.
 		_destinations.pop_front()
 
+	# Check for valid planets
+	var i = 0
+	while i < _destinations.size():
+		if not GlobalGameData.PLANETS_COORDS.has(_destinations[i].planet_name):
+			_destinations.remove_at(i)
+			continue
+		
+		i += 1
+	
 	if _destinations.size() == 0:
 		# In this case, skip the phase
 		go_to_next_phase()
