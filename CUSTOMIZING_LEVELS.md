@@ -97,7 +97,7 @@ Cada fase é representada por um array JSON que armazena os destinos. E cada des
 ```
 <p align="center"><em>Código 6: Visualização dos destinos de cada fase como objetos JSON em um array de fases.</em></p>
 
-Como podemos ver, `phases` um array de arrays. Mas talvez você esteja se perguntando: "Por que vocês usaram um array de arrays para armazenar as fases? Não era mais simples só usar um array de destinos?". A resposta é simples: cada fase pode ter mais de um destino (rotas compostas).
+Como podemos ver, `phases` é um array de arrays. Mas talvez você esteja se perguntando: "Por que vocês usaram um array de arrays para armazenar as fases? Não era mais fácil só usar um array de destinos?". A resposta é simples: cada fase pode ter mais de um destino (rotas compostas).
 
 Por exemplo, na fase 1 do nível 1, o jogador deve criar uma rota para o planeta Marte. Mas e se quiséssemos que o jogador criasse uma rota para Vênus passando por Marte? Nesse caso, a fase 1 do nível 1 teria que ter dois destinos: Marte e Vênus. E é para isso que serve o array. Veja como fica a fase 1 do nível 1 com esses dois destinos:
 
