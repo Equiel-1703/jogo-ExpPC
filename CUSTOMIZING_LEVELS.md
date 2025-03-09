@@ -157,7 +157,7 @@ Esses recursos permitem que você crie fases mais desafiadoras e interessantes p
 
 ## Alguns cuidados!
 
-Os JSON's mostrados aqui, com exceção do _Código 1_, não são códigos JSON válidos. Isso porque o formato JSON não possui sintaxe de comentários. Comentários são textos que programadores costumam adicionar em um código para documentá-lo, conforme fizemos nos códigos apresentados aqui. Por exemplo, em 
+Os JSON's mostrados aqui, com exceção do _Código 1_, não são códigos JSON válidos. Isso porque o formato JSON não possui sintaxe de comentários. Comentários são textos que não são interpretados pelo computador e servem apenas para documentação do código. Em muitas linguagens de programação comentários são feitos com `//` ou `/* */`, como no texto `// Destino 1 - Marte` no _Código 8_. Mas no JSON, não existe sintaxe para comentários, fizemos isso apenas para facilitar a compreensão do código. Portanto, ao editar os arquivos JSON, **não adicione comentários**. Se você adicionar comentários, o jogo não vai conseguir ler o arquivo corretamente e vai apresentar erros.
 
 Todas as fases iniciam com o foguete na Terra. Portanto, não é necessário adicionar a Terra como o primeiro destino de um nível - o foguete já estará lá. Se você fizer isso, o jogo vai ignorar e pular para o próximo destino.
 
