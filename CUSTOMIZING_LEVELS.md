@@ -19,7 +19,7 @@ Os arquivos JSON possuem a seguinte estrutura:
 	]
 }
 ```
-<p align="center"><em>Código 1: Exemplo de estrutura de um arquivo JSON para customização de níveis.</em></p>
+<p align="center"><em>Código 1: Exemplo de um arquivo JSON para o nível 1.</em></p>
 
 
 Tudo que está dentro de um par de chaves `{}` é um objeto JSON. Um objeto JSON é composto por pares de chave-valor, onde a chave é uma string (um texto entre aspas duplas, como `"Olá mundo!"`) e o valor pode ser qualquer tipo de dado que o JSON suporta (número, string, boolean, array, objeto, etc). A sintaxe de um objeto JSON é a seguinte:
