@@ -163,7 +163,7 @@ Esses recursos permitem que você crie fases mais desafiadoras e interessantes p
 
 - O nome dos planetas deve ser escrito em letras minúsculas e sem acentos. Os nomes dos planetas disponíveis são: `mercurio`, `venus`, `terra`, `marte`, `jupiter`, `saturno`, `urano`, `netuno` e `plutao`. Se você escrever o nome de um planeta que não existe ou de uma forma diferente, o jogo não vai reconhecer e esse destino será ignorado.
 
-- Rotas com `mode` igual a 2 (rota inversa) vão sempre retornar para o destino anterior. Portanto, se você deseja adicionar uma rota inversa, certifique-se de colocar o planeta de destino da rota inversa como o planeta que o jogador deve retornar. Veja esse exemplo:
+- Rotas com `mode` igual a 2 (rota inversa) vão sempre retornar para o destino anterior. Portanto, se você deseja adicionar uma rota inversa, certifique-se de colocar o planeta de destino da rota inversa como o planeta que o jogador deve retornar. O nível 1 mostrado no _Código 9_ abaixo inicia com o foguete na terra (isso é padrão em todos os níveis) e o jogador deve criar uma rota simples para Marte. Após chegar em Marte, o jogador deve inverter a rota para retornar à Terra. Se colocarmos o nome de outro planeta que não seja a Terra no segundo destino com rota reversa, o jogo não vai reconhecer que o aluno chegou ao destino e a fase nunca será concluída. Outro cuidado importante é que como a rota reversa sempre retorna para o planeta anterior, ela não pode ser o primeiro destino de um nível. Se isso acontecer, o jogo vai ignorar a rota reversa e pular para o próximo destino.
 
 ```json
 {
@@ -184,9 +184,8 @@ Esses recursos permitem que você crie fases mais desafiadoras e interessantes p
 	]
 }
 ```
-<p align="center"><em>Código 9: Exemplo de uma fase com uma rota simples para Marte e uma rota inversa para a Terra.</em></p>
 
-  O nível 1 mostrado no _Código 9_ inicia com o foguete na terra (isso é padrão em todos os níveis) e o jogador deve criar uma rota simples para Marte. Após chegar em Marte, o jogador deve inverter a rota para retornar à Terra. Se colocarmos o nome de outro planeta que não seja a Terra no segundo destino com rota reversa, o jogo não vai reconhecer que o aluno chegou ao destino e a fase nunca será concluída. Outro cuidado importante é que como a rota reversa sempre retorna para o planeta anterior, ela não pode ser o primeiro destino de um nível. Se isso acontecer, o jogo vai ignorar a rota reversa e pular para o próximo destino.
+<p align="center"><em>Código 9: Exemplo de uma fase com uma rota simples para Marte e uma rota inversa para a Terra.</em></p>
 
 - Última coisa: **NÃO ALTERE O NOME DAS CHAVES E NEM DOS ARQUIVOS**. Se você alterar o nome de uma chave ou de um arquivo, o jogo não vai conseguir ler as informações corretamente e vai apresentar erros. Portanto, mantenha a estrutura dos arquivos JSON como ela está e apenas altere os _valores_ das chaves `planet_name` e `mode` de acordo com a sua customização.
 
